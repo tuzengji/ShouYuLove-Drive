@@ -529,10 +529,10 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
       const main = document.createElement('div');
       main.className = 'file-row__main';
 
-      const tile = document.createElement('span');
-      tile.className = `file-row__tile ${item.type === 'dir' ? 'file-row__tile--dir' : 'file-row__tile--file'}`;
-      tile.setAttribute('aria-hidden', 'true');
-      tile.appendChild(createSvgIcon(pickIconKind(item), 'file-row__icon'));
+      const iconEl = createSvgIcon(
+        pickIconKind(item),
+        `file-row__icon ${item.type === 'dir' ? 'file-row__icon--dir' : 'file-row__icon--file'}`,
+      );
 
       const titleStack = document.createElement('div');
       titleStack.className = 'file-row__title-stack';
@@ -554,11 +554,11 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
       if (searchMode && item.parentPath) {
         const sub = document.createElement('span');
         sub.className = 'file-row__subpath';
-        sub.textContent = item.parentPath === '/' ? '位于 全部文件' : `位于 ${item.parentPath}`;
+        sub.textContent = item.parentPath === '/' ? '根目录' : item.parentPath;
         titleStack.appendChild(sub);
       }
 
-      main.append(tile, titleStack);
+      main.append(iconEl, titleStack);
 
       const mtimeSpan = document.createElement('span');
       mtimeSpan.className = 'file-row__mtime';
@@ -695,7 +695,7 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
     const ext = getFileExt(item.name);
 
     els.previewModalTitle.textContent = item.name;
-    els.previewModalMeta.textContent = `${item.path} · ${formatBytes(item.size)} · ${formatTimestamp(item.mtimeMs)}`;
+    els.previewModalMeta.textContent = `${item.path}（${formatBytes(item.size)}，${formatTimestamp(item.mtimeMs)}）`;
     els.previewDownloadLink.href = dlUrl;
     els.previewEditBtn.hidden = true;
     els.previewSaveBtn.hidden = true;
@@ -1332,49 +1332,46 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
     applyAdminVisibility(isAdmin, state);
 
     if (!state.authenticated) {
-      els.heroSection.classList.remove('home-heading--console');
-      els.navAccount.textContent = '未登录';
-      els.navStatusDot.classList.remove('is-ok', 'is-warn');
+      if (els.heroSection) els.heroSection.hidden = false;
+      if (els.navAccount) els.navAccount.textContent = '未登录';
+      if (els.verifiedRoleText) els.verifiedRoleText.hidden = true;
       if (els.navLogin) els.navLogin.hidden = false;
-      els.navSwitch.hidden = true;
-      els.navLogout.hidden = true;
-      els.viewGuest.hidden = false;
-      els.guestBento.hidden = false;
-      els.viewDenied.hidden = true;
-      els.heroConsoleActions.hidden = true;
-      els.viewConsole.hidden = true;
+      if (els.navSwitch) els.navSwitch.hidden = true;
+      if (els.navLogout) els.navLogout.hidden = true;
+      if (els.viewGuest) els.viewGuest.hidden = false;
+      if (els.guestBento) els.guestBento.hidden = true;
+      if (els.viewDenied) els.viewDenied.hidden = true;
+      if (els.heroConsoleActions) els.heroConsoleActions.hidden = true;
+      if (els.viewConsole) els.viewConsole.hidden = true;
       return state;
     }
 
-    els.navAccount.textContent = state.user.phoneMasked;
+    if (els.heroSection) els.heroSection.hidden = true;
+    if (els.navAccount) els.navAccount.textContent = state.user.phoneMasked;
     if (els.navLogin) els.navLogin.hidden = true;
-    els.navSwitch.hidden = false;
-    els.navLogout.hidden = false;
-    els.guestBento.hidden = true;
+    if (els.navSwitch) els.navSwitch.hidden = false;
+    if (els.navLogout) els.navLogout.hidden = false;
+    if (els.guestBento) els.guestBento.hidden = true;
 
     if (!state.allowed) {
-      els.heroSection.classList.remove('home-heading--console');
-      els.navStatusDot.classList.remove('is-ok');
-      els.navStatusDot.classList.add('is-warn');
-      els.deniedPhone.textContent = state.user.phoneMasked;
-      els.viewGuest.hidden = true;
-      els.viewDenied.hidden = false;
-      els.heroConsoleActions.hidden = true;
-      els.viewConsole.hidden = true;
+      if (els.verifiedRoleText) els.verifiedRoleText.hidden = true;
+      if (els.deniedPhone) els.deniedPhone.textContent = state.user.phoneMasked;
+      if (els.viewGuest) els.viewGuest.hidden = true;
+      if (els.viewDenied) els.viewDenied.hidden = false;
+      if (els.heroConsoleActions) els.heroConsoleActions.hidden = true;
+      if (els.viewConsole) els.viewConsole.hidden = true;
       return state;
     }
 
-    els.heroSection.classList.add('home-heading--console');
-    els.navStatusDot.classList.remove('is-warn');
-    els.navStatusDot.classList.add('is-ok');
     if (els.verifiedRoleText) {
-      els.verifiedRoleText.textContent = isAdmin ? '管理员' : '已开通权限';
+      els.verifiedRoleText.textContent = '管理员';
+      els.verifiedRoleText.hidden = !isAdmin;
     }
-    els.consolePhone.textContent = state.user.phoneMasked;
-    els.viewGuest.hidden = true;
-    els.viewDenied.hidden = true;
-    els.heroConsoleActions.hidden = false;
-    els.viewConsole.hidden = false;
+    if (els.consolePhone) els.consolePhone.textContent = state.user.phoneMasked;
+    if (els.viewGuest) els.viewGuest.hidden = true;
+    if (els.viewDenied) els.viewDenied.hidden = true;
+    if (els.heroConsoleActions) els.heroConsoleActions.hidden = false;
+    if (els.viewConsole) els.viewConsole.hidden = false;
 
     if (!keepExplorer) {
       currentDir = state.currentDir || currentDir || '/';
@@ -1392,7 +1389,7 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
       return applyState(state, { keepExplorer });
     } catch (err) {
       if (!hasLoadedOnce && els.viewError) {
-        els.viewGuest.hidden = false;
+        if (els.heroSection) els.heroSection.hidden = true;
         els.viewError.hidden = false;
         if (els.errorDesc) {
           els.errorDesc.textContent = `${err.message || '无法读取网盘状态'}，请点击下方按钮重试。`;
@@ -1562,7 +1559,7 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
       activePreviewState.editing = false;
       activePreviewState.item.size = saved.size;
       activePreviewState.item.mtimeMs = saved.mtimeMs;
-      els.previewModalMeta.textContent = `${activePreviewState.item.path} · ${formatBytes(saved.size)} · ${formatTimestamp(saved.mtimeMs)}`;
+      els.previewModalMeta.textContent = `${activePreviewState.item.path}（${formatBytes(saved.size)}，${formatTimestamp(saved.mtimeMs)}）`;
       renderPreviewTextView();
       await navigateToDir(currentDir, { pushHistory: false, silent: true });
       showNotice(`已保存 ${activePreviewState.item.name}`);

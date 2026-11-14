@@ -1,6 +1,7 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: custom (Benchmarks' Last Exam dark, by request) · posture: restrained · surface: absolute · redesign: full · v2.0.0 */
 /* 手语分社统一通行证 · 页面内悬浮窗登录样式（CSP 安全外链，零整页跳转） */
 
-dialog.syl-auth-modal {
+:root {
   --syl-bg: #0b0d14;
   --syl-surface: #10131c;
   --syl-surface-soft: #0e1119;
@@ -10,8 +11,8 @@ dialog.syl-auth-modal {
   --syl-ink: #f4f1ea;
   --syl-ink-soft: #d8d5cd;
   --syl-muted: #a3a7b3;
-  --syl-placeholder: #7d8291;
-  --syl-disabled: #5b6070;
+  --syl-placeholder: #8c92a2;
+  --syl-disabled: #8b91a1;
   --syl-line: #1c1f2a;
   --syl-line-strong: #2a2e3b;
   --syl-line-hover: #6b7080;
@@ -19,32 +20,61 @@ dialog.syl-auth-modal {
   --syl-solid: #f4f1ea;
   --syl-solid-hover: #fff3df;
   --syl-on-solid: #07080d;
+  --syl-mark-bg: #f6f4ee;
+  --syl-mark-fg: #07080d;
   --syl-glow: #fff3df;
-  --syl-tick: #ff5a3c;
   --syl-ok: #3ecf8e;
   --syl-ok-bg: #0f241b;
   --syl-ok-fg: #5fd39a;
   --syl-err-bg: #2e1513;
-  --syl-err-fg: #ff7f70;
+  --syl-err-fg: #ff8577;
   --syl-shadow: #000000;
   --syl-font: "Google Sans Flex", "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --syl-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
+  --syl-light-bg: #fbf9f4;
+  --syl-light-surface: #f2ede2;
+  --syl-light-surface-soft: #f5f1e7;
+  --syl-light-surface-hover: #ebe4d5;
+  --syl-light-selected: #ffffff;
+  --syl-light-page: #ffffff;
+  --syl-light-ink: #1b2420;
+  --syl-light-ink-soft: #2e3b35;
+  --syl-light-muted: #53615a;
+  --syl-light-placeholder: #627069;
+  --syl-light-disabled: #68756f;
+  --syl-light-line: #e4ddd0;
+  --syl-light-line-strong: #d4cbb9;
+  --syl-light-line-hover: #8f8675;
+  --syl-light-field-edge: #c7beac;
+  --syl-light-solid: #23332c;
+  --syl-light-solid-hover: #2f453b;
+  --syl-light-on-solid: #fbf9f4;
+  --syl-light-glow: #2f453b;
+  --syl-light-ok: #238a5d;
+  --syl-light-ok-bg: #e4f4ec;
+  --syl-light-ok-fg: #1b6e49;
+  --syl-light-err-bg: #fbeae8;
+  --syl-light-err-fg: #a82e22;
+}
+
+dialog.syl-auth-modal {
   position: fixed;
   inset: 0;
   width: min(432px, calc(100% - 24px));
   max-width: none;
-  max-height: calc(100dvh - 28px);
+  max-height: calc(100dvh - 32px);
   margin: auto;
   padding: 0;
   border: 0;
-  border-radius: 14px;
+  border-radius: 12px;
   background: var(--syl-bg);
   color: var(--syl-ink);
-  font: 400 1rem/1.55 var(--syl-font);
+  font: 400 1rem/1.5 var(--syl-font);
   font-variant-numeric: tabular-nums;
   box-shadow:
-    0 0 0 0.5px var(--syl-line-strong),
-    0 28px 80px color-mix(in srgb, var(--syl-shadow) 72%, transparent);
+    0 0 0 1px var(--syl-line-strong),
+    0 24px 64px color-mix(in srgb, var(--syl-shadow) 72%, transparent);
   overflow: auto;
   overscroll-behavior: contain;
   -webkit-font-smoothing: antialiased;
@@ -52,30 +82,30 @@ dialog.syl-auth-modal {
 
 dialog.syl-auth-modal[data-syl-theme="light"] {
   color-scheme: light;
-  --syl-bg: #fbf9f4;
-  --syl-surface: #f2ede2;
-  --syl-surface-soft: #f5f1e7;
-  --syl-surface-hover: #ebe4d5;
-  --syl-selected: #ffffff;
-  --syl-page: #ffffff;
-  --syl-ink: #1b2420;
-  --syl-ink-soft: #2e3b35;
-  --syl-muted: #5a6861;
-  --syl-placeholder: #83918a;
-  --syl-disabled: #9ba6a0;
-  --syl-line: #e4ddd0;
-  --syl-line-strong: #d4cbb9;
-  --syl-line-hover: #8f8675;
-  --syl-field-edge: #c7beac;
-  --syl-solid: #23332c;
-  --syl-solid-hover: #2f453b;
-  --syl-on-solid: #fbf9f4;
-  --syl-glow: #2f453b;
-  --syl-ok: #238a5d;
-  --syl-ok-bg: #e4f4ec;
-  --syl-ok-fg: #1b6e49;
-  --syl-err-bg: #fbeae8;
-  --syl-err-fg: #b4362a;
+  --syl-bg: var(--syl-light-bg);
+  --syl-surface: var(--syl-light-surface);
+  --syl-surface-soft: var(--syl-light-surface-soft);
+  --syl-surface-hover: var(--syl-light-surface-hover);
+  --syl-selected: var(--syl-light-selected);
+  --syl-page: var(--syl-light-page);
+  --syl-ink: var(--syl-light-ink);
+  --syl-ink-soft: var(--syl-light-ink-soft);
+  --syl-muted: var(--syl-light-muted);
+  --syl-placeholder: var(--syl-light-placeholder);
+  --syl-disabled: var(--syl-light-disabled);
+  --syl-line: var(--syl-light-line);
+  --syl-line-strong: var(--syl-light-line-strong);
+  --syl-line-hover: var(--syl-light-line-hover);
+  --syl-field-edge: var(--syl-light-field-edge);
+  --syl-solid: var(--syl-light-solid);
+  --syl-solid-hover: var(--syl-light-solid-hover);
+  --syl-on-solid: var(--syl-light-on-solid);
+  --syl-glow: var(--syl-light-glow);
+  --syl-ok: var(--syl-light-ok);
+  --syl-ok-bg: var(--syl-light-ok-bg);
+  --syl-ok-fg: var(--syl-light-ok-fg);
+  --syl-err-bg: var(--syl-light-err-bg);
+  --syl-err-fg: var(--syl-light-err-fg);
 }
 
 dialog.syl-auth-modal,
@@ -90,19 +120,17 @@ dialog.syl-auth-modal [hidden] {
 }
 
 dialog.syl-auth-modal::backdrop {
-  background: color-mix(in srgb, var(--syl-shadow) 72%, transparent);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--syl-shadow) 76%, transparent);
 }
 
 dialog.syl-auth-modal[open] {
-  animation: sylModalIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: sylModalIn 180ms var(--syl-ease-out);
 }
 
 @keyframes sylModalIn {
   from {
     opacity: 0;
-    transform: translateY(8px) scale(0.985);
+    transform: translateY(4px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -112,25 +140,16 @@ dialog.syl-auth-modal[open] {
 
 .syl-modal-panel {
   position: relative;
-  padding: 24px 26px 22px;
-}
-
-.syl-modal-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0 14% auto;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--syl-glow) 72%, transparent), transparent);
-  pointer-events: none;
+  padding: 24px;
 }
 
 .syl-modal-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 14px;
-  padding-bottom: 18px;
-  border-bottom: 0.5px solid var(--syl-line);
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--syl-line);
 }
 
 .syl-modal-brand {
@@ -147,12 +166,9 @@ dialog.syl-auth-modal[open] {
   width: 40px;
   height: 40px;
   flex: none;
-  border-radius: 10px;
-  background: #f6f4ee;
-  color: #07080d;
-  box-shadow:
-    0 0 0 0.5px color-mix(in srgb, var(--syl-ink) 20%, transparent),
-    0 6px 18px color-mix(in srgb, var(--syl-shadow) 42%, transparent);
+  border-radius: 8px;
+  background: var(--syl-mark-bg);
+  color: var(--syl-mark-fg);
 }
 
 .syl-modal-mark svg {
@@ -167,8 +183,8 @@ dialog.syl-auth-modal[open] {
 
 .syl-modal-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 650;
+  font-size: 1.1875rem;
+  font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.02em;
   color: var(--syl-ink);
@@ -176,7 +192,7 @@ dialog.syl-auth-modal[open] {
 
 .syl-modal-subtitle {
   margin: 4px 0 0;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   line-height: 1.45;
   color: var(--syl-muted);
 }
@@ -187,19 +203,25 @@ dialog.syl-auth-modal[open] {
   justify-content: center;
   width: 40px;
   height: 40px;
-  margin: -4px -6px 0 0;
+  margin: -4px -4px 0 0;
   flex: none;
   border: 0;
   border-radius: 8px;
   background: transparent;
   color: var(--syl-muted);
   cursor: pointer;
-  transition: background-color 160ms ease-out, color 160ms ease-out;
+  transition: background-color 160ms var(--syl-ease-out), color 160ms var(--syl-ease-out), transform 120ms var(--syl-ease-out);
 }
 
-.syl-modal-close:hover {
-  background: var(--syl-surface-hover);
-  color: var(--syl-ink);
+@media (hover: hover) and (pointer: fine) {
+  .syl-modal-close:hover {
+    background: var(--syl-surface-hover);
+    color: var(--syl-ink);
+  }
+}
+
+.syl-modal-close:active {
+  transform: scale(0.97);
 }
 
 .syl-modal-close svg {
@@ -215,18 +237,18 @@ dialog.syl-auth-modal :focus-visible {
 
 .syl-modal-notice {
   margin-top: 16px;
-  padding: 11px 14px;
+  padding: 12px 16px;
   border-radius: 8px;
-  border: 0.5px solid color-mix(in srgb, var(--syl-err-fg) 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--syl-err-fg) 36%, transparent);
   background: var(--syl-err-bg);
   color: var(--syl-err-fg);
-  font-size: 0.9375rem;
-  font-weight: 550;
+  font-size: 0.875rem;
+  font-weight: 500;
   line-height: 1.45;
 }
 
 .syl-modal-notice.is-ok {
-  border-color: color-mix(in srgb, var(--syl-ok-fg) 38%, transparent);
+  border-color: color-mix(in srgb, var(--syl-ok-fg) 36%, transparent);
   background: var(--syl-ok-bg);
   color: var(--syl-ok-fg);
 }
@@ -235,26 +257,25 @@ dialog.syl-auth-modal :focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   margin-top: 16px;
-  padding: 10px 13px;
+  padding: 12px 16px;
   border-radius: 8px;
-  border: 0.5px solid var(--syl-line-strong);
+  border: 1px solid var(--syl-line-strong);
   background: var(--syl-surface);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--syl-muted);
 }
 
 .syl-modal-current strong {
   color: var(--syl-ink);
-  font-weight: 650;
+  font-weight: 600;
 }
 
-/* 已登录快捷确认视图 */
 .syl-modal-account {
-  margin-top: 18px;
+  margin-top: 16px;
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .syl-modal-pass {
@@ -262,9 +283,9 @@ dialog.syl-auth-modal :focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 18px;
-  border-radius: 10px;
-  border: 0.5px solid var(--syl-line-strong);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--syl-line-strong);
   background: var(--syl-surface);
 }
 
@@ -272,68 +293,67 @@ dialog.syl-auth-modal :focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9375rem;
-  font-weight: 550;
+  font-size: 0.875rem;
+  font-weight: 500;
   color: var(--syl-ok-fg);
 }
 
 .syl-modal-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--syl-ok);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--syl-ok) 24%, transparent);
 }
 
 .syl-modal-pass-phone {
-  font-size: 1.0625rem;
-  font-weight: 650;
+  font-size: 1rem;
+  font-weight: 600;
   color: var(--syl-ink);
 }
 
 .syl-modal-account-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
-/* 分段登录切换 */
 .syl-modal-tabs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 4px;
-  margin-top: 18px;
+  margin-top: 16px;
   padding: 4px;
-  border-radius: 10px;
-  border: 0.5px solid var(--syl-line-strong);
+  border-radius: 8px;
+  border: 1px solid var(--syl-line-strong);
   background: var(--syl-page);
 }
 
 .syl-modal-tab {
-  min-height: 40px;
-  padding: 6px 12px;
+  min-height: 36px;
+  padding: 8px 12px;
   border: 0;
   border-radius: 6px;
   background: transparent;
   color: var(--syl-muted);
   font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 550;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 160ms ease-out, color 160ms ease-out;
+  transition: background-color 160ms var(--syl-ease-out), color 160ms var(--syl-ease-out);
 }
 
-.syl-modal-tab:hover {
-  color: var(--syl-ink);
+@media (hover: hover) and (pointer: fine) {
+  .syl-modal-tab:hover {
+    color: var(--syl-ink);
+  }
 }
 
 .syl-modal-tab.is-active {
   background: var(--syl-selected);
   color: var(--syl-ink);
-  font-weight: 650;
+  font-weight: 600;
 }
 
-/* 表单区域 */
 .syl-modal-form {
   margin-top: 16px;
   display: grid;
@@ -349,7 +369,7 @@ dialog.syl-auth-modal :focus-visible {
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px;
+  margin: 0;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
@@ -359,28 +379,29 @@ dialog.syl-auth-modal :focus-visible {
 .syl-input-shell {
   display: flex;
   align-items: center;
-  min-height: 46px;
+  min-height: 44px;
   border-radius: 8px;
-  border: 0.5px solid var(--syl-field-edge);
+  border: 1px solid var(--syl-field-edge);
   background: var(--syl-page);
-  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+  transition: border-color 160ms var(--syl-ease-out);
 }
 
-.syl-input-shell:hover {
-  border-color: var(--syl-line-hover);
+@media (hover: hover) and (pointer: fine) {
+  .syl-input-shell:hover {
+    border-color: var(--syl-line-hover);
+  }
 }
 
 .syl-input-shell:focus-within {
   border-color: var(--syl-glow);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--syl-glow) 14%, transparent);
 }
 
 .syl-phone-prefix {
-  padding: 0 12px 0 14px;
-  border-inline-end: 0.5px solid var(--syl-line-strong);
+  padding: 0 12px;
+  border-inline-end: 1px solid var(--syl-line-strong);
   color: var(--syl-muted);
-  font-size: 0.9375rem;
-  font-weight: 550;
+  font-size: 0.875rem;
+  font-weight: 500;
   line-height: 1.4;
   user-select: none;
 }
@@ -389,7 +410,7 @@ dialog.syl-auth-modal .syl-input-shell input {
   width: 100%;
   min-width: 0;
   min-height: 44px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -415,7 +436,7 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
 .syl-code-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
+  gap: 8px;
   align-items: stretch;
 }
 
@@ -423,20 +444,27 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin-inline-end: 3px;
+  width: 40px;
+  height: 40px;
+  margin-inline-end: 4px;
   flex: none;
   border: 0;
   border-radius: 6px;
   background: transparent;
   color: var(--syl-muted);
   cursor: pointer;
+  transition: background-color 160ms var(--syl-ease-out), color 160ms var(--syl-ease-out), transform 120ms var(--syl-ease-out);
 }
 
-.syl-icon-btn:hover {
-  color: var(--syl-ink);
-  background: var(--syl-surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .syl-icon-btn:hover {
+    color: var(--syl-ink);
+    background: var(--syl-surface-hover);
+  }
+}
+
+.syl-icon-btn:active {
+  transform: scale(0.97);
 }
 
 .syl-icon-btn svg {
@@ -450,17 +478,21 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
-  padding: 10px 18px;
+  min-height: 44px;
+  padding: 8px 16px;
   border-radius: 8px;
-  border: 0.5px solid transparent;
+  border: 1px solid transparent;
   font: inherit;
   font-size: 0.9375rem;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.3;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out, box-shadow 180ms ease-out;
+  transition: background-color 160ms var(--syl-ease-out), color 160ms var(--syl-ease-out), border-color 160ms var(--syl-ease-out), transform 120ms var(--syl-ease-out);
+}
+
+.syl-btn:not(:disabled):active {
+  transform: scale(0.97);
 }
 
 .syl-btn--primary {
@@ -468,14 +500,18 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   margin-top: 4px;
   background: var(--syl-solid);
   color: var(--syl-on-solid);
-  font-size: 1rem;
+  font-size: 0.9375rem;
 }
 
-.syl-btn--primary:not(:disabled):hover {
-  background: var(--syl-solid-hover);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--syl-glow) 45%, transparent),
-    0 8px 24px color-mix(in srgb, var(--syl-shadow) 45%, transparent);
+@media (hover: hover) and (pointer: fine) {
+  .syl-btn--primary:not(:disabled):hover {
+    background: var(--syl-solid-hover);
+  }
+
+  .syl-btn--secondary:not(:disabled):hover {
+    background: var(--syl-surface-hover);
+    border-color: var(--syl-line-hover);
+  }
 }
 
 .syl-btn--secondary {
@@ -484,23 +520,17 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   border-color: var(--syl-field-edge);
 }
 
-.syl-btn--secondary:not(:disabled):hover {
-  background: var(--syl-surface-hover);
-  border-color: var(--syl-line-hover);
-}
-
 .syl-btn:disabled {
   background: var(--syl-surface-soft);
   color: var(--syl-disabled);
   border-color: var(--syl-line);
-  box-shadow: none;
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .syl-hint {
-  margin: 2px 0 0;
+  margin: 4px 0 0;
   text-align: center;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   line-height: 1.45;
   color: var(--syl-muted);
 }
@@ -510,31 +540,33 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 6px 10px;
+  gap: 8px;
   margin-top: 16px;
-  padding-top: 14px;
-  border-top: 0.5px solid var(--syl-line);
+  padding-top: 12px;
+  border-top: 1px solid var(--syl-line);
 }
 
 .syl-link-btn {
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
-  padding: 4px 10px;
+  min-height: 36px;
+  padding: 4px 12px;
   border: 0;
   border-radius: 6px;
   background: transparent;
   color: var(--syl-ink-soft);
   font: inherit;
-  font-size: 0.9375rem;
-  font-weight: 550;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: color 160ms ease-out, background-color 160ms ease-out;
+  transition: color 160ms var(--syl-ease-out), background-color 160ms var(--syl-ease-out);
 }
 
-.syl-link-btn:hover {
-  color: var(--syl-glow);
-  background: var(--syl-surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .syl-link-btn:hover {
+    color: var(--syl-glow);
+    background: var(--syl-surface-hover);
+  }
 }
 
 .syl-foot-dot {
@@ -548,7 +580,7 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   }
 
   .syl-modal-panel {
-    padding: 20px 18px 18px;
+    padding: 20px 16px 16px;
   }
 
   .syl-code-row {
@@ -560,18 +592,6 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   }
 }
 
-@media (max-width: 380px) {
-  .syl-modal-subtitle,
-  .syl-modal-notice,
-  .syl-modal-current,
-  .syl-modal-tab,
-  .syl-btn,
-  .syl-hint,
-  .syl-link-btn {
-    font-size: 0.875rem;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   dialog.syl-auth-modal[open] {
     animation: none;
@@ -580,6 +600,7 @@ dialog.syl-auth-modal .syl-input-shell input::placeholder {
   .syl-modal-close,
   .syl-modal-tab,
   .syl-input-shell,
+  .syl-icon-btn,
   .syl-btn,
   .syl-link-btn {
     transition-duration: 0.01ms !important;

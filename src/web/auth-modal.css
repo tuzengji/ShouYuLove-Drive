@@ -1,0 +1,587 @@
+/* 手语分社统一通行证 · 页面内悬浮窗登录样式（CSP 安全外链，零整页跳转） */
+
+dialog.syl-auth-modal {
+  --syl-bg: #0b0d14;
+  --syl-surface: #10131c;
+  --syl-surface-soft: #0e1119;
+  --syl-surface-hover: #151924;
+  --syl-selected: #222838;
+  --syl-page: #05060b;
+  --syl-ink: #f4f1ea;
+  --syl-ink-soft: #d8d5cd;
+  --syl-muted: #a3a7b3;
+  --syl-placeholder: #7d8291;
+  --syl-disabled: #5b6070;
+  --syl-line: #1c1f2a;
+  --syl-line-strong: #2a2e3b;
+  --syl-line-hover: #6b7080;
+  --syl-field-edge: #3a3f4f;
+  --syl-solid: #f4f1ea;
+  --syl-solid-hover: #fff3df;
+  --syl-on-solid: #07080d;
+  --syl-glow: #fff3df;
+  --syl-tick: #ff5a3c;
+  --syl-ok: #3ecf8e;
+  --syl-ok-bg: #0f241b;
+  --syl-ok-fg: #5fd39a;
+  --syl-err-bg: #2e1513;
+  --syl-err-fg: #ff7f70;
+  --syl-shadow: #000000;
+  --syl-font: "Google Sans Flex", "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  position: fixed;
+  inset: 0;
+  width: min(432px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 28px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: var(--syl-bg);
+  color: var(--syl-ink);
+  font: 400 1rem/1.55 var(--syl-font);
+  font-variant-numeric: tabular-nums;
+  box-shadow:
+    0 0 0 0.5px var(--syl-line-strong),
+    0 28px 80px color-mix(in srgb, var(--syl-shadow) 72%, transparent);
+  overflow: auto;
+  overscroll-behavior: contain;
+  -webkit-font-smoothing: antialiased;
+}
+
+dialog.syl-auth-modal[data-syl-theme="light"] {
+  color-scheme: light;
+  --syl-bg: #fbf9f4;
+  --syl-surface: #f2ede2;
+  --syl-surface-soft: #f5f1e7;
+  --syl-surface-hover: #ebe4d5;
+  --syl-selected: #ffffff;
+  --syl-page: #ffffff;
+  --syl-ink: #1b2420;
+  --syl-ink-soft: #2e3b35;
+  --syl-muted: #5a6861;
+  --syl-placeholder: #83918a;
+  --syl-disabled: #9ba6a0;
+  --syl-line: #e4ddd0;
+  --syl-line-strong: #d4cbb9;
+  --syl-line-hover: #8f8675;
+  --syl-field-edge: #c7beac;
+  --syl-solid: #23332c;
+  --syl-solid-hover: #2f453b;
+  --syl-on-solid: #fbf9f4;
+  --syl-glow: #2f453b;
+  --syl-ok: #238a5d;
+  --syl-ok-bg: #e4f4ec;
+  --syl-ok-fg: #1b6e49;
+  --syl-err-bg: #fbeae8;
+  --syl-err-fg: #b4362a;
+}
+
+dialog.syl-auth-modal,
+dialog.syl-auth-modal *,
+dialog.syl-auth-modal *::before,
+dialog.syl-auth-modal *::after {
+  box-sizing: border-box;
+}
+
+dialog.syl-auth-modal [hidden] {
+  display: none !important;
+}
+
+dialog.syl-auth-modal::backdrop {
+  background: color-mix(in srgb, var(--syl-shadow) 72%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+dialog.syl-auth-modal[open] {
+  animation: sylModalIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes sylModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.syl-modal-panel {
+  position: relative;
+  padding: 24px 26px 22px;
+}
+
+.syl-modal-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 14% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--syl-glow) 72%, transparent), transparent);
+  pointer-events: none;
+}
+
+.syl-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 0.5px solid var(--syl-line);
+}
+
+.syl-modal-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.syl-modal-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 10px;
+  background: #f6f4ee;
+  color: #07080d;
+  box-shadow:
+    0 0 0 0.5px color-mix(in srgb, var(--syl-ink) 20%, transparent),
+    0 6px 18px color-mix(in srgb, var(--syl-shadow) 42%, transparent);
+}
+
+.syl-modal-mark svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.syl-modal-titles {
+  min-width: 0;
+}
+
+.syl-modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 650;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--syl-ink);
+}
+
+.syl-modal-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--syl-muted);
+}
+
+.syl-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: -4px -6px 0 0;
+  flex: none;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--syl-muted);
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out;
+}
+
+.syl-modal-close:hover {
+  background: var(--syl-surface-hover);
+  color: var(--syl-ink);
+}
+
+.syl-modal-close svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+dialog.syl-auth-modal :focus-visible {
+  outline: 2px solid var(--syl-glow);
+  outline-offset: 2px;
+}
+
+.syl-modal-notice {
+  margin-top: 16px;
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: 0.5px solid color-mix(in srgb, var(--syl-err-fg) 38%, transparent);
+  background: var(--syl-err-bg);
+  color: var(--syl-err-fg);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.45;
+}
+
+.syl-modal-notice.is-ok {
+  border-color: color-mix(in srgb, var(--syl-ok-fg) 38%, transparent);
+  background: var(--syl-ok-bg);
+  color: var(--syl-ok-fg);
+}
+
+.syl-modal-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px 13px;
+  border-radius: 8px;
+  border: 0.5px solid var(--syl-line-strong);
+  background: var(--syl-surface);
+  font-size: 0.9375rem;
+  color: var(--syl-muted);
+}
+
+.syl-modal-current strong {
+  color: var(--syl-ink);
+  font-weight: 650;
+}
+
+/* 已登录快捷确认视图 */
+.syl-modal-account {
+  margin-top: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.syl-modal-pass {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 10px;
+  border: 0.5px solid var(--syl-line-strong);
+  background: var(--syl-surface);
+}
+
+.syl-modal-pass-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  color: var(--syl-ok-fg);
+}
+
+.syl-modal-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--syl-ok);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--syl-ok) 24%, transparent);
+}
+
+.syl-modal-pass-phone {
+  font-size: 1.0625rem;
+  font-weight: 650;
+  color: var(--syl-ink);
+}
+
+.syl-modal-account-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* 分段登录切换 */
+.syl-modal-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 18px;
+  padding: 4px;
+  border-radius: 10px;
+  border: 0.5px solid var(--syl-line-strong);
+  background: var(--syl-page);
+}
+
+.syl-modal-tab {
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--syl-muted);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out;
+}
+
+.syl-modal-tab:hover {
+  color: var(--syl-ink);
+}
+
+.syl-modal-tab.is-active {
+  background: var(--syl-selected);
+  color: var(--syl-ink);
+  font-weight: 650;
+}
+
+/* 表单区域 */
+.syl-modal-form {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.syl-field {
+  min-width: 0;
+}
+
+.syl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.syl-input-shell {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  border-radius: 8px;
+  border: 0.5px solid var(--syl-field-edge);
+  background: var(--syl-page);
+  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+.syl-input-shell:hover {
+  border-color: var(--syl-line-hover);
+}
+
+.syl-input-shell:focus-within {
+  border-color: var(--syl-glow);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--syl-glow) 14%, transparent);
+}
+
+.syl-phone-prefix {
+  padding: 0 12px 0 14px;
+  border-inline-end: 0.5px solid var(--syl-line-strong);
+  color: var(--syl-muted);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.4;
+  user-select: none;
+}
+
+dialog.syl-auth-modal .syl-input-shell input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--syl-ink);
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+dialog.syl-auth-modal .syl-input-shell input:hover,
+dialog.syl-auth-modal .syl-input-shell input:focus,
+dialog.syl-auth-modal .syl-input-shell input:focus-visible {
+  border: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+dialog.syl-auth-modal .syl-input-shell input::placeholder {
+  color: var(--syl-placeholder);
+}
+
+.syl-code-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.syl-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-inline-end: 3px;
+  flex: none;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--syl-muted);
+  cursor: pointer;
+}
+
+.syl-icon-btn:hover {
+  color: var(--syl-ink);
+  background: var(--syl-surface-hover);
+}
+
+.syl-icon-btn svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.syl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out, box-shadow 180ms ease-out;
+}
+
+.syl-btn--primary {
+  width: 100%;
+  margin-top: 4px;
+  background: var(--syl-solid);
+  color: var(--syl-on-solid);
+  font-size: 1rem;
+}
+
+.syl-btn--primary:not(:disabled):hover {
+  background: var(--syl-solid-hover);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--syl-glow) 45%, transparent),
+    0 8px 24px color-mix(in srgb, var(--syl-shadow) 45%, transparent);
+}
+
+.syl-btn--secondary {
+  background: var(--syl-surface);
+  color: var(--syl-ink);
+  border-color: var(--syl-field-edge);
+}
+
+.syl-btn--secondary:not(:disabled):hover {
+  background: var(--syl-surface-hover);
+  border-color: var(--syl-line-hover);
+}
+
+.syl-btn:disabled {
+  background: var(--syl-surface-soft);
+  color: var(--syl-disabled);
+  border-color: var(--syl-line);
+  box-shadow: none;
+  cursor: default;
+}
+
+.syl-hint {
+  margin: 2px 0 0;
+  text-align: center;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--syl-muted);
+}
+
+.syl-modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 0.5px solid var(--syl-line);
+}
+
+.syl-link-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--syl-ink-soft);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  cursor: pointer;
+  transition: color 160ms ease-out, background-color 160ms ease-out;
+}
+
+.syl-link-btn:hover {
+  color: var(--syl-glow);
+  background: var(--syl-surface-hover);
+}
+
+.syl-foot-dot {
+  color: var(--syl-disabled);
+  user-select: none;
+}
+
+@media (max-width: 420px) {
+  dialog.syl-auth-modal {
+    width: calc(100% - 16px);
+  }
+
+  .syl-modal-panel {
+    padding: 20px 18px 18px;
+  }
+
+  .syl-code-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .syl-modal-account-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 380px) {
+  .syl-modal-subtitle,
+  .syl-modal-notice,
+  .syl-modal-current,
+  .syl-modal-tab,
+  .syl-btn,
+  .syl-hint,
+  .syl-link-btn {
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog.syl-auth-modal[open] {
+    animation: none;
+  }
+
+  .syl-modal-close,
+  .syl-modal-tab,
+  .syl-input-shell,
+  .syl-btn,
+  .syl-link-btn {
+    transition-duration: 0.01ms !important;
+  }
+}

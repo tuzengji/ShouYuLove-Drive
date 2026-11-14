@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+IMG="/var/lib/shouyulove-drive/volume.img"
+MNT="/srv/shouyulove-drive"
+STATE_DIR="/var/lib/shouyulove-drive"
+
+if [[ ! -f "$IMG" ]]; then
+  echo "云盘镜像不存在：$IMG" >&2
+  exit 1
+fi
+
+MODE="online"
+RAW_GB="${1:-}"
+if [[ "${1:-}" == "--offline-shrink" ]]; then
+  MODE="offline-shrink"
+  RAW_GB="${2:-}"
+fi
+
+if ! [[ "$RAW_GB" =~ ^[0-9]+$ ]]; then
+  echo "容量参数必须为整数（GB），例如：60、100" >&2
+  exit 1
+fi
+
+TARGET_GB=$((10#$RAW_GB))
+if (( TARGET_GB < 60 || TARGET_GB > 500 )); then
+  echo "容量范围需在 60 至 500 GB 之间。" >&2
+  exit 1
+fi
+
+CURRENT_BYTES=$(stat -c %s "$IMG")
+CURRENT_GB=$(( CURRENT_BYTES / 1024 / 1024 / 1024 ))
+
+if [[ "$MODE" == "offline-shrink" ]]; then
+  if [[ -n "${SUDO_USER:-}" && "${SUDO_USER}" != "root" ]]; then
+    echo "离线缩容模式仅允许 root 管理员直接维护执行。" >&2
+    exit 1
+  fi
+  if mountpoint -q "$MNT"; then
+    echo "离线缩容前必须先卸载 $MNT。" >&2
+    exit 1
+  fi
+  e2fsck -fy "$IMG" >/dev/null
+  resize2fs "$IMG" "${TARGET_GB}G" >/dev/null
+  truncate -s "${TARGET_GB}G" "$IMG"
+  printf '{"ok":true,"mode":"offline-shrink","previousGb":%d,"sizeGb":%d}\n' "$CURRENT_GB" "$TARGET_GB"
+  exit 0
+fi
+
+if (( TARGET_GB < CURRENT_GB )); then
+  echo "ext4 在线模式仅支持扩容（当前配额 ${CURRENT_GB} GB，目标 ${TARGET_GB} GB 不能小于当前容量；如需缩容请使用维护模式 --offline-shrink）。" >&2
+  exit 1
+fi
+
+AVAIL_GB=$(df -BG --output=avail "$STATE_DIR" | tail -n 1 | tr -dc '0-9')
+if (( AVAIL_GB < 5 )); then
+  echo "宿主机可用磁盘空间不足（当前剩余 ${AVAIL_GB} GB，扩容操作至少需保留 5 GB 安全余量）。" >&2
+  exit 1
+fi
+
+if ! mountpoint -q "$MNT"; then
+  echo "网盘存储卷尚未挂载：$MNT" >&2
+  exit 1
+fi
+
+LOOP_DEV=$(findmnt -n -o SOURCE "$MNT")
+if ! [[ "$LOOP_DEV" == /dev/loop* ]]; then
+  echo "未识别到有效的 loop 挂载设备：$LOOP_DEV" >&2
+  exit 1
+fi
+
+if (( TARGET_GB > CURRENT_GB )); then
+  truncate -s "${TARGET_GB}G" "$IMG"
+  losetup -c "$LOOP_DEV"
+  resize2fs "$LOOP_DEV" >/dev/null 2>&1
+fi
+
+printf '{"ok":true,"mode":"online","previousGb":%d,"sizeGb":%d,"loopDev":"%s"}\n' "$CURRENT_GB" "$TARGET_GB" "$LOOP_DEV"

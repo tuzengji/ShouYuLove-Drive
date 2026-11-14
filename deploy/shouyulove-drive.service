@@ -1,0 +1,32 @@
+[Unit]
+Description=ShouYuLove Internal Shared Drive Portal, Whitelist Gateway & Agent API
+After=network.target local-fs.target shouyulove-auth.service shouyulove-drive-fb.service
+RequiresMountsFor=/srv/shouyulove-drive
+
+[Service]
+Type=simple
+User=shouyulove-drive
+Group=shouyulove-drive
+UMask=0000
+WorkingDirectory=/opt/shouyulove-drive/current
+ExecStart=/opt/shouyulove-auth/node/bin/node /opt/shouyulove-drive/current/src/server.mjs
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=8768
+Environment=FILEBROWSER_TARGET=http://127.0.0.1:8769
+Environment=DRIVE_STATE_DIR=/var/lib/shouyulove-drive
+Environment=DRIVE_STORAGE_ROOT=/srv/shouyulove-drive/files
+Environment=DRIVE_RESIZE_CMD=/usr/local/sbin/shouyulove-drive-resize
+Environment=DRIVE_ALLOWED_ORIGINS=https://shouyulove.cn,https://www.shouyulove.cn
+Restart=on-failure
+RestartSec=3
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/shouyulove-drive /srv/shouyulove-drive
+Slice=system-shouyulove.slice
+MemoryMax=256M
+TasksMax=96
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.pyc
+data/
+node_modules/
+output/
+*.log
+*.sqlite*
+*.db
+.impeccable/review/

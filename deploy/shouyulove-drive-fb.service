@@ -1,0 +1,25 @@
+[Unit]
+Description=ShouYuLove Internal Shared Drive FileBrowser Engine
+After=network.target local-fs.target
+RequiresMountsFor=/srv/shouyulove-drive
+
+[Service]
+Type=simple
+User=shouyulove-drive
+Group=shouyulove-drive
+UMask=0000
+WorkingDirectory=/opt/shouyulove-drive/current
+ExecStart=/opt/shouyulove-drive/bin/filebrowser --database /var/lib/shouyulove-drive/filebrowser.db
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/shouyulove-drive /srv/shouyulove-drive
+Slice=system-shouyulove.slice
+MemoryMax=512M
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

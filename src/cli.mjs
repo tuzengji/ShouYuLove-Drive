@@ -69,7 +69,7 @@ function main() {
         {
           storage: store.getStorageStats(),
           whitelistCount: store.listWhitelist().length,
-          whitelist: store.listWhitelist().map(x => ({ masked: x.masked, note: x.note })),
+          whitelist: store.listWhitelist().map(x => ({ masked: x.masked, role: x.role, note: x.note })),
           agentTokens: store.listAgentTokens().length,
         },
         null,

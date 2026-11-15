@@ -18,21 +18,26 @@ import { dirname, join, relative, resolve } from 'node:path';
 
 export const PHONE_HASH_PREFIX = 'syl-phone-v1:';
 
-export const ADMIN_PHONE_HASHES = Object.freeze([
-  'b0adc1362e6bc329700dda54206f3f7be21daa1d109f7cbdeb0301437c59ffd5',
+export const SUPER_ADMIN_PHONE_HASHES = Object.freeze([
+  'b0adc1362e6bc329700dda54206f3f7be21daa1d109f7cbdeb0301437c59ffd5', // 191****0323
+  '66f0945a1d416a6276df7dbfb0f3c9e7741b605b10d2f4b1d715689e210b4247', // 152****6060
 ]);
+
+export const ADMIN_PHONE_HASHES = SUPER_ADMIN_PHONE_HASHES;
 
 export const DEFAULT_SEED_WHITELIST = Object.freeze([
   Object.freeze({
     hash: 'b0adc1362e6bc329700dda54206f3f7be21daa1d109f7cbdeb0301437c59ffd5',
     masked: '191****0323',
-    note: '管理员',
+    note: '超级管理员',
+    role: 'super_admin',
     addedAt: 1763097600000,
   }),
   Object.freeze({
     hash: '66f0945a1d416a6276df7dbfb0f3c9e7741b605b10d2f4b1d715689e210b4247',
     masked: '152****6060',
-    note: '授权成员',
+    note: '超级管理员',
+    role: 'super_admin',
     addedAt: 1763124000000,
   }),
 ]);
@@ -81,6 +86,21 @@ function safeEqualHex(a, b) {
     return false;
   }
   return timingSafeEqual(Buffer.from(a.toLowerCase(), 'hex'), Buffer.from(b.toLowerCase(), 'hex'));
+}
+
+function resolveWhitelistIdentifier(identifier) {
+  const target = String(identifier || '').trim();
+  if (!target) {
+    throw new DriveError('INVALID_INPUT', '请提供白名单手机号或哈希标识。');
+  }
+  let targetHash = target.toLowerCase();
+  if (/^(\+?86[\s-]*)?1[3-9]\d{9}$/.test(target.replace(/[\s-]/g, ''))) {
+    targetHash = hashPhone(target);
+  }
+  if (!/^[a-f0-9]{64}$/.test(targetHash)) {
+    throw new DriveError('INVALID_INPUT', '白名单标识格式无效。');
+  }
+  return targetHash;
 }
 
 function normalizeRelativeUrlPath(rawPath) {
@@ -220,13 +240,36 @@ export class DriveStore {
       return initial;
     }
     const raw = JSON.parse(readFileSync(this.statePath, 'utf8'));
-    this.stateStatKey = this.getStateStatKey();
-    return {
+    const whitelist = Array.isArray(raw.whitelist) ? raw.whitelist : [];
+    let upgraded = false;
+    for (const entry of whitelist) {
+      if (this.adminPhoneHashes.some(h => safeEqualHex(h, entry.hash))) {
+        if (entry.role !== 'super_admin') {
+          entry.role = 'super_admin';
+          upgraded = true;
+        }
+        if (entry.note === '管理员' || entry.note === '授权成员' || !entry.note) {
+          entry.note = '超级管理员';
+          upgraded = true;
+        }
+      }
+    }
+    const state = {
       version: 1,
-      whitelist: Array.isArray(raw.whitelist) ? raw.whitelist : [],
+      whitelist,
       tokens: Array.isArray(raw.tokens) ? raw.tokens : [],
-      updatedAt: Number(raw.updatedAt || this.now()),
+      updatedAt: upgraded ? this.now() : Number(raw.updatedAt || this.now()),
     };
+    if (upgraded) {
+      try {
+        this.writeState(state);
+      } catch {
+        this.stateStatKey = this.getStateStatKey();
+      }
+    } else {
+      this.stateStatKey = this.getStateStatKey();
+    }
+    return state;
   }
 
   writeState(nextState) {
@@ -261,52 +304,76 @@ export class DriveStore {
     return this.state.whitelist.some(item => safeEqualHex(item.hash, phoneHash));
   }
 
-  isPhoneHashAdmin(phoneHash) {
+  isPhoneHashSuperAdmin(phoneHash) {
     if (typeof phoneHash !== 'string' || !/^[a-f0-9]{64}$/i.test(phoneHash)) {
       return false;
     }
     return this.adminPhoneHashes.some(h => safeEqualHex(h, phoneHash)) && this.isPhoneHashAllowed(phoneHash);
   }
 
-  listWhitelist() {
+  isPhoneHashAdmin(phoneHash) {
     this.syncIfChanged();
-    return this.state.whitelist.map(item => ({
+    if (typeof phoneHash !== 'string' || !/^[a-f0-9]{64}$/i.test(phoneHash)) {
+      return false;
+    }
+    if (this.adminPhoneHashes.some(h => safeEqualHex(h, phoneHash)) && this.isPhoneHashAllowed(phoneHash)) {
+      return true;
+    }
+    return this.state.whitelist.some(item => safeEqualHex(item.hash, phoneHash) && item.role === 'admin');
+  }
+
+  serializeWhitelistEntry(item) {
+    const isSuperAdmin = this.adminPhoneHashes.some(h => safeEqualHex(h, item.hash));
+    const role = isSuperAdmin ? 'super_admin' : item.role === 'admin' ? 'admin' : 'user';
+    return {
       hash: item.hash,
       masked: item.masked,
       note: item.note || '',
-      isAdmin: this.adminPhoneHashes.some(h => safeEqualHex(h, item.hash)),
+      role,
+      isSuperAdmin,
+      isAdmin: role === 'super_admin' || role === 'admin',
       addedAt: item.addedAt,
-    }));
+    };
   }
 
-  addWhitelistPhone(phone, note = '') {
+  listWhitelist() {
+    this.syncIfChanged();
+    return this.state.whitelist.map(item => this.serializeWhitelistEntry(item));
+  }
+
+  addWhitelistPhone(phone, note = '', { role = 'user' } = {}) {
     this.syncIfChanged();
     const clean = normalizedPhone(phone);
     const hash = hashPhone(clean);
     const masked = maskPhone(clean);
     const cleanNote = String(note || '').trim().slice(0, 48);
+    const requestedRole = role === 'admin' ? 'admin' : 'user';
     const existing = this.state.whitelist.find(item => safeEqualHex(item.hash, hash));
     if (existing) {
+      let changed = false;
       if (cleanNote && existing.note !== cleanNote) {
         existing.note = cleanNote;
+        changed = true;
+      }
+      if (!this.adminPhoneHashes.some(h => safeEqualHex(h, hash)) && role === 'admin' && existing.role !== 'admin') {
+        existing.role = 'admin';
+        changed = true;
+      }
+      if (changed) {
         this.state.updatedAt = this.now();
         this.writeState(this.state);
       }
       return {
         added: false,
-        entry: {
-          hash: existing.hash,
-          masked: existing.masked,
-          note: existing.note || '',
-          isAdmin: this.adminPhoneHashes.some(h => safeEqualHex(h, existing.hash)),
-          addedAt: existing.addedAt,
-        },
+        entry: this.serializeWhitelistEntry(existing),
       };
     }
+    const isSuper = this.adminPhoneHashes.some(h => safeEqualHex(h, hash));
     const entry = {
       hash,
       masked,
       note: cleanNote,
+      role: isSuper ? 'super_admin' : requestedRole,
       addedAt: this.now(),
     };
     this.state.whitelist.push(entry);
@@ -314,31 +381,44 @@ export class DriveStore {
     this.writeState(this.state);
     return {
       added: true,
-      entry: {
-        ...entry,
-        isAdmin: this.adminPhoneHashes.some(h => safeEqualHex(h, entry.hash)),
-      },
+      entry: this.serializeWhitelistEntry(entry),
+    };
+  }
+
+  setWhitelistRole(identifier, role, { currentPhoneHash = '' } = {}) {
+    this.syncIfChanged();
+    const targetHash = resolveWhitelistIdentifier(identifier);
+    const nextRole = role === 'admin' ? 'admin' : role === 'user' ? 'user' : null;
+    if (!nextRole) {
+      throw new DriveError('INVALID_ROLE', '成员角色仅支持 admin（管理员）或 user（普通成员）。', 400);
+    }
+    if (this.adminPhoneHashes.some(h => safeEqualHex(h, targetHash))) {
+      throw new DriveError('CANNOT_CHANGE_SUPER_ADMIN', '不能修改初始超级管理员的身份。', 400);
+    }
+    if (nextRole === 'user' && currentPhoneHash && safeEqualHex(targetHash, currentPhoneHash)) {
+      throw new DriveError('CANNOT_DEMOTE_SELF', '不能在网页端取消当前正在使用的管理员权限。', 400);
+    }
+    const entry = this.state.whitelist.find(item => safeEqualHex(item.hash, targetHash));
+    if (!entry) {
+      throw new DriveError('NOT_FOUND', '未找到对应的白名单成员条目。', 404);
+    }
+    entry.role = nextRole;
+    this.state.updatedAt = this.now();
+    this.writeState(this.state);
+    return {
+      updated: true,
+      entry: this.serializeWhitelistEntry(entry),
     };
   }
 
   removeWhitelistEntry(identifier, { currentPhoneHash = '', allowEmpty = false } = {}) {
     this.syncIfChanged();
-    const target = String(identifier || '').trim();
-    if (!target) {
-      throw new DriveError('INVALID_INPUT', '请提供要移除的白名单手机号或哈希标识。');
-    }
-    let targetHash = target.toLowerCase();
-    if (/^(\+?86[\s-]*)?1[3-9]\d{9}$/.test(target.replace(/[\s-]/g, ''))) {
-      targetHash = hashPhone(target);
-    }
-    if (!/^[a-f0-9]{64}$/.test(targetHash)) {
-      throw new DriveError('INVALID_INPUT', '白名单标识格式无效。');
-    }
+    const targetHash = resolveWhitelistIdentifier(identifier);
     if (!allowEmpty && currentPhoneHash && safeEqualHex(targetHash, currentPhoneHash)) {
       throw new DriveError('CANNOT_REMOVE_SELF', '为防止误锁定，不能在网页端移除当前正在使用的手机号。', 400);
     }
     if (!allowEmpty && this.adminPhoneHashes.some(h => safeEqualHex(h, targetHash))) {
-      throw new DriveError('CANNOT_REMOVE_ADMIN', '不能在网页端移除管理员账号。', 400);
+      throw new DriveError('CANNOT_REMOVE_ADMIN', '不能在网页端移除超级管理员账号。', 400);
     }
     if (!allowEmpty && this.state.whitelist.length <= 1) {
       throw new DriveError('LAST_ENTRY', '至少需保留一个白名单手机号。', 400);

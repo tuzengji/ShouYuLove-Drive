@@ -197,7 +197,9 @@
     passDot.setAttribute('aria-hidden', 'true');
     const passStatusText = document.createElement('span');
     passStatusText.textContent = '通行证有效';
-    passStatus.append(passDot, passStatusText);
+    const passRoleBadge = document.createElement('span');
+    passRoleBadge.className = 'syl-modal-role';
+    passStatus.append(passDot, passStatusText, passRoleBadge);
     const passPhone = document.createElement('strong');
     passPhone.className = 'syl-modal-pass-phone';
     passBox.append(passStatus, passPhone);
@@ -385,6 +387,7 @@
     const state = {
       base: '/auth',
       appName: '',
+      project: '',
       prompt: '',
       mode: 'login',
       forceForm: false,
@@ -479,6 +482,16 @@
         accountView.hidden = false;
         formWrap.hidden = true;
         passPhone.textContent = formatMaskedPhone(state.user.phoneMasked);
+        const isSuperAdmin = Boolean(state.user.isSuperAdmin);
+        const isAdmin = Boolean(state.user.isAdmin);
+        passRoleBadge.textContent = isSuperAdmin
+          ? '超级管理员'
+          : state.project
+            ? isAdmin
+              ? '本项目管理员'
+              : '普通用户'
+            : '普通用户';
+        passRoleBadge.classList.toggle('is-admin', isAdmin);
         toChangeBtn.textContent = state.user.hasPassword === false ? '设置密码' : '修改密码';
         continueBtn.textContent = state.appName ? `继续进入「${state.appName}」` : '继续使用当前账号';
         continueBtn.disabled = state.busy;
@@ -727,7 +740,10 @@
       render();
       try {
         if (!isSmsMode) {
-          await apiGet('session');
+          const sessionPath = state.project
+            ? `session?project=${encodeURIComponent(state.project)}`
+            : 'session';
+          await apiGet(sessionPath);
         }
         const payload = isSmsMode
           ? {
@@ -736,10 +752,12 @@
               password: state.mode === 'login' ? undefined : pwdInput.value,
               challengeId: state.challengeId,
               purpose: state.mode,
+              ...(state.project ? { project: state.project } : {}),
             }
           : {
               phone,
               password: pwdInput.value,
+              ...(state.project ? { project: state.project } : {}),
             };
 
         const snap = await apiPost(isSmsMode ? 'verify' : 'password', payload);
@@ -783,6 +801,7 @@
 
         state.base = base;
         state.appName = String(options.appName || '').trim().slice(0, 32);
+        state.project = String(options.project || '').trim();
         state.prompt = String(options.prompt || '').trim();
         state.mode =
           options.mode === 'password' || options.mode === 'register' || options.mode === 'reset' || options.mode === 'change'
@@ -817,7 +836,10 @@
         dialog.showModal();
 
         try {
-          const snap = await apiGet('session');
+          const sessionPath = state.project
+            ? `session?project=${encodeURIComponent(state.project)}`
+            : 'session';
+          const snap = await apiGet(sessionPath);
           state.user = snap.user || null;
           if (dialog.open) {
             render();
@@ -846,11 +868,13 @@
 
   const ShouyuAuth = {
     /**
-     * 同域读取当前已登录的手语分社账号（未登录返回 null）
+     * 同域读取当前已登录的手语分社账号（未登录返回 null）；传入 project 可查询指定项目的隔离权限（super_admin / admin / user）
      */
     async getUser(options = {}) {
       const base = (options.issuer || '/auth').replace(/\/+$/, '');
-      const res = await fetch(`${base}/api/me`, {
+      const project = String(options.project || '').trim();
+      const query = project ? `?project=${encodeURIComponent(project)}` : '';
+      const res = await fetch(`${base}/api/me${query}`, {
         method: 'GET',
         credentials: 'same-origin',
         headers: { Accept: 'application/json' },
@@ -858,6 +882,111 @@
       if (!res.ok) return null;
       const data = await res.json();
       return data.authenticated ? data.user : null;
+    },
+
+    /**
+     * 读取指定项目（或同域通行证）的管理员名单（需管理员会话或 OAuth Bearer 令牌）
+     */
+    async getRoles(options = {}) {
+      const base = (options.issuer || (options.accessToken ? DEFAULT_ISSUER : '/auth')).replace(/\/+$/, '');
+      const scope = String(options.scope || options.project || '').trim();
+      if (options.accessToken) {
+        const res = await fetch(`${base}/oauth/roles`, {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${options.accessToken}`,
+          },
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error_description || data.message || '读取项目权限失败。');
+        return data;
+      }
+      const query = scope ? `?scope=${encodeURIComponent(scope)}` : '';
+      const res = await fetch(`${base}/api/roles${query}`, {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' },
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || '读取项目权限失败。');
+      return data;
+    },
+
+    /**
+     * 在当前项目内授予目标账号管理员权限（支持未注册手机号预授权，严格按项目隔离）
+     */
+    async grantAdmin(options = {}) {
+      const base = (options.issuer || (options.accessToken ? DEFAULT_ISSUER : '/auth')).replace(/\/+$/, '');
+      if (options.accessToken) {
+        const res = await fetch(`${base}/oauth/roles/grant`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${options.accessToken}`,
+          },
+          body: JSON.stringify({
+            phone: options.phone || undefined,
+            userId: options.userId || undefined,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error_description || data.message || '授予管理员权限失败。');
+        return data;
+      }
+      const res = await fetch(`${base}/api/roles/grant`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          scope: options.scope || options.project || '__pass__',
+          phone: options.phone || undefined,
+          userId: options.userId || undefined,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || '授予管理员权限失败。');
+      return data;
+    },
+
+    /**
+     * 在当前项目内撤销目标账号的管理员权限（严格按项目隔离）
+     */
+    async revokeAdmin(options = {}) {
+      const base = (options.issuer || (options.accessToken ? DEFAULT_ISSUER : '/auth')).replace(/\/+$/, '');
+      if (options.accessToken) {
+        const res = await fetch(`${base}/oauth/roles/revoke`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${options.accessToken}`,
+          },
+          body: JSON.stringify({
+            phone: options.phone || undefined,
+            userId: options.userId || undefined,
+            phoneHash: options.phoneHash || undefined,
+          }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error_description || data.message || '撤销管理员权限失败。');
+        return data;
+      }
+      const res = await fetch(`${base}/api/roles/revoke`, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          scope: options.scope || options.project || '__pass__',
+          phone: options.phone || undefined,
+          userId: options.userId || undefined,
+          phoneHash: options.phoneHash || undefined,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || '撤销管理员权限失败。');
+      return data;
     },
 
     /**
@@ -884,6 +1013,7 @@
       const target = options.returnTo || (global.location ? global.location.pathname + global.location.search : '/');
       if (target && target.startsWith('/')) params.set('return_to', target);
       if (options.appName) params.set('app', options.appName);
+      if (options.project) params.set('project', options.project);
       if (options.mode) params.set('mode', options.mode);
       if (options.prompt) params.set('prompt', options.prompt);
       const qs = params.toString();

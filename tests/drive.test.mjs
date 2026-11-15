@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { ADMIN_PHONE_HASHES, DEFAULT_SEED_WHITELIST, DriveStore, hashPhone } from '../src/drive-store.mjs';
+import { ADMIN_PHONE_HASHES, DEFAULT_SEED_WHITELIST, DriveStore, SUPER_ADMIN_PHONE_HASHES, hashPhone } from '../src/drive-store.mjs';
 import { createDriveHttpHandler } from '../src/http-app.mjs';
 
 const TEST_ADMIN_PHONE = '13900000001';
@@ -31,26 +31,33 @@ function listenServer(server) {
   });
 }
 
-test('default seed whitelist grants admin only to 191****0323 and member access to 152****6060 without plaintext', () => {
+test('default seed whitelist grants super_admin to both 191****0323 and 152****6060 without plaintext', () => {
   const { dir, statePath, storageRoot } = setupEnv();
   try {
-    assert.equal(ADMIN_PHONE_HASHES.length, 1);
+    assert.equal(SUPER_ADMIN_PHONE_HASHES.length, 2);
+    assert.equal(ADMIN_PHONE_HASHES.length, 2);
     assert.equal(DEFAULT_SEED_WHITELIST.length, 2);
 
     const store = new DriveStore({ statePath, storageRoot });
     const list = store.listWhitelist();
     assert.equal(list.length, 2);
 
-    const adminEntry = list.find(item => item.masked === '191****0323');
-    const memberEntry = list.find(item => item.masked === '152****6060');
-    assert.ok(adminEntry);
-    assert.ok(memberEntry);
+    const primarySuperAdmin = list.find(item => item.masked === '191****0323');
+    const secondarySuperAdmin = list.find(item => item.masked === '152****6060');
+    assert.ok(primarySuperAdmin);
+    assert.ok(secondarySuperAdmin);
+    assert.equal(primarySuperAdmin.role, 'super_admin');
+    assert.equal(secondarySuperAdmin.role, 'super_admin');
+    assert.equal(primarySuperAdmin.isSuperAdmin, true);
+    assert.equal(secondarySuperAdmin.isSuperAdmin, true);
 
-    assert.equal(store.isPhoneHashAllowed(adminEntry.hash), true);
-    assert.equal(store.isPhoneHashAdmin(adminEntry.hash), true);
+    assert.equal(store.isPhoneHashAllowed(primarySuperAdmin.hash), true);
+    assert.equal(store.isPhoneHashAdmin(primarySuperAdmin.hash), true);
+    assert.equal(store.isPhoneHashSuperAdmin(primarySuperAdmin.hash), true);
 
-    assert.equal(store.isPhoneHashAllowed(memberEntry.hash), true);
-    assert.equal(store.isPhoneHashAdmin(memberEntry.hash), false);
+    assert.equal(store.isPhoneHashAllowed(secondarySuperAdmin.hash), true);
+    assert.equal(store.isPhoneHashAdmin(secondarySuperAdmin.hash), true);
+    assert.equal(store.isPhoneHashSuperAdmin(secondarySuperAdmin.hash), true);
 
     assert.equal(store.isPhoneHashAllowed(TEST_GUEST_HASH), false);
     assert.equal(store.isPhoneHashAdmin(TEST_GUEST_HASH), false);
@@ -342,6 +349,119 @@ test('HTTP RBAC (admin vs member), unified native cloud drive operations, range,
   } finally {
     if (appServer) appServer.close();
     mockFb.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('legacy state auto-upgrades 152****6060, X-Shouyu-User-Role and /api/whitelist/role work end to end', async () => {
+  const { dir, statePath, storageRoot } = setupEnv();
+  let appServer;
+  try {
+    writeFileSync(
+      statePath,
+      `${JSON.stringify({
+        version: 1,
+        targetGb: 100,
+        whitelist: [
+          { hash: SUPER_ADMIN_PHONE_HASHES[0], masked: '191****0323', role: 'admin', note: '管理员', addedAt: '2026-11-14T00:00:00.000Z' },
+          { hash: SUPER_ADMIN_PHONE_HASHES[1], masked: '152****6060', role: 'user', note: '授权成员', addedAt: '2026-11-14T00:00:00.000Z' },
+        ],
+        agentTokens: [],
+      }, null, 2)}\n`,
+      'utf8',
+    );
+
+    const store = new DriveStore({ statePath, storageRoot });
+    const upgraded = store.listWhitelist();
+    const super0 = upgraded.find(item => item.hash === SUPER_ADMIN_PHONE_HASHES[0]);
+    const super1 = upgraded.find(item => item.hash === SUPER_ADMIN_PHONE_HASHES[1]);
+    assert.equal(super0?.role, 'super_admin');
+    assert.equal(super0?.note, '超级管理员');
+    assert.equal(super1?.role, 'super_admin');
+    assert.equal(super1?.note, '超级管理员');
+
+    store.addWhitelistPhone(TEST_MEMBER_PHONE, '协作同学');
+
+    const handler = createDriveHttpHandler({
+      store,
+      filebrowserTarget: 'http://127.0.0.1:1',
+      filebrowserUser: 'shouyulove',
+      filebrowserPassword: 'test-password',
+      resizer: async gb => gb,
+    });
+    appServer = createServer(handler);
+    const base = await listenServer(appServer);
+
+    const superHeaders = {
+      'X-Shouyu-From-Nginx': '1',
+      'X-Shouyu-User-Id': 'u_super_2',
+      'X-Shouyu-User-Phone': '152****6060',
+      'X-Shouyu-User-Phone-Hash': SUPER_ADMIN_PHONE_HASHES[1],
+      'X-Shouyu-User-Role': 'super_admin',
+      Origin: 'https://shouyulove.cn',
+      'Content-Type': 'application/json',
+    };
+    const memberPlainHeaders = {
+      'X-Shouyu-From-Nginx': '1',
+      'X-Shouyu-User-Id': 'u_member_1',
+      'X-Shouyu-User-Phone': '138****8000',
+      'X-Shouyu-User-Phone-Hash': TEST_MEMBER_HASH,
+    };
+    const memberScopedAdminHeaders = {
+      ...memberPlainHeaders,
+      'X-Shouyu-User-Role': 'admin',
+    };
+
+    const plainState = await (await fetch(`${base}/drive/api/state`, { headers: memberPlainHeaders })).json();
+    assert.equal(plainState.allowed, true);
+    assert.equal(plainState.role, 'user');
+    assert.equal(plainState.isAdmin, false);
+    assert.equal(plainState.isSuperAdmin, false);
+    assert.equal(plainState.whitelist, undefined);
+
+    const scopedAdminState = await (await fetch(`${base}/drive/api/state`, { headers: memberScopedAdminHeaders })).json();
+    assert.equal(scopedAdminState.allowed, true);
+    assert.equal(scopedAdminState.role, 'admin');
+    assert.equal(scopedAdminState.isAdmin, true);
+    assert.equal(scopedAdminState.isSuperAdmin, false);
+    assert.equal(Array.isArray(scopedAdminState.whitelist), true);
+
+    const promoteRes = await fetch(`${base}/drive/api/whitelist/role`, {
+      method: 'POST',
+      headers: superHeaders,
+      body: JSON.stringify({ hash: TEST_MEMBER_HASH, role: 'admin' }),
+    });
+    assert.equal(promoteRes.status, 200);
+    const promoteJson = await promoteRes.json();
+    const promotedEntry = promoteJson.whitelist.find(item => item.hash === TEST_MEMBER_HASH);
+    assert.equal(promotedEntry?.role, 'admin');
+    assert.equal(promotedEntry?.isAdmin, true);
+    assert.equal(promotedEntry?.isSuperAdmin, false);
+
+    const afterPromoteState = await (await fetch(`${base}/drive/api/state`, { headers: memberPlainHeaders })).json();
+    assert.equal(afterPromoteState.role, 'admin');
+    assert.equal(afterPromoteState.isAdmin, true);
+
+    const rejectSuperDemote = await fetch(`${base}/drive/api/whitelist/role`, {
+      method: 'POST',
+      headers: { ...memberScopedAdminHeaders, Origin: 'https://shouyulove.cn', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hash: SUPER_ADMIN_PHONE_HASHES[1], role: 'user' }),
+    });
+    assert.equal(rejectSuperDemote.status, 400);
+    const rejectJson = await rejectSuperDemote.json();
+    assert.equal(rejectJson.code, 'CANNOT_CHANGE_SUPER_ADMIN');
+
+    const demoteRes = await fetch(`${base}/drive/api/whitelist/role`, {
+      method: 'POST',
+      headers: superHeaders,
+      body: JSON.stringify({ hash: TEST_MEMBER_HASH, role: 'user' }),
+    });
+    assert.equal(demoteRes.status, 200);
+    const afterDemoteState = await (await fetch(`${base}/drive/api/state`, { headers: memberPlainHeaders })).json();
+    assert.equal(afterDemoteState.role, 'user');
+    assert.equal(afterDemoteState.isAdmin, false);
+  } finally {
+    if (appServer) appServer.close();
     rmSync(dir, { recursive: true, force: true });
   }
 });

@@ -300,10 +300,19 @@ export function createDriveHttpHandler({
     const userId = String(req.headers['x-shouyu-user-id'] || '').trim();
     const phoneMasked = String(req.headers['x-shouyu-user-phone'] || '').trim();
     const phoneHash = String(req.headers['x-shouyu-user-phone-hash'] || '').trim().toLowerCase();
+    const userRoleHeader = String(req.headers['x-shouyu-user-role'] || '').trim().toLowerCase();
+    const passRoleHeader = String(req.headers['x-shouyu-pass-role'] || '').trim().toLowerCase();
 
     const authenticated = Boolean(userId && phoneHash);
-    const webAllowed = authenticated && store.isPhoneHashAllowed(phoneHash);
-    const isAdmin = webAllowed && store.isPhoneHashAdmin(phoneHash);
+    const isSuperAdmin =
+      authenticated &&
+      (passRoleHeader === 'super_admin' ||
+        userRoleHeader === 'super_admin' ||
+        store.isPhoneHashSuperAdmin(phoneHash));
+    const isPassportDriveAdmin = authenticated && (isSuperAdmin || userRoleHeader === 'admin');
+    const webAllowed = authenticated && (isPassportDriveAdmin || store.isPhoneHashAllowed(phoneHash));
+    const isAdmin = webAllowed && (isPassportDriveAdmin || store.isPhoneHashAdmin(phoneHash));
+    const role = !webAllowed ? 'guest' : isSuperAdmin ? 'super_admin' : isAdmin ? 'admin' : 'user';
 
     const bearer = parseBearerToken(req.headers['authorization']);
     const agentToken = bearer ? store.verifyAgentToken(bearer) : null;
@@ -320,7 +329,9 @@ export function createDriveHttpHandler({
       fromNginx,
       authenticated,
       webAllowed,
+      isSuperAdmin,
       isAdmin,
+      role,
       user: authenticated ? { id: userId, phoneMasked, phoneHash } : null,
       agentToken,
       isDirectLocalAgent,
@@ -334,7 +345,9 @@ export function createDriveHttpHandler({
     const payload = {
       authenticated: ctx.authenticated,
       allowed: ctx.webAllowed,
+      isSuperAdmin: Boolean(ctx.isSuperAdmin),
       isAdmin: Boolean(ctx.isAdmin),
+      role: ctx.role,
       user: ctx.user ? { id: ctx.user.id, phoneMasked: ctx.user.phoneMasked } : null,
       storage: stats,
       overview,
@@ -365,6 +378,9 @@ export function createDriveHttpHandler({
       delete headers['x-shouyu-user-id'];
       delete headers['x-shouyu-user-phone'];
       delete headers['x-shouyu-user-phone-hash'];
+      delete headers['x-shouyu-user-role'];
+      delete headers['x-shouyu-pass-role'];
+      delete headers['x-shouyu-super-admin'];
       headers['host'] = upstreamBase.host;
       headers['x-fbrowser-user'] = filebrowserUser;
 
@@ -802,7 +818,20 @@ export function createDriveHttpHandler({
         const body = await readJsonBody(req);
 
         if (pathname === '/api/whitelist/add') {
-          const result = store.addWhitelistPhone(body.phone, body.note);
+          const result = store.addWhitelistPhone(body.phone, body.note, {
+            role: body.role === 'admin' ? 'admin' : 'user',
+          });
+          sendJson(res, 200, {
+            ...result,
+            whitelist: store.listWhitelist(),
+          });
+          return;
+        }
+
+        if (pathname === '/api/whitelist/role') {
+          const result = store.setWhitelistRole(body.hash || body.phone, body.role, {
+            currentPhoneHash: ctx.user.phoneHash,
+          });
           sendJson(res, 200, {
             ...result,
             whitelist: store.listWhitelist(),

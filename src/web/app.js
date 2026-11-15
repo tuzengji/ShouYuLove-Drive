@@ -1126,14 +1126,22 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
       phone.textContent = item.masked;
       left.append(icon, phone);
 
-      if (item.isAdmin) {
+      if (item.isSuperAdmin) {
+        const badge = document.createElement('span');
+        badge.className = 'meta-pill meta-pill--super';
+        badge.textContent = '超级管理员';
+        left.appendChild(badge);
+      } else if (item.isAdmin) {
         const badge = document.createElement('span');
         badge.className = 'meta-pill meta-pill--admin';
         badge.textContent = '管理员';
         left.appendChild(badge);
       }
 
-      if (item.note && !(item.isAdmin && item.note === '管理员')) {
+      const isDefaultRoleNote =
+        (item.isSuperAdmin && item.note === '超级管理员') ||
+        (item.isAdmin && item.note === '管理员');
+      if (item.note && !isDefaultRoleNote) {
         const note = document.createElement('span');
         note.className = 'record-row__note';
         note.textContent = item.note;
@@ -1142,24 +1150,50 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
 
       li.appendChild(left);
 
-      if (!item.isAdmin) {
-        const removeBtn = document.createElement('button');
-        removeBtn.type = 'button';
-        removeBtn.className = 'action-link action-link--danger';
-        removeBtn.textContent = '移除';
-        removeBtn.addEventListener('click', async () => {
+      if (!item.isSuperAdmin) {
+        const actions = document.createElement('div');
+        actions.className = 'record-row__actions';
+
+        const roleBtn = document.createElement('button');
+        roleBtn.type = 'button';
+        roleBtn.className = 'action-link';
+        const nextRole = item.isAdmin ? 'user' : 'admin';
+        roleBtn.textContent = item.isAdmin ? '取消管理员' : '设为管理员';
+        roleBtn.addEventListener('click', async () => {
           try {
-            const data = await apiJson('/api/whitelist/remove', {
+            const data = await apiJson('/api/whitelist/role', {
               method: 'POST',
-              body: JSON.stringify({ hash: item.hash }),
+              body: JSON.stringify({ hash: item.hash, role: nextRole }),
             });
             renderWhitelist(data.whitelist);
-            showNotice(`已移除 ${item.masked}`);
+            showNotice(nextRole === 'admin' ? `已将 ${item.masked} 设为云盘管理员` : `已取消 ${item.masked} 的云盘管理员权限`);
           } catch (err) {
             showNotice(err.message, 'error');
           }
         });
-        li.appendChild(removeBtn);
+        actions.appendChild(roleBtn);
+
+        if (!item.isAdmin) {
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'action-link action-link--danger';
+          removeBtn.textContent = '移除';
+          removeBtn.addEventListener('click', async () => {
+            try {
+              const data = await apiJson('/api/whitelist/remove', {
+                method: 'POST',
+                body: JSON.stringify({ hash: item.hash }),
+              });
+              renderWhitelist(data.whitelist);
+              showNotice(`已移除 ${item.masked}`);
+            } catch (err) {
+              showNotice(err.message, 'error');
+            }
+          });
+          actions.appendChild(removeBtn);
+        }
+
+        li.appendChild(actions);
       }
 
       els.whitelistList.appendChild(li);
@@ -1263,6 +1297,7 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
       const sdk = await ensurePassportSdk();
       const result = await sdk.openModal({
         issuer: '/auth',
+        project: 'drive',
         appName: '心创云盘',
         theme: 'dark',
         prompt,
@@ -1364,7 +1399,7 @@ curl -X PUT -H "Authorization: Bearer ${tok}" \\
     }
 
     if (els.verifiedRoleText) {
-      els.verifiedRoleText.textContent = '管理员';
+      els.verifiedRoleText.textContent = state.isSuperAdmin ? '超级管理员' : '管理员';
       els.verifiedRoleText.hidden = !isAdmin;
     }
     if (els.consolePhone) els.consolePhone.textContent = state.user.phoneMasked;

@@ -95,7 +95,7 @@ def main() -> None:
             continue
         css_text = css_path.read_text(encoding="utf-8")
         updated_css = re.sub(
-            r'(url\("[^"]*hos-ui-(?:regular|medium|bold)\.woff2"\)[^}]*?unicode-range:\s*)([^;]+)(;)',
+            r'(url\("[^"]*hos-ui-(?:regular|medium|bold)\.woff2(?:\?[^"]*)?"\)[^}]*?unicode-range:\s*)([^;]+)(;)',
             rf'\g<1>{manifest["hos_ui_range"]}\g<3>',
             css_text,
             flags=re.DOTALL,

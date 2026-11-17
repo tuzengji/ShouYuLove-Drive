@@ -4,330 +4,518 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#05060b">
-  <meta name="description" content="心创组共享云盘，支持网页拖拽存取、在线预览编辑与服务器协同读写。">
+  <meta name="theme-color" content="#fbfaf6">
+  <meta name="color-scheme" content="only light">
+  <meta name="description" content="心创组的共享网盘，网页上随时存取，服务器上的程序读写的是同一份文件。">
   <title>心创云盘</title>
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=__ASSET_VERSION__">
   <link rel="preload" href="./google-sans-flex-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./hos-ui-regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./hos-ui-medium.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="./hos-ui-bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./hos-ui-regular.woff2?v=__ASSET_VERSION__" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./hos-ui-medium.woff2?v=__ASSET_VERSION__" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="./hos-ui-bold.woff2?v=__ASSET_VERSION__" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="./auth-modal.css" data-syl-modal-css="1">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=__ASSET_VERSION__">
 </head>
 <body data-drive-base="__DRIVE_BASE__" data-initial-state="__INITIAL_STATE__">
-  <a class="skip-link" href="#main">跳到主要内容</a>
+  <!-- 图标库：页面与脚本统一用 <use href="#i-…"> 引用 -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 20 20"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.3 3.3"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 20 20"><path d="M10 13V3.5"/><path d="M6.5 7 10 3.5 13.5 7"/><path d="M4 13v2.5A1.5 1.5 0 0 0 5.5 17h9a1.5 1.5 0 0 0 1.5-1.5V13"/></symbol>
+    <symbol id="i-download" viewBox="0 0 20 20"><path d="M10 3.5V13"/><path d="M6.5 9.5 10 13l3.5-3.5"/><path d="M4 13v2.5A1.5 1.5 0 0 0 5.5 17h9a1.5 1.5 0 0 0 1.5-1.5V13"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 4.5v11M4.5 10h11"/></symbol>
+    <symbol id="i-more" viewBox="0 0 20 20"><circle cx="4.5" cy="10" r="1.35" fill="currentColor" stroke="none"/><circle cx="10" cy="10" r="1.35" fill="currentColor" stroke="none"/><circle cx="15.5" cy="10" r="1.35" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-close" viewBox="0 0 20 20"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9"/></symbol>
+    <symbol id="i-check" viewBox="0 0 20 20"><path d="m4.5 10.5 3.5 3.5 7.5-8"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 20 20"><path d="m7.5 5 5 5-5 5"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 20 20"><path d="m12.5 5-5 5 5 5"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 20 20"><path d="m5 7.5 5 5 5-5"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 20 20"><path d="M10 15.5v-11"/><path d="M5.5 9 10 4.5 14.5 9"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 20 20"><path d="M10 4.5v11"/><path d="M5.5 11 10 15.5 14.5 11"/></symbol>
+    <symbol id="i-sort" viewBox="0 0 20 20"><path d="M6.5 15.5v-11"/><path d="M3.5 7.5l3-3 3 3"/><path d="M13.5 4.5v11"/><path d="M10.5 12.5l3 3 3-3"/></symbol>
+    <symbol id="i-list" viewBox="0 0 20 20"><path d="M7.5 5.5h9M7.5 10h9M7.5 14.5h9"/><path d="M3.6 5.5h.01M3.6 10h.01M3.6 14.5h.01"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="5.2" height="5.2" rx="1.2"/><rect x="11.3" y="3.5" width="5.2" height="5.2" rx="1.2"/><rect x="3.5" y="11.3" width="5.2" height="5.2" rx="1.2"/><rect x="11.3" y="11.3" width="5.2" height="5.2" rx="1.2"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 20 20"><path d="M12.5 4.5 15.5 7.5 7 16H4v-3l8.5-8.5Z"/><path d="m10.8 6.2 3 3"/></symbol>
+    <symbol id="i-move" viewBox="0 0 20 20"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3.6l1.5 2h5.9A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5v-9Z"/><path d="M7.5 11h5"/><path d="m10.7 9 2 2-2 2"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 20 20"><path d="M4 6h12"/><path d="M8 6V4.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V6"/><path d="m5.5 6 .7 9.1a1.5 1.5 0 0 0 1.5 1.4h4.6a1.5 1.5 0 0 0 1.5-1.4L14.5 6"/><path d="M8.5 9v4.5M11.5 9v4.5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 20 20"><path d="M16 10a6 6 0 1 1-1.9-4.4"/><path d="M16.3 3.3v3.2h-3.2"/></symbol>
+    <symbol id="i-users" viewBox="0 0 20 20"><circle cx="7.5" cy="6.5" r="3"/><path d="M2.5 16.5c.4-2.6 2.4-4.2 5-4.2s4.6 1.6 5 4.2"/><path d="M13 9.3a2.8 2.8 0 0 0 0-5.4"/><path d="M14.6 12.6c1.6.5 2.6 1.8 2.9 3.9"/></symbol>
+    <symbol id="i-user" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.2"/><path d="M4 16.5c.6-2.9 3-4.5 6-4.5s5.4 1.6 6 4.5"/></symbol>
+    <symbol id="i-key" viewBox="0 0 20 20"><circle cx="7" cy="13" r="3.2"/><path d="m9.3 10.7 6.2-6.2"/><path d="m13 7 2 2M15 5l1.5 1.5"/></symbol>
+    <symbol id="i-drive" viewBox="0 0 20 20"><path d="m3.5 11.5 2-6.4A1.5 1.5 0 0 1 6.9 4h6.2a1.5 1.5 0 0 1 1.4 1.1l2 6.4"/><path d="M3.5 11.5h13V15a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 15v-3.5Z"/><path d="M6.6 14h.01M9.4 14h.01"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 20 20"><path d="M3.5 6h7.3M15.2 6h1.3M3.5 14h1.3M9.2 14h7.3"/><circle cx="13" cy="6" r="2.2"/><circle cx="7" cy="14" r="2.2"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 20 20"><path d="M8 4H5.5A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/><path d="M12.5 6.5 16 10l-3.5 3.5"/><path d="M16 10H8"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 20 20"><path d="M4 7h11.5"/><path d="m12.5 4 3 3-3 3"/><path d="M16 13H4.5"/><path d="m7.5 10-3 3 3 3"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 20 20"><rect x="7.5" y="7" width="9" height="9" rx="1.6"/><path d="M5 13a1.5 1.5 0 0 1-1.5-1.5v-6A1.5 1.5 0 0 1 5 4h6a1.5 1.5 0 0 1 1.5 1.5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 9.2v4.3"/><path d="M10 6.6h.01"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 20 20"><path d="M10 3.5 17 16H3L10 3.5Z"/><path d="M10 8.5v3.5"/><path d="M10 14.2h.01"/></symbol>
+    <symbol id="i-ok" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="m6.9 10.3 2.1 2.1 4.1-4.5"/></symbol>
+    <symbol id="i-home" viewBox="0 0 20 20"><path d="M3.5 9.5 10 4l6.5 5.5"/><path d="M5.5 8.5V16h9V8.5"/></symbol>
+    <symbol id="i-external" viewBox="0 0 20 20"><path d="M8.5 4.5H5.5A1.5 1.5 0 0 0 4 6v8.5A1.5 1.5 0 0 0 5.5 16H14a1.5 1.5 0 0 0 1.5-1.5v-3"/><path d="M11.5 4H16v4.5"/><path d="m16 4-6.5 6.5"/></symbol>
+    <symbol id="i-folder-line" viewBox="0 0 20 20"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3.6l1.5 2h5.9A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5v-9Z"/></symbol>
+    <symbol id="i-folder-plus" viewBox="0 0 20 20"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4h3.6l1.5 2h5.9A1.5 1.5 0 0 1 17 7.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 14.5v-9Z"/><path d="M10 9v4M8 11h4"/></symbol>
+    <symbol id="i-file-plus" viewBox="0 0 20 20"><path d="M5.5 3h5.6L15 6.9v8.6a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 15.5v-11A1.5 1.5 0 0 1 5.5 3Z"/><path d="M10 9v4.5M7.8 11.2h4.4"/></symbol>
+    <symbol id="i-select" viewBox="0 0 20 20"><rect x="3.5" y="3.5" width="13" height="13" rx="3"/><path d="m6.8 10.3 2.2 2.2 4.2-4.6"/></symbol>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="nav-brand" href="__DRIVE_BASE__/" aria-label="心创云盘首页">
-        <img src="./logo.svg" width="34" height="24" alt="">
-        <span class="brand-name">心创云盘</span>
+    <!-- 文件夹：两层蜜色，像一只牛皮纸文件夹 -->
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M2.5 6.2A2.2 2.2 0 0 1 4.7 4h4.6c.7 0 1.3.3 1.7.8l1 1.2h7.3a2.2 2.2 0 0 1 2.2 2.2V10h-19V6.2Z" fill="#e79a2b" stroke="none"/><path d="M2.5 9.2h19v8.6a2.2 2.2 0 0 1-2.2 2.2H4.7a2.2 2.2 0 0 1-2.2-2.2V9.2Z" fill="#f8c35a" stroke="none"/></symbol>
+
+    <!-- 文件类型图形 -->
+    <symbol id="t-file" viewBox="0 0 20 20"><path d="M5.5 3h5.6L15 6.9v8.6a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 15.5v-11A1.5 1.5 0 0 1 5.5 3Z"/><path d="M11 3v4h4"/></symbol>
+    <symbol id="t-text" viewBox="0 0 20 20"><path d="M5.5 3h5.6L15 6.9v8.6a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 15.5v-11A1.5 1.5 0 0 1 5.5 3Z"/><path d="M7 10h6M7 13h4"/></symbol>
+    <symbol id="t-image" viewBox="0 0 20 20"><rect x="3.5" y="4" width="13" height="12" rx="1.8"/><circle cx="7.6" cy="8" r="1.1"/><path d="m4 14.2 3.6-3.6 2.6 2.6 2.1-2.1 3.7 3.7"/></symbol>
+    <symbol id="t-video" viewBox="0 0 20 20"><rect x="3.5" y="4.5" width="13" height="11" rx="1.8"/><path d="m8.6 7.7 4 2.3-4 2.3V7.7Z"/></symbol>
+    <symbol id="t-audio" viewBox="0 0 20 20"><path d="M8 14.2V5.4L15 4v8.8"/><circle cx="6" cy="14.2" r="2"/><circle cx="13" cy="12.8" r="2"/></symbol>
+    <symbol id="t-sheet" viewBox="0 0 20 20"><rect x="3.5" y="4" width="13" height="12" rx="1.8"/><path d="M3.5 8h13M3.5 12h13M8.5 8v8"/></symbol>
+    <symbol id="t-slides" viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="9" rx="1.5"/><path d="M10 13v3.5M7 16.5h6"/></symbol>
+    <symbol id="t-archive" viewBox="0 0 20 20"><path d="M4 7.5h12v7.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 4 15V7.5Z"/><rect x="3" y="4" width="14" height="3.5" rx="1"/><path d="M8.3 11h3.4"/></symbol>
+    <symbol id="t-code" viewBox="0 0 20 20"><path d="m7 6.5-3.5 3.5L7 13.5"/><path d="m13 6.5 3.5 3.5-3.5 3.5"/><path d="m11.3 5-2.6 10"/></symbol>
+  </svg>
+
+  <a class="skip-link" href="#main">跳到文件列表</a>
+
+  <!-- 门厅：未登录、未开通、读取失败时的整页视图 -->
+  <div id="gate" class="gate" hidden>
+    <header class="gate__bar">
+      <a class="brand" href="__DRIVE_BASE__/" aria-label="心创云盘首页">
+        <img src="./logo.svg?v=__ASSET_VERSION__" width="34" height="24" alt="">
+        <span>心创云盘</span>
       </a>
+      <nav class="gate__links" aria-label="站点导航">
+        <a href="/portfolio/">作品集</a>
+        <a href="/">以手予爱</a>
+        <button id="nav-login-btn" type="button" class="btn" hidden>登录</button>
+      </nav>
+    </header>
 
-      <div class="topbar-right">
-        <nav class="page-nav" aria-label="站点导航">
-          <a href="/portfolio/">作品集</a>
-          <a href="/">以手予爱</a>
-        </nav>
-
-        <div class="nav-tools">
-          <span id="verified-role-text" class="role-tag" hidden>管理员</span>
-          <span id="nav-account-text" class="account-label">加载中</span>
-          <button id="nav-login-btn" type="button" class="nav-tool-btn" hidden>登录</button>
-          <button id="nav-switch-btn" type="button" class="nav-tool-btn" hidden>切换账号</button>
-          <button id="nav-logout-btn" type="button" class="nav-tool-btn nav-tool-btn--muted" hidden>退出</button>
+    <main class="gate__main">
+      <section id="hero-section" class="welcome" aria-labelledby="welcome-title" hidden>
+        <div class="welcome__copy">
+          <h1 id="welcome-title">心创云盘</h1>
+          <p class="welcome__lead">心创组的共享网盘。活动素材、课程资料和程序产出都放在同一个地方，打开网页就能存取。</p>
+          <div id="view-guest" class="welcome__cta">
+            <button id="guest-login-btn" type="button" class="btn btn--primary btn--large">使用统一通行证登录</button>
+            <span class="welcome__note">仅限成员名单内的手机号访问</span>
+          </div>
+          <ul class="welcome__points">
+            <li>
+              <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+              <span>把文件或整个文件夹拖进页面就能上传</span>
+            </li>
+            <li>
+              <svg class="icon" aria-hidden="true"><use href="#t-image"/></svg>
+              <span>图片、视频、PDF 和文档直接在线查看，文本可以在线修改</span>
+            </li>
+            <li>
+              <svg class="icon" aria-hidden="true"><use href="#i-drive"/></svg>
+              <span>服务器上的程序和 Agent 读写的是同一份文件</span>
+            </li>
+          </ul>
         </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="page" id="main">
-    <div id="drive-notice" class="studio-notice" role="alert" aria-live="polite" hidden></div>
-
-    <!-- 未登录访客入口（登录后整块收起，直接展示文件主界面） -->
-    <section id="hero-section" class="guest-hero" hidden>
-      <div class="guest-hero__body">
-        <h1>心创云盘</h1>
-        <p class="home-lead">心创组内部共享网盘，支持多级目录整理、在线预览编辑与服务器直接读写。</p>
-        <div id="view-guest" class="guest-hero__actions">
-          <button id="guest-login-btn" type="button" class="primary-button primary-button--hero">
-            <span>使用统一通行证登录</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 状态异常兜底 -->
-    <section id="view-error" class="denied-panel" aria-labelledby="error-title" hidden>
-      <div class="denied-panel__head">
-        <h2 id="error-title">暂时无法读取网盘状态</h2>
-      </div>
-      <p id="error-desc" class="denied-panel__desc">网络连接波动或服务繁忙，请点击重试。</p>
-      <div class="action-cluster">
-        <button id="retry-load-btn" type="button" class="primary-button">重试加载</button>
-        <button id="error-login-btn" type="button" class="secondary-button">登录账号</button>
-      </div>
-    </section>
-
-    <!-- 已登录但未在成员名单 -->
-    <section id="view-denied" class="denied-panel" aria-labelledby="denied-title" hidden>
-      <div class="denied-panel__head">
-        <h2 id="denied-title">暂未开通访问权限</h2>
-        <span id="denied-phone" class="role-tag role-tag--warn"></span>
-      </div>
-      <p class="denied-panel__desc">当前账号不在成员名单中，请切换已开通权限的账号或联系管理员添加。</p>
-      <div class="action-cluster">
-        <button id="denied-switch-btn" type="button" class="primary-button">切换其他账号</button>
-        <button id="denied-logout-btn" type="button" class="secondary-button">退出登录</button>
-      </div>
-    </section>
-
-    <!-- 核心主界面：直接展示文件列表（占满主视野） -->
-    <div id="view-console" class="workbench-stack" hidden>
-      <section id="drive-dropzone" class="drive-explorer" aria-label="网盘文件列表">
-        <div id="dropzone-banner" class="dropzone-banner" hidden aria-hidden="true">
-          <span id="dropzone-banner-text">松手上传至当前目录</span>
-        </div>
-
-        <div class="explorer-bar">
-          <div class="explorer-bar__path">
-            <button id="nav-up-btn" type="button" class="crumb-up-btn" hidden aria-label="返回上一级">←</button>
-            <nav id="drive-breadcrumbs" class="drive-breadcrumbs" aria-label="当前目录路径"></nav>
-            <span id="root-files-count" class="item-count">0 项</span>
-          </div>
-
-          <div class="explorer-bar__controls">
-            <div class="search-field">
-              <svg class="search-field__icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="9" cy="9" r="5.5"/>
-                <path d="m13.2 13.2 3.3 3.3"/>
-              </svg>
-              <input id="file-filter-input" name="q" type="search" maxlength="80" autocomplete="off" placeholder="搜索文件…" aria-label="搜索全部文件与文件夹">
-            </div>
-
-            <div class="toolbar-sort">
-              <label class="sr-only" for="sort-select">排序方式</label>
-              <select id="sort-select" name="sort" class="drive-select" aria-label="排序方式">
-                <option value="name">按名称</option>
-                <option value="mtime">按修改时间</option>
-                <option value="size">按大小</option>
-              </select>
-              <svg class="toolbar-sort__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m6 8 4 4 4-4"/>
-              </svg>
-            </div>
-
-            <div class="explorer-actions">
-              <button id="new-folder-btn" type="button" class="secondary-button">新建文件夹</button>
-              <button id="new-doc-btn" type="button" class="secondary-button">新建文档</button>
-              <label id="dir-upload-label" class="secondary-button upload-trigger">
-                <input id="dir-upload-input" type="file" webkitdirectory directory multiple hidden>
-                <span>上传文件夹</span>
-              </label>
-              <button id="zip-dir-btn" type="button" class="secondary-button">打包下载</button>
-              <label id="quick-upload-label" class="primary-button upload-trigger">
-                <input id="quick-upload-input" type="file" multiple hidden>
-                <span id="quick-upload-text">上传文件</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div id="upload-progress-box" class="upload-progress-box" hidden>
-          <div class="upload-progress-box__head">
-            <span id="upload-progress-text">正在上传…</span>
-            <span id="upload-progress-pct" class="tabular-num">0%</span>
-          </div>
-          <progress id="upload-progress-bar" class="drive-meter" max="100" value="0" aria-label="文件上传进度"></progress>
-        </div>
-
-        <div id="batch-bar" class="batch-bar" hidden>
-          <span id="batch-count-text" class="batch-bar__count">已选 0 项</span>
-          <div class="batch-bar__actions">
-            <button id="batch-zip-btn" type="button" class="secondary-button">打包下载选中</button>
-            <button id="batch-delete-btn" type="button" class="action-link action-link--danger">批量删除</button>
-            <button id="batch-clear-btn" type="button" class="action-link">取消选择</button>
-          </div>
-        </div>
-
-        <div class="results-table">
-          <div id="file-table-head" class="file-table-head" hidden>
-            <label class="file-check-wrap" title="全选当前列表">
-              <input id="select-all-checkbox" name="selectAll" type="checkbox" aria-label="全选当前列表">
-            </label>
-            <span>名称</span>
-            <span class="col-mtime">修改时间</span>
-            <span class="col-size">大小</span>
-            <span class="col-actions">操作</span>
-          </div>
-
-          <div id="root-files-empty" class="state-block" hidden>
-            <p>当前文件夹为空，可将文件或文件夹直接拖入此处。</p>
-          </div>
-
-          <div id="root-files-filter-empty" class="state-block" hidden>
-            <p>没有找到匹配项。</p>
-            <button id="clear-filter-btn" type="button" class="secondary-button">清空搜索</button>
-          </div>
-
-          <ul id="root-files-list" class="file-table" hidden></ul>
+        <div class="welcome__art" aria-hidden="true">
+          <img src="./logo.svg?v=__ASSET_VERSION__" width="280" height="196" alt="">
         </div>
       </section>
 
-      <!-- 仅超级管理员与心创云盘项目管理员可见，普通成员严格隐藏 -->
-      <details id="admin-settings-drawer" class="admin-drawer" hidden>
-        <summary class="admin-drawer__summary">
-          <span class="admin-drawer__title">管理设置</span>
-          <span class="admin-drawer__hint">成员名单、空间扩容与接入令牌</span>
-          <svg class="admin-drawer__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="m5.5 7.5 4.5 4.5 4.5-4.5"/>
-          </svg>
-        </summary>
+      <section id="view-denied" class="notice-page" aria-labelledby="denied-title" hidden>
+        <span class="notice-page__badge"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></span>
+        <h1 id="denied-title">这个账号还没有开通云盘</h1>
+        <p class="notice-page__desc"><strong id="denied-phone"></strong> 不在成员名单里。可以换一个已开通的账号，或者请心创组管理员把这个手机号加进名单。</p>
+        <div class="notice-page__actions">
+          <button id="denied-switch-btn" type="button" class="btn btn--primary btn--large">切换账号</button>
+          <button id="denied-logout-btn" type="button" class="btn btn--large">退出登录</button>
+        </div>
+      </section>
 
-        <div class="admin-drawer__body">
-          <div class="split-workbench">
-            <section class="workbench-pane">
-              <div class="section-bar">
-                <h2>成员名单</h2>
-                <span id="whitelist-count" class="item-count">0 人</span>
-              </div>
-              <form id="whitelist-form" class="whitelist-add-form">
-                <input id="wl-phone-input" name="phone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="16" placeholder="11 位手机号" required aria-label="11 位手机号">
-                <input id="wl-note-input" name="note" type="text" autocomplete="off" maxlength="48" placeholder="备注（选填）" aria-label="成员备注">
-                <button type="submit" class="secondary-button">添加成员</button>
-              </form>
-              <ul id="whitelist-list" class="record-table"></ul>
-            </section>
+      <section id="view-error" class="notice-page" aria-labelledby="error-title" hidden>
+        <span class="notice-page__badge notice-page__badge--warn"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg></span>
+        <h1 id="error-title">暂时读不到网盘状态</h1>
+        <p id="error-desc" class="notice-page__desc">可能是网络波动，或者服务正在重启。</p>
+        <div class="notice-page__actions">
+          <button id="retry-load-btn" type="button" class="btn btn--primary btn--large">重新加载</button>
+          <button id="error-login-btn" type="button" class="btn btn--large">登录账号</button>
+        </div>
+      </section>
+    </main>
 
-            <section class="workbench-pane">
-              <div class="section-bar">
-                <h2>空间扩容</h2>
-                <span id="resize-current-gb" class="item-count">读取中</span>
-              </div>
-              <p id="quota-summary-line" class="pane-desc">正在读取空间使用情况…</p>
-              <progress id="quota-progress" class="drive-meter drive-meter--wide" max="100" value="0" aria-label="网盘空间使用率"></progress>
-              <form id="resize-form" class="pane-form">
-                <div class="preset-group" role="group" aria-label="快捷扩容选项">
-                  <button type="button" class="preset-chip" data-resize-preset="120">120 GB</button>
-                  <button type="button" class="preset-chip" data-resize-preset="160">160 GB</button>
-                  <button type="button" class="preset-chip" data-resize-preset="200">200 GB</button>
-                  <button type="button" class="preset-chip" data-resize-preset="300">300 GB</button>
-                </div>
-                <div class="resize-input-row">
-                  <label class="field-label" for="resize-gb-input">目标容量</label>
-                  <div class="unit-input">
-                    <input id="resize-gb-input" name="targetGb" type="number" inputmode="numeric" autocomplete="off" min="60" max="500" step="1" placeholder="120" required>
-                    <span class="unit-suffix" aria-hidden="true">GB</span>
-                  </div>
-                  <button id="resize-submit-btn" type="submit" class="secondary-button">确认扩容</button>
-                </div>
-              </form>
-            </section>
+    <footer class="gate__foot">
+      <span>以手予爱 心创组</span>
+      <span>设计者：涂增基</span>
+    </footer>
+  </div>
+
+  <!-- 工作台：左侧目录与空间，右侧文件 -->
+  <div id="view-console" class="app" hidden>
+    <aside class="side" aria-label="文件夹与存储空间">
+      <a class="brand side__brand" href="__DRIVE_BASE__/" aria-label="心创云盘首页">
+        <img src="./logo.svg?v=__ASSET_VERSION__" width="34" height="24" alt="">
+        <span>心创云盘</span>
+      </a>
+
+      <nav class="side__scroll" aria-label="文件夹">
+        <ul id="folder-tree" class="tree" role="tree"></ul>
+      </nav>
+
+      <!-- 仅超级管理员与云盘管理员可见 -->
+      <div id="admin-nav" class="side__group" hidden>
+        <h2 class="side__label">管理</h2>
+        <button type="button" class="side__item" data-admin-tab="members">
+          <svg class="icon" aria-hidden="true"><use href="#i-users"/></svg><span>成员名单</span>
+        </button>
+        <button type="button" class="side__item" data-admin-tab="tokens">
+          <svg class="icon" aria-hidden="true"><use href="#i-key"/></svg><span>接入令牌</span>
+        </button>
+      </div>
+
+      <div id="drive-overview" class="storage" aria-label="存储空间">
+        <div class="storage__head">
+          <span class="storage__label">存储空间</span>
+          <button id="overview-expand-btn" type="button" class="link-btn" data-admin-tab="storage" hidden>扩容</button>
+        </div>
+        <div class="gauge" data-gauge role="meter" aria-label="存储空间使用率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="gauge__fill"></span>
+          <span class="gauge__mark"></span>
+        </div>
+        <p class="storage__nums">已用 <strong data-storage-used>--</strong>，共 <span data-storage-total>--</span></p>
+      </div>
+
+      <p class="side__foot">
+        <a href="/">以手予爱</a>
+        <a href="/portfolio/">作品集</a>
+        <span>设计者：涂增基</span>
+      </p>
+    </aside>
+
+    <div class="stage">
+      <header class="topbar">
+        <a class="topbar__logo" href="__DRIVE_BASE__/" aria-label="心创云盘首页">
+          <img src="./logo.svg?v=__ASSET_VERSION__" width="34" height="24" alt="">
+        </a>
+        <div class="search" role="search">
+          <svg class="icon search__icon" aria-hidden="true"><use href="#i-search"/></svg>
+          <input id="file-filter-input" name="q" type="search" maxlength="80" autocomplete="off" spellcheck="false" placeholder="搜索全部文件" aria-label="搜索全部文件与文件夹">
+          <kbd class="search__key" aria-hidden="true">/</kbd>
+          <button id="search-clear-btn" type="button" class="icon-btn icon-btn--small" aria-label="清空搜索" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
+        </div>
+        <button id="account-btn" type="button" class="account" aria-haspopup="menu" aria-expanded="false" aria-label="账号菜单">
+          <span class="account__avatar"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></span>
+          <span id="nav-account-text" class="account__phone"></span>
+          <span id="verified-role-text" class="tag tag--role" hidden>管理员</span>
+          <svg class="icon account__chevron" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+        </button>
+      </header>
+
+      <main id="main" class="content" tabindex="-1">
+        <div class="headline">
+          <div class="headline__path">
+            <button id="nav-up-btn" type="button" class="icon-btn" aria-label="返回上一级" hidden>
+              <svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>
+            </button>
+            <nav id="drive-breadcrumbs" class="crumbs" aria-label="当前位置"></nav>
+            <span id="root-files-count" class="headline__count"></span>
           </div>
 
-          <section class="workbench-pane agent-workbench">
-            <div class="section-bar section-bar--wrap">
-              <h2>Agent 接入令牌</h2>
-              <form id="token-form" class="token-create-form">
-                <input id="token-name-input" name="tokenName" type="text" autocomplete="off" maxlength="48" placeholder="令牌备注" required aria-label="令牌备注">
-                <button type="submit" class="secondary-button">生成令牌</button>
-              </form>
+          <div class="headline__actions">
+            <button id="upload-menu-btn" type="button" class="btn btn--primary" aria-haspopup="menu">
+              <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span id="quick-upload-text">上传</span>
+            </button>
+            <button id="new-menu-btn" type="button" class="btn" aria-haspopup="menu">
+              <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg><span>新建</span>
+            </button>
+            <span class="headline__spring"></span>
+            <button id="select-mode-btn" type="button" class="btn btn--quiet headline__select" aria-pressed="false">
+              <svg class="icon" aria-hidden="true"><use href="#i-select"/></svg><span>选择</span>
+            </button>
+            <button id="sort-menu-btn" type="button" class="btn btn--quiet headline__sort" aria-haspopup="menu">
+              <svg class="icon" aria-hidden="true"><use href="#i-sort"/></svg><span id="sort-menu-label">名称</span>
+            </button>
+            <div class="seg" role="group" aria-label="显示方式">
+              <button id="view-list-btn" type="button" class="seg__btn" aria-pressed="true" aria-label="列表" title="列表">
+                <svg class="icon" aria-hidden="true"><use href="#i-list"/></svg>
+              </button>
+              <button id="view-grid-btn" type="button" class="seg__btn" aria-pressed="false" aria-label="宫格" title="宫格">
+                <svg class="icon" aria-hidden="true"><use href="#i-grid"/></svg>
+              </button>
             </div>
-
-            <div id="issued-token-box" class="token-secret-banner" hidden>
-              <div class="token-secret-banner__head">
-                <span>新令牌已生成（仅显示一次，请立即复制）</span>
-                <button id="close-token-btn" type="button" class="action-link">收起</button>
-              </div>
-              <div class="token-secret-banner__row">
-                <code id="issued-token-val" class="token-value"></code>
-                <button id="copy-token-btn" type="button" class="secondary-button">复制令牌</button>
-              </div>
-            </div>
-
-            <ul id="token-list" class="record-table record-table--tokens"></ul>
-
-            <div class="agent-terminal">
-              <div class="agent-terminal__bar">
-                <span class="agent-terminal__title">接口示例</span>
-                <button id="copy-agent-code-btn" type="button" class="action-link">复制示例</button>
-              </div>
-              <pre id="agent-code-pre" class="agent-terminal__pre"></pre>
-            </div>
-          </section>
+            <button id="more-menu-btn" type="button" class="icon-btn" aria-haspopup="menu" aria-label="更多操作">
+              <svg class="icon" aria-hidden="true"><use href="#i-more"/></svg>
+            </button>
+          </div>
         </div>
-      </details>
+
+        <section id="drive-dropzone" class="files" aria-label="文件列表">
+          <div id="file-table-head" class="list-head" hidden>
+            <label class="check" title="全选">
+              <input id="select-all-checkbox" name="selectAll" type="checkbox" aria-label="全选当前列表">
+            </label>
+            <button type="button" class="sort-btn" data-sort="name"><span>名称</span><svg class="icon sort-btn__arrow" aria-hidden="true"><use href="#i-arrow-up"/></svg></button>
+            <button type="button" class="sort-btn col-mtime" data-sort="mtime"><span>修改时间</span><svg class="icon sort-btn__arrow" aria-hidden="true"><use href="#i-arrow-up"/></svg></button>
+            <button type="button" class="sort-btn col-size" data-sort="size"><span>大小</span><svg class="icon sort-btn__arrow" aria-hidden="true"><use href="#i-arrow-up"/></svg></button>
+            <span class="col-actions"></span>
+          </div>
+
+          <ul id="root-files-list" class="list" hidden></ul>
+
+          <div id="root-files-empty" class="empty" hidden>
+            <svg class="empty__art" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"/></svg>
+            <h2>这个文件夹还是空的</h2>
+            <p>把文件或文件夹拖到这里，或者用下面的按钮添加。</p>
+            <div class="empty__actions">
+              <button id="empty-upload-btn" type="button" class="btn btn--primary">
+                <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg><span>上传文件</span>
+              </button>
+              <button id="empty-folder-btn" type="button" class="btn">
+                <svg class="icon" aria-hidden="true"><use href="#i-folder-plus"/></svg><span>新建文件夹</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="root-files-filter-empty" class="empty" hidden>
+            <span class="empty__glyph"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+            <h2 id="filter-empty-title">没有找到匹配的文件</h2>
+            <p>换一个关键词试试，搜索范围是整个云盘的文件名。</p>
+            <div class="empty__actions">
+              <button id="clear-filter-btn" type="button" class="btn">清空搜索</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 窄屏没有侧栏，把空间和归属放到列表下方 -->
+        <footer class="content__foot">
+          <div class="storage storage--inline" aria-label="存储空间">
+            <div class="storage__head">
+              <span class="storage__label">存储空间</span>
+              <button type="button" class="link-btn" data-admin-tab="storage" data-admin-only hidden>扩容</button>
+            </div>
+            <div class="gauge" data-gauge role="meter" aria-label="存储空间使用率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span class="gauge__fill"></span>
+              <span class="gauge__mark"></span>
+            </div>
+            <p class="storage__nums">已用 <strong data-storage-used>--</strong>，共 <span data-storage-total>--</span></p>
+          </div>
+          <p class="content__credit">以手予爱 心创组　设计者：涂增基</p>
+        </footer>
+      </main>
     </div>
+  </div>
 
-    <!-- 紧凑单行底栏：左侧克制展示存储空间，右侧保留简洁归属 -->
-    <footer class="site-footer">
-      <div id="drive-overview" class="storage-inline" aria-label="存储空间">
-        <span class="storage-inline__label">存储空间</span>
-        <progress id="overview-meter" class="drive-meter" max="100" value="0" aria-label="存储空间使用率"></progress>
-        <span class="storage-inline__nums tabular-num">
-          <span id="overview-used">--</span>
-          <span class="storage-inline__slash">/</span>
-          <span id="overview-total">--</span>
-        </span>
-        <button id="overview-expand-btn" type="button" class="storage-inline__btn" hidden>扩容</button>
-      </div>
+  <input id="quick-upload-input" type="file" multiple hidden>
+  <input id="dir-upload-input" type="file" webkitdirectory directory multiple hidden>
 
-      <div class="footer-links">
-        <a href="/portfolio/">作品集</a>
-        <a href="/">以手予爱首页</a>
-        <span>设计者：涂增基</span>
-      </div>
-    </footer>
-  </main>
+  <!-- 拖入文件时的整页提示 -->
+  <div id="dropzone-banner" class="dropveil" hidden aria-hidden="true">
+    <div class="dropveil__card">
+      <svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg>
+      <span id="dropzone-banner-text">松手上传到当前文件夹</span>
+    </div>
+  </div>
 
-  <!-- 页内文件预览与在线编辑弹窗 -->
-  <dialog id="file-preview-modal" class="drive-modal drive-modal--preview" aria-labelledby="preview-modal-title">
-    <div class="drive-modal__panel">
-      <div class="drive-modal__head">
-        <div class="drive-modal__titles">
-          <h2 id="preview-modal-title" class="drive-modal__title">文件预览</h2>
-          <p id="preview-modal-meta" class="drive-modal__subtitle"></p>
+  <!-- 多选后的操作条 -->
+  <div id="batch-bar" class="selbar" role="region" aria-label="已选项目的操作" hidden>
+    <button id="batch-clear-btn" type="button" class="selbar__close" aria-label="取消选择">
+      <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+    </button>
+    <span id="batch-count-text" class="selbar__count">已选 0 项</span>
+    <span class="selbar__rule" aria-hidden="true"></span>
+    <button id="batch-zip-btn" type="button" class="selbar__btn">
+      <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg><span>下载</span>
+    </button>
+    <button id="batch-move-btn" type="button" class="selbar__btn">
+      <svg class="icon" aria-hidden="true"><use href="#i-move"/></svg><span>移动</span>
+    </button>
+    <button id="batch-delete-btn" type="button" class="selbar__btn selbar__btn--danger">
+      <svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg><span>删除</span>
+    </button>
+  </div>
+
+  <!-- 上传进度 -->
+  <div id="upload-progress-box" class="upcard" role="status" aria-live="polite" hidden>
+    <div class="upcard__head">
+      <strong id="upload-progress-title">正在上传</strong>
+      <span id="upload-progress-pct" class="num">0%</span>
+    </div>
+    <p id="upload-progress-text" class="upcard__file"></p>
+    <div class="upcard__bar"><span id="upload-progress-bar"></span></div>
+    <button id="upload-cancel-btn" type="button" class="link-btn">取消上传</button>
+  </div>
+
+  <div id="drive-notice" class="toast" role="status" aria-live="polite" popover="manual"></div>
+
+  <!-- 文件查看与在线编辑 -->
+  <dialog id="file-preview-modal" class="viewer" aria-labelledby="preview-modal-title">
+    <div class="viewer__panel">
+      <header class="viewer__head">
+        <span id="preview-modal-tile" class="viewer__tile"></span>
+        <div class="viewer__titles">
+          <h2 id="preview-modal-title">文件</h2>
+          <p id="preview-modal-meta"></p>
         </div>
-        <div class="drive-modal__actions">
-          <button id="preview-edit-btn" type="button" class="secondary-button" hidden>编辑文档</button>
-          <button id="preview-save-btn" type="button" class="primary-button" hidden>保存修改</button>
-          <a id="preview-download-link" class="secondary-button" href="#">下载</a>
-          <button id="preview-close-btn" type="button" class="drive-modal__close" aria-label="关闭预览">×</button>
+        <div class="viewer__actions">
+          <button id="preview-edit-btn" type="button" class="btn" hidden>
+            <svg class="icon" aria-hidden="true"><use href="#i-pencil"/></svg><span id="preview-edit-text">编辑</span>
+          </button>
+          <button id="preview-save-btn" type="button" class="btn btn--primary" hidden>保存</button>
+          <a id="preview-download-link" class="btn" href="#">
+            <svg class="icon" aria-hidden="true"><use href="#i-download"/></svg><span>下载</span>
+          </a>
+          <button id="preview-close-btn" type="button" class="icon-btn" aria-label="关闭">
+            <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+          </button>
         </div>
-      </div>
-      <div id="preview-modal-body" class="drive-modal__body"></div>
+      </header>
+      <div id="preview-modal-body" class="viewer__body"></div>
+      <button id="preview-prev-btn" type="button" class="viewer__nav viewer__nav--prev" aria-label="上一个文件" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>
+      </button>
+      <button id="preview-next-btn" type="button" class="viewer__nav viewer__nav--next" aria-label="下一个文件" hidden>
+        <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+      </button>
     </div>
   </dialog>
 
-  <!-- 页内新建/重命名/移动/确认删除弹窗 -->
-  <dialog id="drive-action-modal" class="drive-modal" aria-labelledby="action-modal-title">
-    <form id="drive-action-form" class="drive-modal__panel">
-      <div class="drive-modal__head">
-        <div class="drive-modal__titles">
-          <h2 id="action-modal-title" class="drive-modal__title">操作</h2>
-          <p id="action-modal-desc" class="drive-modal__subtitle"></p>
+  <!-- 命名与确认 -->
+  <dialog id="drive-action-modal" class="dlg" aria-labelledby="action-modal-title">
+    <form id="drive-action-form" class="dlg__panel" novalidate>
+      <header class="dlg__head">
+        <h2 id="action-modal-title">操作</h2>
+        <button id="action-close-btn" type="button" class="icon-btn" aria-label="关闭">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </header>
+      <div class="dlg__body">
+        <p id="action-modal-desc" class="dlg__desc"></p>
+        <div id="action-input-wrap" class="field">
+          <label id="action-input-label" for="action-text-input">名称</label>
+          <input id="action-text-input" name="entryName" type="text" maxlength="240" autocomplete="off" spellcheck="false">
         </div>
-        <button id="action-close-btn" type="button" class="drive-modal__close" aria-label="关闭窗口">×</button>
+        <p id="action-error" class="field-error" role="alert" hidden></p>
       </div>
-      <div class="drive-modal__body drive-modal__body--form">
-        <div id="action-input-wrap" class="action-field">
-          <label id="action-input-label" class="field-label" for="action-text-input">名称</label>
-          <input id="action-text-input" name="entryName" type="text" maxlength="240" autocomplete="off">
-        </div>
-        <div id="action-textarea-wrap" class="action-field" hidden>
-          <label class="field-label" for="action-textarea-input">内容（选填）</label>
-          <textarea id="action-textarea-input" name="entryBody" class="drive-textarea" rows="8" placeholder="输入文档内容…"></textarea>
-        </div>
-      </div>
-      <div class="drive-modal__foot">
-        <button id="action-cancel-btn" type="button" class="secondary-button">取消</button>
-        <button id="action-submit-btn" type="submit" class="primary-button">确认</button>
-      </div>
+      <footer class="dlg__foot">
+        <button id="action-cancel-btn" type="button" class="btn">取消</button>
+        <button id="action-submit-btn" type="submit" class="btn btn--primary">确认</button>
+      </footer>
     </form>
   </dialog>
 
+  <!-- 选择目标文件夹 -->
+  <dialog id="move-modal" class="dlg dlg--move" aria-labelledby="move-modal-title">
+    <div class="dlg__panel">
+      <header class="dlg__head">
+        <h2 id="move-modal-title">移动到</h2>
+        <button id="move-close-btn" type="button" class="icon-btn" aria-label="关闭">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </header>
+      <div class="dlg__body dlg__body--flush">
+        <ul id="move-tree" class="tree tree--picker" role="tree" aria-label="选择目标文件夹"></ul>
+      </div>
+      <footer class="dlg__foot">
+        <span id="move-dest-text" class="dlg__hint"></span>
+        <button id="move-cancel-btn" type="button" class="btn">取消</button>
+        <button id="move-submit-btn" type="button" class="btn btn--primary">移动到这里</button>
+      </footer>
+    </div>
+  </dialog>
+
+  <!-- 管理设置：只有管理员能打开，内容由脚本按权限填充 -->
+  <dialog id="admin-settings" class="dlg dlg--admin" aria-labelledby="admin-title">
+    <div class="dlg__panel">
+      <header class="dlg__head">
+        <h2 id="admin-title">管理设置</h2>
+        <button id="admin-close-btn" type="button" class="icon-btn" aria-label="关闭">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+        </button>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="管理项目">
+        <button type="button" class="tabs__tab" role="tab" id="admin-tab-members" data-admin-pane="members" aria-controls="admin-pane-members" aria-selected="true">
+          <span>成员名单</span><span id="whitelist-count" class="tabs__count">0</span>
+        </button>
+        <button type="button" class="tabs__tab" role="tab" id="admin-tab-storage" data-admin-pane="storage" aria-controls="admin-pane-storage" aria-selected="false" tabindex="-1">
+          <span>存储空间</span>
+        </button>
+        <button type="button" class="tabs__tab" role="tab" id="admin-tab-tokens" data-admin-pane="tokens" aria-controls="admin-pane-tokens" aria-selected="false" tabindex="-1">
+          <span>接入令牌</span>
+        </button>
+      </div>
+
+      <div class="dlg__body dlg__body--panes">
+        <section id="admin-pane-members" class="pane" role="tabpanel" aria-labelledby="admin-tab-members">
+          <p class="pane__lead">名单里的手机号用统一通行证登录后就能使用云盘。管理员还可以打开这个设置面板。</p>
+          <form id="whitelist-form" class="inline-form">
+            <input id="wl-phone-input" name="phone" type="tel" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="11 位手机号" required aria-label="11 位手机号">
+            <input id="wl-note-input" name="note" type="text" autocomplete="off" maxlength="48" placeholder="备注，选填" aria-label="成员备注">
+            <button type="submit" class="btn btn--primary">添加成员</button>
+          </form>
+          <ul id="whitelist-list" class="records"></ul>
+        </section>
+
+        <section id="admin-pane-storage" class="pane" role="tabpanel" aria-labelledby="admin-tab-storage" hidden>
+          <div class="capacity">
+            <p class="capacity__figure"><strong data-storage-used>--</strong><span>已用，共 <span id="resize-current-gb" data-storage-total>--</span></span></p>
+            <div class="gauge gauge--large" data-gauge role="meter" aria-label="存储空间使用率" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span class="gauge__fill"></span>
+              <span class="gauge__mark"></span>
+            </div>
+            <p id="quota-summary-line" class="capacity__note">正在读取空间使用情况</p>
+          </div>
+
+          <form id="resize-form" class="resize">
+            <h3>调大容量</h3>
+            <p class="pane__lead">扩容时云盘照常使用。容量只能调大，上限 500 GB。</p>
+            <div class="chips" role="group" aria-label="常用容量">
+              <button type="button" class="chip" data-resize-preset="120">120 GB</button>
+              <button type="button" class="chip" data-resize-preset="160">160 GB</button>
+              <button type="button" class="chip" data-resize-preset="200">200 GB</button>
+              <button type="button" class="chip" data-resize-preset="300">300 GB</button>
+            </div>
+            <div class="inline-form inline-form--resize">
+              <label class="unit-input" for="resize-gb-input">
+                <span class="sr-only">目标容量</span>
+                <input id="resize-gb-input" name="targetGb" type="number" inputmode="numeric" autocomplete="off" min="60" max="500" step="1" placeholder="120" required>
+                <span aria-hidden="true">GB</span>
+              </label>
+              <button id="resize-submit-btn" type="submit" class="btn btn--primary">扩容</button>
+            </div>
+          </form>
+        </section>
+
+        <section id="admin-pane-tokens" class="pane" role="tabpanel" aria-labelledby="admin-tab-tokens" hidden>
+          <p class="pane__lead">服务器上的程序可以直接读写 <code>/srv/drive</code>，不需要令牌。其他机器上的 Agent 访问云盘接口时，在请求头里带上令牌。</p>
+          <form id="token-form" class="inline-form">
+            <input id="token-name-input" name="tokenName" type="text" autocomplete="off" maxlength="48" placeholder="给令牌起个名字" required aria-label="令牌名称">
+            <button type="submit" class="btn btn--primary">生成令牌</button>
+          </form>
+
+          <div id="issued-token-box" class="issued" hidden>
+            <p class="issued__title">新令牌只显示这一次，请现在复制保存。</p>
+            <div class="issued__row">
+              <code id="issued-token-val"></code>
+              <button id="copy-token-btn" type="button" class="btn">
+                <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg><span>复制</span>
+              </button>
+              <button id="close-token-btn" type="button" class="icon-btn" aria-label="收起新令牌">
+                <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <ul id="token-list" class="records"></ul>
+
+          <div class="snippet">
+            <div class="snippet__bar">
+              <span>接口示例</span>
+              <button id="copy-agent-code-btn" type="button" class="link-btn">复制示例</button>
+            </div>
+            <pre id="agent-code-pre"></pre>
+          </div>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
   <script src="/auth/sdk.js" defer></script>
-  <script src="./app.js" defer></script>
+  <script src="./app.js?v=__ASSET_VERSION__" defer></script>
 </body>
 </html>

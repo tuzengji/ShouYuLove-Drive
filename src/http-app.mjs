@@ -8,7 +8,7 @@ import {
   unlinkSync,
 } from 'node:fs';
 import { request as httpRequest } from 'node:http';
-import { randomBytes } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 import { basename, dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -41,6 +41,17 @@ const STATIC_ASSETS = {
   '/hos-bold.woff2': { file: 'hos-bold.woff2', type: 'font/woff2', cache: 'public, max-age=31536000, immutable' },
   '/shouyu-serif.woff2': { file: 'shouyu-serif.woff2', type: 'font/woff2', cache: 'public, max-age=31536000, immutable' },
 };
+
+// 这些文件的内容共同决定页面里的 ?v= 版本号，发布新版后浏览器不会继续使用缓存里的旧文件
+const VERSIONED_ASSETS = [
+  'style.css',
+  'app.js',
+  'logo.svg',
+  'favicon.svg',
+  'hos-ui-regular.woff2',
+  'hos-ui-medium.woff2',
+  'hos-ui-bold.woff2',
+];
 
 const MIME_BY_EXT = {
   '.txt': 'text/plain; charset=utf-8',
@@ -281,6 +292,15 @@ export function createDriveHttpHandler({
     const content = readFileSync(join(WEB_DIR, filename));
     if (!devMode) assetCache.set(filename, content);
     return content;
+  };
+
+  let cachedAssetVersion = '';
+  const getAssetVersion = () => {
+    if (!devMode && cachedAssetVersion) return cachedAssetVersion;
+    const hash = createHash('sha1');
+    for (const name of VERSIONED_ASSETS) hash.update(readAsset(name));
+    cachedAssetVersion = hash.digest('hex').slice(0, 10);
+    return cachedAssetVersion;
   };
 
   const upstreamBase = new URL(filebrowserTarget);
@@ -538,11 +558,14 @@ export function createDriveHttpHandler({
             raw
               .toString('utf8')
               .replaceAll('__DRIVE_BASE__', mountBase || '/drive')
+              .replaceAll('__ASSET_VERSION__', getAssetVersion())
               .replaceAll('__INITIAL_STATE__', initialStateJson),
             'utf8',
           );
           headers['Content-Security-Policy'] = CSP_HEADER;
           headers['Vary'] = 'Cookie';
+        } else if (asset.file === 'style.css') {
+          body = Buffer.from(raw.toString('utf8').replaceAll('__ASSET_VERSION__', getAssetVersion()), 'utf8');
         }
         res.writeHead(200, headers);
         res.end(req.method === 'HEAD' ? undefined : body);

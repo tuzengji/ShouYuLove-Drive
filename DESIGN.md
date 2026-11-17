@@ -1,346 +1,252 @@
 ---
 name: "心创云盘 (ShouYuLove Drive)"
-description: "Night-sky starlight cloud drive portal and FileBrowser workspace modeled on Benchmarks' Last Exam, uniting 0.5px open hairline directories, #f6f4ee light squircle stamps, warm starlight glow, and progressive-disclosure team sharing."
+description: "暖纸面上的共享网盘工作台：左侧目录树与刻度尺存储条，右侧白色文件区；松绿墨色主操作、蜜色文件夹、按类型着色的文件色块，与统一通行证的浅色悬浮窗同系。"
 colors:
-  page: "#05060b"
-  surface: "#0b0d14"
-  surface-soft: "#0e1119"
-  surface-raised: "#10131c"
-  surface-hover: "#151924"
-  selected: "#222838"
-  selection-bg: "#3a4468"
-  ink: "#f4f1ea"
-  ink-soft: "#d8d5cd"
-  muted: "#a3a7b3"
-  placeholder-ink: "#7d8291"
-  disabled-ink: "#5b6070"
-  line: "#1c1f2a"
-  line-strong: "#2a2e3b"
-  line-hover: "#6b7080"
-  field-edge: "#3a3f4f"
-  solid: "#f4f1ea"
-  solid-hover: "#fff3df"
-  on-solid: "#07080d"
-  accent: "#f4f1ea"
-  accent-hover: "#ffffff"
-  glow: "#fff3df"
-  glow-soft: "#ffd6a0"
-  glow-active: "#ffe2b8"
-  nebula-indigo: "#222e68"
-  nebula-umber: "#62361c"
-  brand-tick: "#ff5a3c"
-  stamp-light: "#f6f4ee"
-  data-hard: "#3ecf8e"
-  review-success-bg: "#0f241b"
-  review-success-fg: "#5fd39a"
-  review-warning-bg: "#2a2010"
-  review-warning-fg: "#ecbd55"
-  review-error-bg: "#2e1513"
-  review-error-fg: "#ff7f70"
-  danger-hover: "#ffa296"
-  danger-solid: "#ff6b5e"
-  shadow-black: "#000000"
+  paper: "#fbfaf6"
+  sheet: "#ffffff"
+  sand: "#f4f0e7"
+  sand-deep: "#e9e3d5"
+  line: "#e8e2d6"
+  line-strong: "#d3cbba"
+  ink: "#1c2622"
+  ink-soft: "#414d47"
+  ink-quiet: "#5c6861"
+  ink-faint: "#98a19b"
+  placeholder-ink: "#626e66"
+  pine: "#23332c"
+  pine-hover: "#2f453b"
+  on-pine: "#fbfaf6"
+  leaf: "#2a7a55"
+  leaf-deep: "#1f6b49"
+  heart: "#f2553b"
+  danger: "#b9321c"
+  danger-hover: "#9f2814"
+  danger-soft: "#fcebe6"
+  mark: "#fdf2d0"
+  mark-deep: "#f8e2a0"
+  stage: "#161d1a"
+  folder-back: "#e79a2b"
+  folder-front: "#f8c35a"
+  sky-butter: "#fff5df"
+  sky-apricot: "#ffe7cc"
 typography:
+  display:
+    fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
+    fontSize: "clamp(42px, 6.4vw, 68px)"
+    fontWeight: 700
+    lineHeight: 1.12
   title:
     fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "2.625rem"
-    fontWeight: 400
-    lineHeight: 1.18
-    letterSpacing: "-0.028em"
-  section:
-    fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "1.375rem"
-    fontWeight: 650
+    fontSize: "22px"
+    fontWeight: 700
     lineHeight: 1.3
-    letterSpacing: "-0.02em"
   heading:
     fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 650
+    fontSize: "19px"
+    fontWeight: 700
     lineHeight: 1.4
-    letterSpacing: "-0.02em"
-  drawer-title:
-    fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 650
-    lineHeight: 1.4
-    letterSpacing: "-0.01em"
-  brand:
-    fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Display\", \"PingFang SC\", sans-serif"
-    fontSize: "1.0625rem"
-    fontWeight: 650
-    lineHeight: 1.25
-    letterSpacing: "-0.02em"
   body:
     fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "1.0625rem"
+    fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.65
-    letterSpacing: "0em"
+    lineHeight: 1.5
   control:
     fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "1rem"
-    fontWeight: 550
-    lineHeight: 1.5
-    letterSpacing: "0em"
+    fontSize: "15px"
+    fontWeight: 500
+    lineHeight: 1.4
   meta:
     fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "0.9375rem"
-    fontWeight: 550
-    lineHeight: 1.4
-    letterSpacing: "0em"
-  floor:
-    fontFamily: "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 550
-    lineHeight: 1.4
-    letterSpacing: "0em"
-  mono:
-    fontFamily: "\"SF Mono\", \"JetBrains Mono\", Menlo, Monaco, Consolas, monospace"
-    fontSize: "0.9375rem"
+    fontSize: "14px"
     fontWeight: 400
-    lineHeight: 1.68
-    letterSpacing: "0em"
+    lineHeight: 1.4
+  mono:
+    fontFamily: "\"SF Mono\", \"JetBrains Mono\", ui-monospace, Menlo, Consolas, \"HarmonyOS Sans SC\", monospace"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.7
 rounded:
-  xs: "6px"
+  xs: "5px"
   sm: "8px"
   md: "10px"
-  stamp: "13px"
-  lg: "14px"
+  tile: "9px"
+  card: "14px"
+  lg: "18px"
   pill: "999px"
-  full: "50%"
 spacing:
   xs: "8px"
   sm: "12px"
   md: "16px"
-  lg: "22px"
+  lg: "24px"
   xl: "32px"
-  2xl: "40px"
-  3xl: "56px"
+  side-width: "272px"
+  topbar-height: "68px"
 components:
-  topbar:
-    backgroundColor: "{colors.page}"
-    textColor: "{colors.ink}"
-    height: "68px"
   button-primary:
-    backgroundColor: "{colors.solid}"
-    textColor: "{colors.on-solid}"
-    typography: "meta"
-    rounded: "{rounded.sm}"
-    padding: "10px 18px"
-    height: "46px"
+    backgroundColor: "{colors.pine}"
+    textColor: "{colors.on-pine}"
+    typography: "control"
+    rounded: "{rounded.md}"
+    height: "40px"
   button-primary-hover:
-    backgroundColor: "{colors.solid-hover}"
-    textColor: "{colors.on-solid}"
-  button-primary-hero:
-    backgroundColor: "{colors.solid}"
-    textColor: "{colors.on-solid}"
-    typography: "control"
-    rounded: "{rounded.sm}"
-    padding: "12px 22px"
-    height: "48px"
+    backgroundColor: "{colors.pine-hover}"
   button-secondary:
-    backgroundColor: "{colors.surface}"
+    backgroundColor: "{colors.sheet}"
     textColor: "{colors.ink}"
-    typography: "meta"
-    rounded: "{rounded.sm}"
-    padding: "10px 18px"
-    height: "46px"
-  button-secondary-hover:
-    backgroundColor: "{colors.surface-hover}"
-    textColor: "{colors.ink}"
-  chip-verified:
-    backgroundColor: "{colors.review-success-bg}"
-    textColor: "{colors.review-success-fg}"
-    typography: "meta"
-    rounded: "{rounded.xs}"
-    padding: "5px 11px"
-  chip-meta:
-    backgroundColor: "{colors.surface-hover}"
-    textColor: "{colors.muted}"
-    typography: "meta"
-    rounded: "{rounded.pill}"
-    padding: "3px 10px"
-  chip-preset:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink-soft}"
-    typography: "meta"
-    rounded: "{rounded.sm}"
-    padding: "7px 12px"
-    height: "42px"
-  chip-preset-selected:
-    backgroundColor: "{colors.selected}"
-    textColor: "{colors.accent-hover}"
-  input-field:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    typography: "control"
-    rounded: "{rounded.sm}"
-    padding: "9px 13px"
+    borderColor: "{colors.line-strong}"
+    rounded: "{rounded.md}"
+    height: "40px"
+  button-danger:
+    backgroundColor: "{colors.danger}"
+    textColor: "#ffffff"
+  row:
+    minHeight: "56px"
+    borderColor: "{colors.line}"
+  row-selected:
+    backgroundColor: "{colors.mark}"
+  search-field:
+    backgroundColor: "{colors.sand}"
+    rounded: "12px"
     height: "44px"
-  report-stamp:
-    backgroundColor: "{colors.stamp-light}"
-    textColor: "{colors.on-solid}"
-    rounded: "{rounded.stamp}"
-    padding: "9px"
-    width: "48px"
-    height: "48px"
-  card-panel:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
+  dialog:
+    backgroundColor: "{colors.sheet}"
     rounded: "{rounded.lg}"
-    padding: "28px"
-  card-pane:
-    backgroundColor: "{colors.surface-raised}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.lg}"
-    padding: "22px"
-  terminal-console:
-    backgroundColor: "{colors.page}"
-    textColor: "{colors.ink-soft}"
-    typography: "mono"
-    rounded: "{rounded.lg}"
+  toast:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-pine}"
 ---
 
 # Design System: 心创云盘 (ShouYuLove Drive)
 
 ## Overview
 
-**Creative North Star: "The Star-Track Night-Sky Directory"**
+心创云盘是手语分社心创组每天要用的共享网盘。界面的任务是让人一眼找到文件、放心地存取，所以页面本身保持安静，颜色主要来自文件自己。
 
-心创云盘 (`shouyulove-drive`) replicates the nocturnal architectural discipline of `Benchmarks' Last Exam` (`/zh/benchmarks/`): a `#05060b` deep-space canvas brushed with subtle starlight dots and indigo/umber nebula washes, `0.5px` structural hairlines (`--line: #1c1f2a`, `--line-strong: #2a2e3b`), warm `#f4f1ea` primary ink paired with `#fff3df` starlight glow, `#ff5a3c` emblem accent ticks, `#f6f4ee` ivory squircle icon stamps, and open hairline directories in place of boxed card walls.
+整体是一张暖纸面：左侧浅沙色侧栏放目录树、管理入口和存储刻度尺，右侧纯白的文件区放搜索、路径、操作按钮和文件列表。主操作用松绿墨色，文件夹是蜜色的牛皮纸夹，不同类型的文件用不同的浅色块区分，选中的行像被荧光笔划过一样变成淡黄色。徽标里的珊瑚色爱心只出现在徽标和刻度尺的指针上。
 
-Public copy remains concise, human, and free of filesystem/ops jargon—never displaying `/srv/drive` paths or hash internals. Right beneath the editorial left-right header (`<h1>心创云盘</h1>`, plain-language subtitle, and `48px` `#f4f1ea` login CTA), `#drive-overview.overview` renders a quiet full-width two-column `0.5px` hairline band modeled directly on `Benchmarks' Last Exam`: left column `存储空间` (`7px` `#3ecf8e -> #fff3df` `<progress>` bar plus tabular `已用空间`, `剩余可用`, `总容量`) and right column `云盘概览` (aggregate file/folder counts plus live sync timestamp). All Unified Passport sign-in, auto-registration, and account-switching actions open an in-page floating `<dialog class="syl-auth-modal">` (`ShouyuAuth.openModal`) right over `/drive/` with zero URL redirect. When an authorized member signs in, the guest directory hides immediately so `#view-console` places the open `网盘文件` hairline table right below `#drive-overview`, while administrative controls (`成员名单`, `空间扩展`, `Agent 接入令牌`) remain collapsed by default inside `<details id="admin-settings-drawer">`.
+页面只有浅色一种外观（`color-scheme: only light`），与统一通行证登录悬浮窗的浅色主题同系。未登录页的那轮暖光呼应通行证的暖色天光。
 
-Every asset—including self-hosted `Google Sans Flex` and `HarmonyOS Sans SC` (`400 / 500 / 600–700`) WOFF2 faces, custom cloud-bracket SVG logo (`logo.svg` / `favicon.svg`), and `1.75px` UI icons—ships under a strict `'self'` Content Security Policy, while `branding/custom.css` brings the identical `#05060b`, `#0b0d14`, `#10131c`, `#f4f1ea`, `#d8d5cd`, and `#fff3df` palette into FileBrowser (`/drive/files/`).
+三个最能代表这套设计的地方：
 
-**Key Characteristics:**
-- Deep-space `#05060b` canvas layered with sparse CSS starlight (`body::before`), stepped obsidian surfaces (`#0b0d14` / `#0e1119` / `#10131c` / `#151924` / `#222838`), and `0.5px` structural hairlines (`#1c1f2a` / `#2a2e3b` / `#3a3f4f`).
-- Warm alabaster ink (`#f4f1ea` / `#d8d5cd`) and cool slate muted text (`#a3a7b3`), ignited by `#fff3df` warm starlight hover rims and `#ff5a3c` cinnabar-orange brand ticks.
-- Signature `#f6f4ee` warm-ivory squircle stamps (`48x48`, `13px` radius for guest feature rows; `40x40`, `10px` radius for root folder tiles) casting high-contrast dark icons (`#07080d` + `#ff5a3c`) off the night canvas.
-- Variable typography combining self-hosted `Google Sans Flex` + `HarmonyOS Sans SC` (`--font` and `--font-brand`) and `SF Mono` / `JetBrains Mono` (`--font-mono`), preserving a strict `>= 15px` (`0.9375rem`) desktop floor and `>= 14px` (`0.875rem`) floor at `<= 380px`.
-- Sticky translucent frosted glass `.topbar` (`backdrop-filter: blur(18px) saturate(1.5)` over `color-mix(in srgb, #05060b 82%, transparent)`) with a `1px` starlight beam under active/hovered navigation links.
+1. 存储刻度尺。取自徽标里托着云的那把尺，两端有立边，十等分刻度，松绿色填充表示已用空间，珊瑚色指针标出当前位置。
+2. 文件类型色块。图片青绿、视频紫、音频玫红、PDF 朱红、文档蓝、表格绿、演示橙、压缩包棕、代码灰蓝、纯文本灰绿，文件夹不用色块而是直接画成蜜色文件夹。
+3. 荧光笔选中。被选中的行和卡片使用 `mark`（`#fdf2d0`），多选后底部浮出松绿色的操作条。
 
 ## Colors
 
-A dark-polarity obsidian system anchored on `#05060b` deep space, warm `#f4f1ea` ink, cool slate `#a3a7b3` metadata, `#f6f4ee` tactile light icon stamps, `#fff3df` starlight glow accents, and dark-tinted semantic status badges.
-
 ### Primary
-- **Warm Alabaster Solid** (`#f4f1ea`): Primary CTA fills (`.primary-button`), primary headings, primary ink (`--ink`, `--solid`, `--accent`), FileBrowser primary `.button` fill, and active outline rings.
-- **Starlight Warm Glow** (`#fff3df` `--glow`, `#ffd6a0` `--glow-soft` / `--glow-faint` alpha base): Hover fill for primary buttons (`--solid-hover`), focus border and `2px` `:focus-visible` outlines (`--glow`), active preset borders, `.page-nav` active underline beam, crisp `1px` hover rims, and FileBrowser focus/selection highlights (`#ffe2b8` on `:active`).
-- **On-Solid Ink** (`#07080d`): High-contrast dark ink on `#f4f1ea` / `#fff3df` solid buttons and icon fills/strokes inside `#f6f4ee` squircle stamps.
-- **Brand Cinnabar Tick** (`#ff5a3c`): Heart emblem and center bracket tick in `logo.svg` / `favicon.svg`, plus active dual-tone calibration ticks inside the three `#f6f4ee` capability stamps.
+
+- `pine` `#23332c`：主按钮、勾选框、存储条填充、多选操作条。悬停用 `pine-hover` `#2f453b`。
+- `heart` `#f2553b`：只用于徽标爱心与刻度尺指针，不用于按钮和文字。
+- `leaf` `#2a7a55` / `leaf-deep` `#1f6b49`：焦点环、输入框聚焦、文字链接、上传进度条、拖放目标的描边。
 
 ### Neutral
-- **Deep Space Canvas** (`#05060b`): Root page ground (`--page`), `.agent-terminal` code backdrop, `.token-value` container, FileBrowser `header` and dialog input fills (`#000000` gradient fade mask / shadow base).
-- **Obsidian Surface** (`#0b0d14`): Primary panel base (`--surface`), secondary button fill, text inputs, `.denied-panel` / `.admin-drawer` base, FileBrowser sidebar (`nav`), list rows, and `.card` modal surfaces.
-- **Soft & Raised Obsidian** (`#0e1119` `--surface-soft` / `#10131c` `--surface-raised`): Hover wash gradient stop on open directory rows, notice banner, and document file tiles (`.file-row__tile--file`).
-- **Hover & Selected States** (`#151924` `--surface-hover` / `#222838` `--selected` / `#3a4468` text `::selection`): Interactive hover surface for secondary controls/pills and selected capacity preset/FileBrowser items.
-- **Ink Hierarchy** (`#f4f1ea` `--ink`, `#d8d5cd` `--ink-soft`, `#a3a7b3` `--muted`, `#7d8291` `--placeholder-ink`, `#5b6070` `--disabled-ink`): Tuned for high contrast and zero harsh glare against `#05060b`–`#10131c`.
-- **Structural Hairlines** (`#1c1f2a` `--line`, `#2a2e3b` `--line-strong`, `#3a3f4f` `--field-edge`, `#6b7080` `--line-hover`): `0.5px` (`--hairline`) row separators, panel strokes, and input/button borders.
-- **Ivory Stamp Light** (`#f6f4ee`): High-contrast warm-ivory squircle surface exclusive to `.report-project-icon` and `.file-row__tile--dir`.
+
+- `paper` `#fbfaf6`：门厅页底色、查看器正文背景。
+- `sheet` `#ffffff`：文件区、对话框、菜单。
+- `sand` `#f4f0e7`：侧栏、搜索框、悬停底色。`sand-deep` `#e9e3d5` 用于侧栏悬停与计数徽标。
+- `line` `#e8e2d6` / `line-strong` `#d3cbba`：行分隔线与控件描边。
+- `ink` `#1c2622`、`ink-soft` `#414d47`、`ink-quiet` `#5c6861`：三级文字。`ink-faint` `#98a19b` 只用于装饰性分隔符与禁用状态。
 
 ### Semantic
-- **Verified Mint Success** (`#3ecf8e` `--data-hard` / `#5fd39a` `--review-success-fg` / `#0f241b` `--review-success-bg`): Online status dot (`.status-dot.is-ok`), quota meter start stop, `.verified-pill`, `.token-secret-banner`, inline accepted emphasis, and FileBrowser upload progress bar.
-- **Amber Nebula Warning** (`#ecbd55` `--review-warning-fg` / `#2a2010` `--review-warning-bg`): Non-whitelisted status dot (`.status-dot.is-warn`), `.review-outcome.doubtful`, and inline sync highlight.
-- **Coral Danger / Error** (`#ff7f70` `--review-error-fg`, hover `#ffa296`, `#2e1513` `--review-error-bg`, `#ff6b5e` FileBrowser `.button--red`): Destructive removal links (`.action-link--danger`) and `.studio-notice[data-tone="error"]`.
+
+- `danger` `#b9321c`：删除、移除、停用等不可恢复操作的文字与确认按钮，浅底用 `danger-soft` `#fcebe6`。
+- `mark` `#fdf2d0`：选中状态、管理员身份标签、一次性令牌提示。
+- 文件类型色块的前景与背景成对定义在 `style.css` 的 `.ftile--*` 规则里。
 
 ### Named Rules
-**The Starlight-Over-Obsidian Rule.** Deep-space `#05060b` and obsidian `#0b0d14`–`#10131c` layers frame warm `#f4f1ea` alabaster prose, leaving `#fff3df` glow exclusively for interactive focus/hover/beams and `#ff5a3c` strictly for emblem and stamp ticks.
-**The Tactile Ivory Stamp Rule.** Directory tiles (`.file-row__tile--dir`) and visitor capability badges (`.report-project-icon`) flip polarity onto `#f6f4ee` warm ivory with `#07080d` strokes, anchoring visual hierarchy without boxing the surrounding `0.5px` open hairline rows.
+
+- 珊瑚色不当按钮色。主操作是松绿，危险操作是深红，两者不混用。
+- 阴影带暖色（`rgba(58, 44, 20, …)`），不使用纯灰阴影。
+- 正文与占位文字在各自底色上的对比度不低于 4.5:1。
 
 ## Typography
 
-**Brand Lockup Font:** `"Google Sans Flex", "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", sans-serif`
-**Body & UI Font:** `"Google Sans Flex", "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif`
-**Mono Font:** `"SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace`
-
-**Character:** Matches `Benchmarks' Last Exam` by self-hosting `Google Sans Flex` (variable UI/display sans) and `HarmonyOS Sans SC` (`400 / 500 / 600–700`) with Apple `SF Pro` / `PingFang SC` fallbacks, `font-variant-numeric: tabular-nums`, and `font-optical-sizing: auto` across the body and FileBrowser (`branding/custom.css`).
+沿用自托管的 `Google Sans Flex`（拉丁字母与数字）和 `HarmonyOS Sans SC`（中文）。界面用到的中文字形由 `scripts/build-ui-fonts.py` 提取成约 60 KB 的预加载子集，`font-display: block`，刷新时不闪字。修改了界面文案后要重新运行这个脚本。
 
 ### Hierarchy
-- **Display Title** (`400`, `--type-title: clamp(1.875rem, 3.4vw, 2.625rem)` / `30px`–`42px`, line-height `1.18`, tracking `-0.028em`): Editorial `<h1>心创云盘</h1>` rendered in solid warm alabaster `#f4f1ea` (`--ink`).
-- **Section Heading** (`650`, `--type-section: clamp(1.25rem, 1.8vw, 1.375rem)` / `20px`–`22px`, line-height `1.3`, tracking `-0.02em`): Workspace `网盘文件`, denied panel heading, and drawer sub-pane `<h2>` titles.
-- **Entry Heading** (`650`, `--type-heading: 1.25rem` / `20px` desktop, `1.125rem` / `18px` at `<= 720px`, line-height `1.4`, tracking `-0.02em`): Guest open directory row `<h2>` titles.
-- **Drawer Summary Title** (`650`, `1.125rem` / `18px`): Collapsible `<summary>` label `.admin-drawer__title`.
-- **Brand & Body** (`650` at `1.0625rem` / `17px` on `.brand-name`; `400` / `550` at `--type-body: 1.0625rem` / `17px` desktop stepping to `1rem` / `16px` at `<= 720px`, line-height `1.65`–`1.7`): Hero lead (`max-width: 48ch`), directory descriptions, file names, masked console phone, and empty states.
-- **Control & Mobile Body** (`400` / `550` / `650`, `1rem` / `16px`): Hero primary CTA (`.primary-button--hero`), `<input>` fields, `.record-row__title`, and `branding/custom.css` FileBrowser base font.
-- **Meta, Nav & Buttons** (`550` / `650`, `--type-meta: 0.9375rem` / `15px` desktop, `0.875rem` / `14px` absolute floor at `<= 380px`): `.page-nav` links, `.account-pill`, `.nav-tool-btn`, standard `.primary-button` / `.secondary-button`, `.preset-chip`, `.meta-pill`, `.file-kind-pill`, `.site-footer`, FileBrowser `.item` / `.button` (`15px`).
-- **Monospace Code** (`400`, `0.9375rem` / `15px`, line-height `1.68`): `.token-value`, `.record-row__code`, and `.agent-terminal__pre`.
+
+- 门厅大标题：`clamp(42px, 6.4vw, 68px)`，700。
+- 当前文件夹名（路径末段）：22px，700；路径上其余各段 22px，500，`ink-quiet`。
+- 对话框标题：19px，700。
+- 文件名：15px，500。
+- 按钮与菜单项：15px，500。
+- 修改时间、大小、说明文字：14px，使用等宽数字。
+- 代码与令牌：等宽字体 14px。
 
 ### Named Rules
-**The 14px Minimum Legibility Floor.** Auxiliary labels, navigation items, chips, buttons, and FileBrowser rows hold `0.9375rem` (`15px`) on desktop and never drop below `--type-meta: 0.875rem` (`14px`) inside `@media (max-width: 380px)`—zero sub-`14px` text anywhere.
-**The Variable Font & Tabular Discipline.** `Google Sans Flex` and `HarmonyOS Sans SC` drive headings (`450` / `650`) and body prose (`400` / `550`) with `font-variant-numeric: tabular-nums`.
+
+- 全站最小字号 14px。
+- 中文字体只有三档字重（400、500、600 以上），不要使用 550、650 这类中间值。
+- 文件名过长时截断名称主体并保留扩展名。
 
 ## Layout
 
-Centered single-column editorial container (`.page`) capped at `max-width: 1280px` with responsive horizontal padding (`--side: clamp(20px, 4vw, 56px)`, tightening to `14px` at `<= 380px`) and `padding: 40px var(--side) 56px` (`28px var(--side) 44px` at `<= 720px`). Sticky `.topbar-inner` matches `max-width: 1280px` and `min-height: 68px` (wrapping to `98px` two-row layout at `<= 960px` where `.page-nav` shifts onto its own full-width row with `100%` `0.5px` divider).
-
-The page header (`.home-heading`) arranges copy (`flex: 1 1 420px`) on the left and visitor CTA or logged-in `.home-heading__console` (`verified-strip` + `action-cluster`) on the right (`align-items: flex-end`, `gap: 24px 32px`). Below, unauthenticated visitors see `#guest-bento.reports`—an open hairline list bordered only at the top (`0.5px solid #2a2e3b`) with `0.5px solid #1c1f2a` row separators. Authorized members instead mount `#view-console.workbench-stack` (`gap: 36px`), placing `.results` (`网盘文件`, three-column `.workbench-toolbar`, and `.results-table`) first, followed by collapsed `<details id="admin-settings-drawer">` (expanding into `.split-workbench` `repeat(2, minmax(0, 1fr))` at `gap: 20px` plus full-width `.workbench-pane`).
-
-Key breakpoints sit at `960px` (wrapped two-row header, single-column `.workbench-toolbar` and `.split-workbench`), `736px` (FileBrowser mobile drawer background), `720px` (stacked `.home-heading`, `44px` report stamps, `1rem` body / `1.125rem` entry heading, full-width toolbars, stacked `.file-row` and `.record-row`), and `380px` (`14px` gutters, `0.875rem` `--type-meta` floor, single-column `.preset-group`).
+- 桌面端（宽度不小于 960px）：左侧 272px 固定侧栏，右侧文件区自适应。顶栏 68px 吸顶，列表表头吸附在顶栏下方。
+- 960px 以下收起侧栏，顶栏左侧只留徽标，存储刻度尺与归属信息移到列表下方。
+- 720px 以下列表改为两行式（名称在上，大小与时间在下），只保留「更多」按钮；「选择」和显示方式收进「更多」菜单，菜单改为底部面板。
+- 文件区里的内容左对齐，数字列（大小）右对齐。
+- 门厅页（未登录、未开通、读取失败）不显示侧栏，内容居中，未登录页桌面端左文右图。
 
 ## Elevation & Depth
 
-Spatial hierarchy merges subtle ambient night-sky light, translucent frosted navigation, warm specular top edges, and deep ambient shadows under high-contrast stamps:
-
-- **Sticky Frosted Topbar (`.topbar`):** Explicitly uses translucent glassmorphism—`background: color-mix(in srgb, var(--page) 82%, transparent)` paired with `-webkit-backdrop-filter: blur(18px) saturate(1.5)` and `backdrop-filter: blur(18px) saturate(1.5)` plus `border-bottom: 0.5px solid #1c1f2a`—so scrolling directory rows diffuse cleanly beneath the sticky `68px` header.
-- **Nocturnal Starlight Field (`body::before`):** Layered multi-scale `1px`–`1.5px` radial star points (`rgba(255,255,255,0.28–0.55)`, `rgba(255,240,214,0.42)`, `rgba(190,210,255,0.36–0.5)`) and dual upper nebula washes (`rgba(34, 46, 104, 0.42)` top-right indigo, `rgba(98, 54, 28, 0.2)` top-left umber) masked smoothly downward over `#05060b`.
-- **Warm Specular Hairlines & Crisp Rim Elevation:** `.denied-panel::before` and `.admin-drawer::before` draw centered `1px` warm specular top glints (`color-mix(in srgb, var(--glow) 80% / 65%, transparent)`); `.page-nav a::after` draws a `1px` `#fff3df` horizontal gradient beam; `.primary-button:hover` combines a crisp `1px` warm rim (`0 0 0 1px color-mix(in srgb, var(--glow) 45%, transparent)`) with neutral offset elevation (`0 8px 24px rgba(0, 0, 0, 0.45)`); `input:focus` adds `0 0 0 3px var(--glow-faint)`; `.status-dot.is-ok` / `.is-warn` add crisp `2px` status rings.
-- **Elevated Stamps & FileBrowser Modals:** `.report-project-icon` rests at `0 0 0 0.5px rgba(255, 255, 255, 0.22), 0 8px 28px rgba(0, 0, 0, 0.5)` and lifts on hover to `0 0 0 1px color-mix(in srgb, var(--glow) 72%, transparent), 0 10px 28px rgba(0, 0, 0, 0.56)`; `.file-row__tile--dir` casts `0 0 0 0.5px rgba(255, 255, 255, 0.2), 0 6px 18px rgba(0, 0, 0, 0.45)`; FileBrowser modal `.card` (`branding/custom.css`) floats with `0 30px 90px rgba(0, 0, 0, 0.62)`.
+- 文件区与侧栏之间只用一条 `line` 分隔，不加阴影。
+- 菜单、上传卡片、提示条、多选操作条使用 `shadow-pop`；对话框与查看器使用 `shadow-dlg`，背后是 `rgba(28, 38, 34, 0.45)` 的遮罩。
+- 提示条通过 popover 进入顶层，保证盖在对话框上面。
 
 ### Named Rules
-**The Frosted Topbar & Specular-Line Rule.** Only `.topbar` uses `backdrop-filter: blur(18px) saturate(1.5)` over `82%` `#05060b`; secondary panels (`.denied-panel`, `.admin-drawer`, `.workbench-pane`) use flat obsidian fills, `0.5px` `#2a2e3b` borders, and subtle warm top-edge specular glints instead of frosted glass.
+
+- 不使用毛玻璃和渐变做装饰。唯一的渐变是门厅页背景的暖光和徽标背后的圆。
 
 ## Shapes
 
-Sharp-yet-tactile architectural radii scaled strictly by control role:
-- `6px` (`xs`): Status and micro-reference pills (`.verified-pill`, `.review-outcome`, `.file-kind-pill`, `.record-row__code`).
-- `8px` (`sm`, `--control-radius`): Buttons (`.primary-button`, `.secondary-button`, `.terminal-copy-btn`), inputs, `.preset-chip`, `.nav-tool-btn`, `.page-nav a`, `.account-pill`, `.file-row`, `.studio-notice`, `.token-value`, and FileBrowser `#search #input` / `.button` / `.card input`.
-- `10px` (`md`): Root workspace file/folder tiles (`.file-row__tile`) and FileBrowser `#listing .item`.
-- `13px` (`stamp`): Warm ivory capability stamps (`.report-project-icon`).
-- `14px` (`lg`, `--panel-radius`): Architectural containers (`.denied-panel`, `.report-item` hover bleed, `.admin-drawer`, `.workbench-pane`, `.agent-terminal`, and FileBrowser `.card`).
-- `999px` (`pill`) / `50%` (`full`): `.meta-pill`, `.quota-meter`, and circular `.status-dot` indicators.
-
-UI iconography relies on inline `1.75px` round-cap/round-join stroke SVGs (`20x20` controls and file tiles, `18x18` record/verified icons, `17x17` search icon; `2.0px`/`2.2px` dual-tone strokes inside `32x32` guest stamps), paired with the `46x32` custom `logo.svg` / `favicon.svg` fixed-color cloud-bracket mark (`#f4f1ea` + `#ff5a3c`).
+- 控件 10px 圆角，文件色块 9px，宫格卡片 14px，对话框 18px，标签和容量选项为胶囊形。
+- 图标统一为 20 格线性图标，线宽 1.6，圆头圆角，集中定义在 `index.html` 顶部的 SVG 图标库里，页面和脚本都用 `<use href="#i-…">` 引用。
 
 ## Components
 
 ### Buttons
-- **Shape & Sizing:** `--control-radius` (`8px`), `white-space: nowrap`; `.primary-button` / `.secondary-button` hold `46px` min-height (`10px 18px` padding, `0.9375rem`, `650`), while `.primary-button--hero` steps up to `48px` (`12px 22px`, `1rem`, `650`).
-- **Primary:** Solid warm alabaster `#f4f1ea` with `#07080d` ink; hovers (`160ms`/`200ms ease-out`) to `#fff3df` with `0 0 0 1px color-mix(in srgb, var(--glow) 45%, transparent), 0 8px 24px rgba(0, 0, 0, 0.45)`, presses active to `#ffe2b8`, and shifts button arrow icons `3px` right on `.btn-icon--shift`.
-- **Secondary & Links:** `.secondary-button` uses `#0b0d14` fill, `0.5px solid #3a3f4f`, and `#f4f1ea` ink, shifting on hover to `#151924` / `#6b7080`. Inline `.action-link` (`40px` min-height, `6px 10px`, `0.9375rem`) uses `#d8d5cd` (`#fff3df` hover on `#151924`; danger variant `#ff7f70` -> `#ffa296` on `#2e1513`).
 
-### Chips
-- **Status & Metadata:** `.verified-pill` pairs `#0f241b` with `#5fd39a` (`6px` radius, `5px 11px`); `.review-outcome.doubtful` pairs `#2a2010` with `#ecbd55` (`6px` radius, `3px 9px`); `.meta-pill` uses `#151924` fill, `0.5px solid #2a2e3b`, `#a3a7b3` ink (`999px` pill); `.file-kind-pill` uses `#10131c` + `#2a2e3b` (`6px` radius).
-- **Preset Chips:** `.preset-chip` (`42px` min-height, `7px 12px`, `8px` radius) pairs `#0b0d14` fill and `0.5px solid #3a3f4f` with `#d8d5cd` ink, switching to `#222838` fill, `#fff3df` border, and `#ffffff` text when `.is-selected`.
+主按钮（松绿底）、次按钮（白底描边）、安静按钮（无边框，用于排序等次要操作）、危险按钮（深红底，只出现在确认对话框里）。图标按钮 36px 见方，手机端行内按钮 44px。
 
-### Cards / Containers
-- **Open Hairline Lists:** `.reports` and `.results` never wrap items in card boxes; rows sit directly on `#05060b` beneath a `0.5px solid #2a2e3b` top border with straight container-aligned `0.5px solid #1c1f2a` dividers (`.report-entry`, `.file-entry`) and subtle horizontal hover wash (`linear-gradient(90deg, #0e1119, transparent 85%)`).
-- **Architectural Panels & Hairline Drawer:** `.denied-panel` (`28px` padding) and `<details id="admin-settings-drawer">` use `14px` radius, `0.5px solid #2a2e3b` border, `linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.008) 70%), #0b0d14`, and top specular glint; inside `.admin-drawer__body`, `.workbench-pane` sections stay unboxed and separated purely by `0.5px` hairlines (`cubic-bezier(0.16, 1, 0.3, 1)` reveal). FileBrowser `.card` overlays match `#0b0d14` + `0.5px solid #2a2e3b` + `14px` radius.
+### Tags & Chips
 
-### Inputs / Fields
-- **Style & Focus:** `44px` min-height, `9px 13px` padding (`38px` left padding in `.search-field`, `44px` right padding in `.unit-input`), `8px` radius, `#0b0d14` fill, `0.5px solid #3a3f4f` stroke, `1rem` (`16px`) `#f4f1ea` text, and `#7d8291` placeholders. Hover shifts border to `#6b7080`; focus lights border to `#fff3df` with `0 0 0 3px var(--glow-faint)`; `:focus-visible` uses `2px solid #fff3df` (`outline-offset: 3px`).
-- **Error & Quota:** `.studio-notice[data-tone="error"]` renders `#2e1513` fill, `0.5px solid rgba(255, 127, 112, 0.4)`, and `#ff7f70` ink; `<progress class="quota-meter">` fills a `#0b0d14` pill track with `linear-gradient(90deg, #3ecf8e, #fff3df)`.
+身份标签用 `mark` 底色。容量选项是胶囊形，选中后变成松绿底，不可选的用虚线描边。
+
+### File Rows & Cards
+
+列表行高 56px，五列：勾选框、名称、修改时间、大小、操作。勾选框和行内操作在悬停、聚焦或已有选中项时才出现。点名称所在的整块区域打开文件或进入文件夹，右键或「更多」按钮打开操作菜单，行可以拖到文件夹、目录树或路径上完成移动。宫格视图使用同一份数据，图片不超过 3 MB 时显示缩略图。
+
+### Inputs & Search
+
+输入框 42px 高，聚焦时 `leaf` 描边加浅绿光晕。搜索框在顶栏里，浅沙色底，按 `/` 聚焦。
 
 ### Navigation
-- **Sticky Translucent Topbar:** `68px` min-height `.topbar` with frosted `color-mix(in srgb, #05060b 82%, transparent)` + `blur(18px) saturate(1.5)` backdrop. Left `.nav-brand` pairs `46x32` `logo.svg` with `1.0625rem` (`650`) wordmark `心创云盘`; `.page-nav` aligns `0.9375rem` links (`44px` touch height, `#a3a7b3` -> `#ffffff`) underscored by a `1px` `#fff3df` starlight beam (`opacity: 1` on `aria-current="page"`); right `.nav-tools` joins behind a `0.5px solid #2a2e3b` divider with `.account-pill` (`7px` status dot) and `.nav-tool-btn` (`#d8d5cd` -> `#fff3df`).
 
-### Open Hairline Directory & Collapsible Settings Drawer
-- **Guest Capability Directory (`.reports`):** Three open hairline entries (`网页随时存取`, `全组实时共享`, `Agent 协同读写`) led by `48x48` `#f6f4ee` warm ivory squircle stamps (`13px` radius, `6px` padding) with bold `#07080d` / `#ff5a3c` solid-and-tick instrument emblems and inline `.review-status` semantic accents. Hidden immediately on member sign-in.
-- **File Workbench & Collapsible Drawer (`#view-console`):** `.results` leads with `#05060b`-native `.file-entry` + `.file-row` items (`40x40` `10px`-radius `#f6f4ee` folder tiles vs. `#10131c` document tiles). `<details id="admin-settings-drawer">` stays collapsed until clicked, revealing unboxed hairline-divided `.workbench-pane` sections for whitelist management, `60–500 GB` quota resizing, and the `#05060b` `.agent-terminal` `curl` block.
+侧栏目录树按需展开加载。路径过深时折叠中间各段，点「…」展开。账号菜单在顶栏右侧，里面有管理设置、切换账号、退出登录和站点链接。
+
+### Dialogs
+
+命名与确认共用一个小对话框，错误提示显示在对话框内。移动使用带目录树的文件夹选择器。管理设置是一个带三个分页的对话框（成员名单、存储空间、接入令牌），手机端全屏。文件查看器占据大部分视口，图片和视频用深色舞台，文档用纸面版心，可以用左右方向键切换文件。
+
+### Storage Gauge
+
+`.gauge` 元素通过 `--pct` 控制填充与指针位置。侧栏、手机端页脚和管理设置里各有一把，由同一个函数更新。
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** anchor every view on `#05060b` deep-space canvas, `#0b0d14`–`#10131c` obsidian panels, `0.5px` `#1c1f2a` / `#2a2e3b` hairlines, `#f4f1ea` ink, and `#fff3df` warm starlight focus/hover rims.
-- **Do** keep `.topbar` sticky translucent glass (`backdrop-filter: blur(18px) saturate(1.5)`) with `1px` warm underline beams, while keeping secondary panels flat obsidian with `0.5px` strokes.
-- **Do** spotlight folders and visitor capability entries using `#f6f4ee` warm-ivory squircle stamps (`13px` and `10px` radius) with `#07080d` and `#ff5a3c` accents, keeping directory rows borderless with open hairlines.
-- **Do** enforce `Google Sans Flex` + self-hosted `HarmonyOS Sans SC`, `1.0625rem` (`17px`) desktop body copy, `0.9375rem` (`15px`) buttons/nav/metadata, and the `0.875rem` (`14px`) absolute mobile floor (`<= 380px`).
-- **Do** keep `branding/custom.css` synchronized pixel-for-token with `#05060b`, `#0b0d14`, `#f4f1ea`, `#d8d5cd`, `#fff3df`, `#3ecf8e`, and `#ff6b5e`, and collapse transitions to `0.01ms` under `prefers-reduced-motion: reduce`.
+
+- 让文件名和文件类型成为页面上最显眼的东西。
+- 新增操作优先放进已有的菜单，保持工具栏只有「上传」和「新建」两个带文字的按钮。
+- 不可恢复的操作先弹确认，并写清楚后果。
+- 文案用成员听得懂的话，说清楚发生了什么、下一步怎么做。
+- 改动后在 1440px、820px、390px、320px 四个宽度各检查一遍，不能出现横向滚动。
 
 ### Don't:
-- **Don't** box directory rows (`.report-entry`, `.file-row`, `.record-row`) inside full card borders or drop shadows—preserve open `0.5px` hairline rows on `#05060b`.
-- **Don't** render any text smaller than `0.875rem` (`14px`) or place eyebrow/kicker labels above `<h1>心创云盘</h1>`.
-- **Don't** expose server filesystem paths (`/srv/drive`), ports, or cryptographic internals (`SHA-256`) in the public UI, and **never** navigate away from `/drive/` to `/auth/` for login or account switching—always open `dialog.syl-auth-modal` in-page.
-- **Don't** apply `backdrop-filter` blur to `.denied-panel`, `.admin-drawer`, `.workbench-pane`, or `.file-row`—reserve glassmorphism strictly for `.topbar`.
-- **Don't** reference external CDN fonts, icon libraries, or inline `<script>`/`<style>` blocks that break the strict `'self'` Content Security Policy.
+
+- 不要恢复深色外观，也不要添加跟随系统的深色模式。
+- 不要把珊瑚色用在按钮、链接或大面积底色上。
+- 不要在每一行重复摆放文字操作链接。
+- 不要在页面上写 `ext4`、`SHA-256` 这类运维术语（管理设置里面向管理员的接口示例除外）。
+- 不要使用行内 `style` 属性和外部资源，页面受 `style-src 'self'` 等内容安全策略约束，动态样式只能通过脚本设置。

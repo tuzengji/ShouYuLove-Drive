@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 196" width="280" height="196" data-fixed-colors="true" role="img" aria-labelledby="logo-title">
-  <title id="logo-title">心创云盘 · 以手予爱</title>
-  <path d="M78 128 H202 C222 128 236 114 236 96 C236 79 224 66 207 63 C199 38 175 22 145 22 C114 22 88 42 82 70 C61 74 46 88 46 106 C46 120 60 128 78 128 Z" fill="none" stroke="#f4f1ea" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M140 109 C121 95 115 82 122 73 C128 66 136 69 140 77 C144 69 152 66 158 73 C165 82 159 95 140 109 Z" fill="#ff5a3c"/>
-  <path d="M24 142 H36 V174 H244 V142 H256 V184 H24 Z" fill="#f4f1ea"/>
-  <rect x="82" y="160" width="8" height="14" fill="#f4f1ea"/>
-  <rect x="190" y="160" width="8" height="14" fill="#f4f1ea"/>
-  <rect x="135" y="148" width="10" height="26" fill="#ff5a3c"/>
+  <title id="logo-title">心创云盘</title>
+  <path d="M78 128 H202 C222 128 236 114 236 96 C236 79 224 66 207 63 C199 38 175 22 145 22 C114 22 88 42 82 70 C61 74 46 88 46 106 C46 120 60 128 78 128 Z" fill="none" stroke="#23332c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M140 109 C121 95 115 82 122 73 C128 66 136 69 140 77 C144 69 152 66 158 73 C165 82 159 95 140 109 Z" fill="#f2553b"/>
+  <path d="M24 142 H36 V174 H244 V142 H256 V184 H24 Z" fill="#23332c"/>
+  <rect x="82" y="160" width="8" height="14" fill="#23332c"/>
+  <rect x="190" y="160" width="8" height="14" fill="#23332c"/>
+  <rect x="135" y="148" width="10" height="26" fill="#f2553b"/>
 </svg>

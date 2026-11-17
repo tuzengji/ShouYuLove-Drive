@@ -1,821 +1,334 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-14T09:14:38Z",
+  "generatedAt": "2026-11-16T16:15:27Z",
   "title": "Design System: 心创云盘 (ShouYuLove Drive)",
   "extensions": {
     "colorMeta": {
-      "page": {
+      "paper": {
         "role": "neutral",
-        "displayName": "Deep Space Canvas",
-        "canonical": "oklch(12.4% 0.013 273.4)",
-        "tonalRamp": [
-          "oklch(16% 0.007 273.4)",
-          "oklch(26% 0.013 273.4)",
-          "oklch(38% 0.013 273.4)",
-          "oklch(50% 0.013 273.4)",
-          "oklch(62% 0.013 273.4)",
-          "oklch(74% 0.013 273.4)",
-          "oklch(86% 0.005 273.4)",
-          "oklch(95% 0.005 273.4)"
-        ]
+        "displayName": "暖纸白",
+        "canonical": "#fbfaf6"
       },
-      "surface": {
+      "sheet": {
         "role": "neutral",
-        "displayName": "Obsidian Surface",
-        "canonical": "oklch(16% 0.015 272.2)",
-        "tonalRamp": [
-          "oklch(16% 0.008 272.2)",
-          "oklch(26% 0.015 272.2)",
-          "oklch(38% 0.015 272.2)",
-          "oklch(50% 0.015 272.2)",
-          "oklch(62% 0.015 272.2)",
-          "oklch(74% 0.015 272.2)",
-          "oklch(86% 0.005 272.2)",
-          "oklch(95% 0.005 272.2)"
-        ]
+        "displayName": "文件区白",
+        "canonical": "#ffffff"
       },
-      "surface-soft": {
+      "sand": {
         "role": "neutral",
-        "displayName": "Soft Obsidian Hover Wash",
-        "canonical": "oklch(17.8% 0.017 268.6)",
-        "tonalRamp": [
-          "oklch(16% 0.009 268.6)",
-          "oklch(26% 0.017 268.6)",
-          "oklch(38% 0.017 268.6)",
-          "oklch(50% 0.017 268.6)",
-          "oklch(62% 0.017 268.6)",
-          "oklch(74% 0.017 268.6)",
-          "oklch(86% 0.006 268.6)",
-          "oklch(95% 0.006 268.6)"
-        ]
+        "displayName": "浅沙",
+        "canonical": "#f4f0e7"
       },
-      "surface-raised": {
+      "sand-deep": {
         "role": "neutral",
-        "displayName": "Raised Obsidian Pane",
-        "canonical": "oklch(18.8% 0.019 270.2)",
-        "tonalRamp": [
-          "oklch(16% 0.01 270.2)",
-          "oklch(26% 0.019 270.2)",
-          "oklch(38% 0.019 270.2)",
-          "oklch(50% 0.019 270.2)",
-          "oklch(62% 0.019 270.2)",
-          "oklch(74% 0.019 270.2)",
-          "oklch(86% 0.007 270.2)",
-          "oklch(95% 0.007 270.2)"
-        ]
-      },
-      "surface-hover": {
-        "role": "neutral",
-        "displayName": "Obsidian Interactive Hover",
-        "canonical": "oklch(21.5% 0.023 269)",
-        "tonalRamp": [
-          "oklch(16% 0.012 269)",
-          "oklch(26% 0.023 269)",
-          "oklch(38% 0.023 269)",
-          "oklch(50% 0.023 269)",
-          "oklch(62% 0.023 269)",
-          "oklch(74% 0.023 269)",
-          "oklch(86% 0.008 269)",
-          "oklch(95% 0.008 269)"
-        ]
-      },
-      "selected": {
-        "role": "neutral",
-        "displayName": "Selected Obsidian Surface",
-        "canonical": "oklch(27.8% 0.031 268.5)",
-        "tonalRamp": [
-          "oklch(16% 0.017 268.5)",
-          "oklch(26% 0.031 268.5)",
-          "oklch(38% 0.031 268.5)",
-          "oklch(50% 0.031 268.5)",
-          "oklch(62% 0.031 268.5)",
-          "oklch(74% 0.031 268.5)",
-          "oklch(86% 0.011 268.5)",
-          "oklch(95% 0.011 268.5)"
-        ]
-      },
-      "selection-bg": {
-        "role": "neutral",
-        "displayName": "Text Selection Indigo",
-        "canonical": "oklch(39.4% 0.063 271.5)",
-        "tonalRamp": [
-          "oklch(16% 0.034 271.5)",
-          "oklch(26% 0.063 271.5)",
-          "oklch(38% 0.063 271.5)",
-          "oklch(50% 0.063 271.5)",
-          "oklch(62% 0.063 271.5)",
-          "oklch(74% 0.063 271.5)",
-          "oklch(86% 0.022 271.5)",
-          "oklch(95% 0.022 271.5)"
-        ]
-      },
-      "ink": {
-        "role": "primary",
-        "displayName": "Warm Alabaster Ink",
-        "canonical": "oklch(95.9% 0.01 87.5)",
-        "tonalRamp": [
-          "oklch(16% 0.005 87.5)",
-          "oklch(26% 0.01 87.5)",
-          "oklch(38% 0.01 87.5)",
-          "oklch(50% 0.01 87.5)",
-          "oklch(62% 0.01 87.5)",
-          "oklch(74% 0.01 87.5)",
-          "oklch(86% 0.003 87.5)",
-          "oklch(95% 0.003 87.5)"
-        ]
-      },
-      "ink-soft": {
-        "role": "neutral",
-        "displayName": "Soft Alabaster Ink",
-        "canonical": "oklch(87.3% 0.011 89.7)",
-        "tonalRamp": [
-          "oklch(16% 0.006 89.7)",
-          "oklch(26% 0.011 89.7)",
-          "oklch(38% 0.011 89.7)",
-          "oklch(50% 0.011 89.7)",
-          "oklch(62% 0.011 89.7)",
-          "oklch(74% 0.011 89.7)",
-          "oklch(86% 0.004 89.7)",
-          "oklch(95% 0.004 89.7)"
-        ]
-      },
-      "muted": {
-        "role": "neutral",
-        "displayName": "Cool Slate Muted Ink",
-        "canonical": "oklch(72.9% 0.018 271.2)",
-        "tonalRamp": [
-          "oklch(16% 0.01 271.2)",
-          "oklch(26% 0.018 271.2)",
-          "oklch(38% 0.018 271.2)",
-          "oklch(50% 0.018 271.2)",
-          "oklch(62% 0.018 271.2)",
-          "oklch(74% 0.018 271.2)",
-          "oklch(86% 0.006 271.2)",
-          "oklch(95% 0.006 271.2)"
-        ]
-      },
-      "placeholder-ink": {
-        "role": "neutral",
-        "displayName": "Placeholder Slate Ink",
-        "canonical": "oklch(60.8% 0.023 271)",
-        "tonalRamp": [
-          "oklch(16% 0.013 271)",
-          "oklch(26% 0.023 271)",
-          "oklch(38% 0.023 271)",
-          "oklch(50% 0.023 271)",
-          "oklch(62% 0.023 271)",
-          "oklch(74% 0.023 271)",
-          "oklch(86% 0.008 271)",
-          "oklch(95% 0.008 271)"
-        ]
-      },
-      "disabled-ink": {
-        "role": "neutral",
-        "displayName": "Disabled Slate Ink",
-        "canonical": "oklch(49.1% 0.026 271.7)",
-        "tonalRamp": [
-          "oklch(16% 0.014 271.7)",
-          "oklch(26% 0.026 271.7)",
-          "oklch(38% 0.026 271.7)",
-          "oklch(50% 0.026 271.7)",
-          "oklch(62% 0.026 271.7)",
-          "oklch(74% 0.026 271.7)",
-          "oklch(86% 0.009 271.7)",
-          "oklch(95% 0.009 271.7)"
-        ]
+        "displayName": "深沙",
+        "canonical": "#e9e3d5"
       },
       "line": {
         "role": "neutral",
-        "displayName": "Hairline Divider",
-        "canonical": "oklch(24.1% 0.022 272.8)",
-        "tonalRamp": [
-          "oklch(16% 0.012 272.8)",
-          "oklch(26% 0.022 272.8)",
-          "oklch(38% 0.022 272.8)",
-          "oklch(50% 0.022 272.8)",
-          "oklch(62% 0.022 272.8)",
-          "oklch(74% 0.022 272.8)",
-          "oklch(86% 0.008 272.8)",
-          "oklch(95% 0.008 272.8)"
-        ]
+        "displayName": "分隔线",
+        "canonical": "#e8e2d6"
       },
       "line-strong": {
         "role": "neutral",
-        "displayName": "Strong Hairline Border",
-        "canonical": "oklch(30.3% 0.024 271.5)",
-        "tonalRamp": [
-          "oklch(16% 0.013 271.5)",
-          "oklch(26% 0.024 271.5)",
-          "oklch(38% 0.024 271.5)",
-          "oklch(50% 0.024 271.5)",
-          "oklch(62% 0.024 271.5)",
-          "oklch(74% 0.024 271.5)",
-          "oklch(86% 0.008 271.5)",
-          "oklch(95% 0.008 271.5)"
-        ]
+        "displayName": "控件描边",
+        "canonical": "#d3cbba"
       },
-      "line-hover": {
+      "ink": {
         "role": "neutral",
-        "displayName": "Control Hover Border",
-        "canonical": "oklch(54.7% 0.026 271.8)",
-        "tonalRamp": [
-          "oklch(16% 0.014 271.8)",
-          "oklch(26% 0.026 271.8)",
-          "oklch(38% 0.026 271.8)",
-          "oklch(50% 0.026 271.8)",
-          "oklch(62% 0.026 271.8)",
-          "oklch(74% 0.026 271.8)",
-          "oklch(86% 0.009 271.8)",
-          "oklch(95% 0.009 271.8)"
-        ]
+        "displayName": "主文字",
+        "canonical": "#1c2622"
       },
-      "field-edge": {
+      "ink-soft": {
         "role": "neutral",
-        "displayName": "Input & Secondary Field Edge",
-        "canonical": "oklch(37% 0.028 271.4)",
-        "tonalRamp": [
-          "oklch(16% 0.016 271.4)",
-          "oklch(26% 0.028 271.4)",
-          "oklch(38% 0.028 271.4)",
-          "oklch(50% 0.028 271.4)",
-          "oklch(62% 0.028 271.4)",
-          "oklch(74% 0.028 271.4)",
-          "oklch(86% 0.01 271.4)",
-          "oklch(95% 0.01 271.4)"
-        ]
+        "displayName": "次级文字",
+        "canonical": "#414d47"
       },
-      "solid": {
-        "role": "primary",
-        "displayName": "Primary Solid Button",
-        "canonical": "oklch(95.9% 0.01 87.5)",
-        "tonalRamp": [
-          "oklch(16% 0.005 87.5)",
-          "oklch(26% 0.01 87.5)",
-          "oklch(38% 0.01 87.5)",
-          "oklch(50% 0.01 87.5)",
-          "oklch(62% 0.01 87.5)",
-          "oklch(74% 0.01 87.5)",
-          "oklch(86% 0.003 87.5)",
-          "oklch(95% 0.003 87.5)"
-        ]
-      },
-      "solid-hover": {
-        "role": "primary",
-        "displayName": "Primary Solid Hover",
-        "canonical": "oklch(96.8% 0.029 80.7)",
-        "tonalRamp": [
-          "oklch(16% 0.016 80.7)",
-          "oklch(26% 0.029 80.7)",
-          "oklch(38% 0.029 80.7)",
-          "oklch(50% 0.029 80.7)",
-          "oklch(62% 0.029 80.7)",
-          "oklch(74% 0.029 80.7)",
-          "oklch(86% 0.01 80.7)",
-          "oklch(95% 0.01 80.7)"
-        ]
-      },
-      "on-solid": {
-        "role": "primary",
-        "displayName": "On-Solid Obsidian Ink",
-        "canonical": "oklch(13.6% 0.012 274.6)",
-        "tonalRamp": [
-          "oklch(16% 0.006 274.6)",
-          "oklch(26% 0.012 274.6)",
-          "oklch(38% 0.012 274.6)",
-          "oklch(50% 0.012 274.6)",
-          "oklch(62% 0.012 274.6)",
-          "oklch(74% 0.012 274.6)",
-          "oklch(86% 0.004 274.6)",
-          "oklch(95% 0.004 274.6)"
-        ]
-      },
-      "accent": {
-        "role": "primary",
-        "displayName": "Primary Brand Ink",
-        "canonical": "oklch(95.9% 0.01 87.5)",
-        "tonalRamp": [
-          "oklch(16% 0.005 87.5)",
-          "oklch(26% 0.01 87.5)",
-          "oklch(38% 0.01 87.5)",
-          "oklch(50% 0.01 87.5)",
-          "oklch(62% 0.01 87.5)",
-          "oklch(74% 0.01 87.5)",
-          "oklch(86% 0.003 87.5)",
-          "oklch(95% 0.003 87.5)"
-        ]
-      },
-      "accent-hover": {
-        "role": "primary",
-        "displayName": "Active White Highlight",
-        "canonical": "oklch(100% 0 0)",
-        "tonalRamp": [
-          "oklch(16% 0 0)",
-          "oklch(26% 0 0)",
-          "oklch(38% 0 0)",
-          "oklch(50% 0 0)",
-          "oklch(62% 0 0)",
-          "oklch(74% 0 0)",
-          "oklch(86% 0 0)",
-          "oklch(95% 0 0)"
-        ]
-      },
-      "glow": {
-        "role": "primary",
-        "displayName": "Starlight Warm Glow",
-        "canonical": "oklch(96.8% 0.029 80.7)",
-        "tonalRamp": [
-          "oklch(16% 0.016 80.7)",
-          "oklch(26% 0.029 80.7)",
-          "oklch(38% 0.029 80.7)",
-          "oklch(50% 0.029 80.7)",
-          "oklch(62% 0.029 80.7)",
-          "oklch(74% 0.029 80.7)",
-          "oklch(86% 0.01 80.7)",
-          "oklch(95% 0.01 80.7)"
-        ]
-      },
-      "glow-soft": {
-        "role": "primary",
-        "displayName": "Starlight Ambient Glow Base",
-        "canonical": "oklch(89.9% 0.083 74.1)",
-        "tonalRamp": [
-          "oklch(16% 0.046 74.1)",
-          "oklch(26% 0.083 74.1)",
-          "oklch(38% 0.083 74.1)",
-          "oklch(50% 0.083 74.1)",
-          "oklch(62% 0.083 74.1)",
-          "oklch(74% 0.083 74.1)",
-          "oklch(86% 0.029 74.1)",
-          "oklch(95% 0.029 74.1)"
-        ]
-      },
-      "glow-active": {
-        "role": "primary",
-        "displayName": "Active Starlight Press",
-        "canonical": "oklch(92.6% 0.063 77)",
-        "tonalRamp": [
-          "oklch(16% 0.035 77)",
-          "oklch(26% 0.063 77)",
-          "oklch(38% 0.063 77)",
-          "oklch(50% 0.063 77)",
-          "oklch(62% 0.063 77)",
-          "oklch(74% 0.063 77)",
-          "oklch(86% 0.022 77)",
-          "oklch(95% 0.022 77)"
-        ]
-      },
-      "brand-tick": {
-        "role": "primary",
-        "displayName": "Brand Cinnabar Tick",
-        "canonical": "oklch(68.5% 0.206 32.5)",
-        "tonalRamp": [
-          "oklch(16% 0.113 32.5)",
-          "oklch(26% 0.206 32.5)",
-          "oklch(38% 0.206 32.5)",
-          "oklch(50% 0.206 32.5)",
-          "oklch(62% 0.206 32.5)",
-          "oklch(74% 0.206 32.5)",
-          "oklch(86% 0.072 32.5)",
-          "oklch(95% 0.072 32.5)"
-        ]
-      },
-      "stamp-light": {
+      "ink-quiet": {
         "role": "neutral",
-        "displayName": "Warm Ivory Stamp Surface",
-        "canonical": "oklch(96.7% 0.008 91.5)",
-        "tonalRamp": [
-          "oklch(16% 0.005 91.5)",
-          "oklch(26% 0.008 91.5)",
-          "oklch(38% 0.008 91.5)",
-          "oklch(50% 0.008 91.5)",
-          "oklch(62% 0.008 91.5)",
-          "oklch(74% 0.008 91.5)",
-          "oklch(86% 0.003 91.5)",
-          "oklch(95% 0.003 91.5)"
-        ]
+        "displayName": "说明文字",
+        "canonical": "#5c6861"
       },
-      "data-hard": {
-        "role": "semantic",
-        "displayName": "Mint Data & Online Dot",
-        "canonical": "oklch(76.2% 0.154 159.4)",
-        "tonalRamp": [
-          "oklch(16% 0.085 159.4)",
-          "oklch(26% 0.154 159.4)",
-          "oklch(38% 0.154 159.4)",
-          "oklch(50% 0.154 159.4)",
-          "oklch(62% 0.154 159.4)",
-          "oklch(74% 0.154 159.4)",
-          "oklch(86% 0.054 159.4)",
-          "oklch(95% 0.054 159.4)"
-        ]
+      "ink-faint": {
+        "role": "neutral",
+        "displayName": "装饰与禁用",
+        "canonical": "#98a19b"
       },
-      "review-success-bg": {
-        "role": "semantic",
-        "displayName": "Success Obsidian Tint",
-        "canonical": "oklch(23.9% 0.033 164.3)",
-        "tonalRamp": [
-          "oklch(16% 0.018 164.3)",
-          "oklch(26% 0.033 164.3)",
-          "oklch(38% 0.033 164.3)",
-          "oklch(50% 0.033 164.3)",
-          "oklch(62% 0.033 164.3)",
-          "oklch(74% 0.033 164.3)",
-          "oklch(86% 0.011 164.3)",
-          "oklch(95% 0.011 164.3)"
-        ]
+      "placeholder-ink": {
+        "role": "neutral",
+        "displayName": "占位文字",
+        "canonical": "#626e66"
       },
-      "review-success-fg": {
-        "role": "semantic",
-        "displayName": "Verified Mint Foreground",
-        "canonical": "oklch(78.5% 0.135 159.5)",
-        "tonalRamp": [
-          "oklch(16% 0.074 159.5)",
-          "oklch(26% 0.135 159.5)",
-          "oklch(38% 0.135 159.5)",
-          "oklch(50% 0.135 159.5)",
-          "oklch(62% 0.135 159.5)",
-          "oklch(74% 0.135 159.5)",
-          "oklch(86% 0.047 159.5)",
-          "oklch(95% 0.047 159.5)"
-        ]
+      "pine": {
+        "role": "primary",
+        "displayName": "松绿墨色",
+        "canonical": "#23332c"
       },
-      "review-warning-bg": {
-        "role": "semantic",
-        "displayName": "Warning Amber Tint",
-        "canonical": "oklch(25.1% 0.031 78.4)",
-        "tonalRamp": [
-          "oklch(16% 0.017 78.4)",
-          "oklch(26% 0.031 78.4)",
-          "oklch(38% 0.031 78.4)",
-          "oklch(50% 0.031 78.4)",
-          "oklch(62% 0.031 78.4)",
-          "oklch(74% 0.031 78.4)",
-          "oklch(86% 0.011 78.4)",
-          "oklch(95% 0.011 78.4)"
-        ]
+      "pine-hover": {
+        "role": "primary",
+        "displayName": "松绿悬停",
+        "canonical": "#2f453b"
       },
-      "review-warning-fg": {
-        "role": "semantic",
-        "displayName": "Warning Amber Foreground",
-        "canonical": "oklch(82.1% 0.132 84.6)",
-        "tonalRamp": [
-          "oklch(16% 0.073 84.6)",
-          "oklch(26% 0.132 84.6)",
-          "oklch(38% 0.132 84.6)",
-          "oklch(50% 0.132 84.6)",
-          "oklch(62% 0.132 84.6)",
-          "oklch(74% 0.132 84.6)",
-          "oklch(86% 0.046 84.6)",
-          "oklch(95% 0.046 84.6)"
-        ]
+      "on-pine": {
+        "role": "primary",
+        "displayName": "松绿上的文字",
+        "canonical": "#fbfaf6"
       },
-      "review-error-bg": {
-        "role": "semantic",
-        "displayName": "Error Coral Tint",
-        "canonical": "oklch(23.1% 0.041 25.5)",
-        "tonalRamp": [
-          "oklch(16% 0.023 25.5)",
-          "oklch(26% 0.041 25.5)",
-          "oklch(38% 0.041 25.5)",
-          "oklch(50% 0.041 25.5)",
-          "oklch(62% 0.041 25.5)",
-          "oklch(74% 0.041 25.5)",
-          "oklch(86% 0.014 25.5)",
-          "oklch(95% 0.014 25.5)"
-        ]
+      "leaf": {
+        "role": "accent",
+        "displayName": "焦点与进度",
+        "canonical": "#2a7a55"
       },
-      "review-error-fg": {
+      "leaf-deep": {
+        "role": "accent",
+        "displayName": "文字链接",
+        "canonical": "#1f6b49"
+      },
+      "heart": {
+        "role": "brand",
+        "displayName": "徽标爱心与刻度尺指针",
+        "canonical": "#f2553b"
+      },
+      "danger": {
         "role": "semantic",
-        "displayName": "Error Coral Foreground",
-        "canonical": "oklch(74% 0.159 28.3)",
-        "tonalRamp": [
-          "oklch(16% 0.087 28.3)",
-          "oklch(26% 0.159 28.3)",
-          "oklch(38% 0.159 28.3)",
-          "oklch(50% 0.159 28.3)",
-          "oklch(62% 0.159 28.3)",
-          "oklch(74% 0.159 28.3)",
-          "oklch(86% 0.056 28.3)",
-          "oklch(95% 0.056 28.3)"
-        ]
+        "displayName": "危险操作",
+        "canonical": "#b9321c"
       },
       "danger-hover": {
         "role": "semantic",
-        "displayName": "Danger Link Hover",
-        "canonical": "oklch(80.3% 0.113 27.8)",
-        "tonalRamp": [
-          "oklch(16% 0.062 27.8)",
-          "oklch(26% 0.113 27.8)",
-          "oklch(38% 0.113 27.8)",
-          "oklch(50% 0.113 27.8)",
-          "oklch(62% 0.113 27.8)",
-          "oklch(74% 0.113 27.8)",
-          "oklch(86% 0.039 27.8)",
-          "oklch(95% 0.039 27.8)"
-        ]
+        "displayName": "危险悬停",
+        "canonical": "#9f2814"
       },
-      "danger-solid": {
+      "danger-soft": {
         "role": "semantic",
-        "displayName": "FileBrowser Danger Solid",
-        "canonical": "oklch(70.9% 0.183 27.7)",
-        "tonalRamp": [
-          "oklch(16% 0.101 27.7)",
-          "oklch(26% 0.183 27.7)",
-          "oklch(38% 0.183 27.7)",
-          "oklch(50% 0.183 27.7)",
-          "oklch(62% 0.183 27.7)",
-          "oklch(74% 0.183 27.7)",
-          "oklch(86% 0.064 27.7)",
-          "oklch(95% 0.064 27.7)"
-        ]
+        "displayName": "危险浅底",
+        "canonical": "#fcebe6"
       },
-      "shadow-black": {
-        "role": "neutral",
-        "displayName": "Deep Scrim Shadow Base",
-        "canonical": "oklch(0% 0 0)",
-        "tonalRamp": [
-          "oklch(16% 0 0)",
-          "oklch(26% 0 0)",
-          "oklch(38% 0 0)",
-          "oklch(50% 0 0)",
-          "oklch(62% 0 0)",
-          "oklch(74% 0 0)",
-          "oklch(86% 0 0)",
-          "oklch(95% 0 0)"
-        ]
+      "mark": {
+        "role": "semantic",
+        "displayName": "选中与提示",
+        "canonical": "#fdf2d0"
       },
-      "nebula-indigo": {
-        "role": "neutral",
-        "displayName": "Nebula Indigo Atmosphere",
-        "canonical": "oklch(32.5% 0.095 268.2)",
-        "tonalRamp": [
-          "oklch(16% 0.052 268.2)",
-          "oklch(26% 0.095 268.2)",
-          "oklch(38% 0.095 268.2)",
-          "oklch(50% 0.095 268.2)",
-          "oklch(62% 0.095 268.2)",
-          "oklch(74% 0.095 268.2)",
-          "oklch(86% 0.033 268.2)",
-          "oklch(95% 0.033 268.2)"
-        ]
+      "mark-deep": {
+        "role": "semantic",
+        "displayName": "文字选区",
+        "canonical": "#f8e2a0"
       },
-      "nebula-umber": {
+      "stage": {
         "role": "neutral",
-        "displayName": "Nebula Umber Atmosphere",
-        "canonical": "oklch(37.4% 0.076 52.8)",
-        "tonalRamp": [
-          "oklch(16% 0.042 52.8)",
-          "oklch(26% 0.076 52.8)",
-          "oklch(38% 0.076 52.8)",
-          "oklch(50% 0.076 52.8)",
-          "oklch(62% 0.076 52.8)",
-          "oklch(74% 0.076 52.8)",
-          "oklch(86% 0.027 52.8)",
-          "oklch(95% 0.027 52.8)"
-        ]
+        "displayName": "图片视频舞台",
+        "canonical": "#161d1a"
+      },
+      "folder-back": {
+        "role": "brand",
+        "displayName": "文件夹背页",
+        "canonical": "#e79a2b"
+      },
+      "folder-front": {
+        "role": "brand",
+        "displayName": "文件夹前页",
+        "canonical": "#f8c35a"
+      },
+      "sky-butter": {
+        "role": "brand",
+        "displayName": "门厅暖光浅色",
+        "canonical": "#fff5df"
+      },
+      "sky-apricot": {
+        "role": "brand",
+        "displayName": "门厅暖光杏色",
+        "canonical": "#ffe7cc"
       }
     },
     "typographyMeta": {
-      "title": {
-        "displayName": "Display Title (H1)",
-        "purpose": "Main editorial H1 title (clamp 30px–42px / 400 weight) in solid warm alabaster #f4f1ea."
+      "display": {
+        "fontFamily": "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+        "fontSize": "clamp(42px, 6.4vw, 68px)",
+        "fontWeight": 700,
+        "usage": "门厅大标题"
       },
-      "section": {
-        "displayName": "Section Heading (H2)",
-        "purpose": "Workspace, denied-panel, and drawer sub-pane H2 titles (clamp 20px–22px / 650 weight)."
+      "title": {
+        "fontFamily": "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+        "fontSize": "22px",
+        "fontWeight": 700,
+        "usage": "当前文件夹名"
       },
       "heading": {
-        "displayName": "Directory Entry Heading",
-        "purpose": "Guest open capability directory headings (20px desktop, 18px mobile <= 720px)."
-      },
-      "drawer-title": {
-        "displayName": "Collapsible Drawer Title",
-        "purpose": "Admin settings drawer <summary> title (18px / 1.125rem)."
-      },
-      "brand": {
-        "displayName": "Topbar Brand Lockup",
-        "purpose": "Self-hosted Google Sans Flex + HarmonyOS Sans SC wordmark on .nav-brand (17px / 1.0625rem, 650 weight)."
+        "fontFamily": "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+        "fontSize": "19px",
+        "fontWeight": 700,
+        "usage": "对话框标题"
       },
       "body": {
-        "displayName": "Body & File Names",
-        "purpose": "Lead descriptions, directory copy, file titles, and masked account numbers (17px desktop, 16px mobile <= 720px)."
+        "fontFamily": "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+        "fontSize": "16px",
+        "fontWeight": 400,
+        "usage": "正文与输入"
       },
       "control": {
-        "displayName": "Controls & Form Inputs",
-        "purpose": "Hero CTA label, input fields, record row titles, and FileBrowser base size (16px / 1rem)."
+        "fontFamily": "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+        "fontSize": "15px",
+        "fontWeight": 500,
+        "usage": "文件名、按钮、菜单项"
       },
       "meta": {
-        "displayName": "Meta, Nav & Buttons",
-        "purpose": "Navigation links, account pills, standard action buttons, preset chips, FileBrowser items, and footer (15px / 0.9375rem)."
-      },
-      "floor": {
-        "displayName": "Ultra-Narrow Mobile Floor",
-        "purpose": "Absolute minimum font size at <= 380px viewports (14px / 0.875rem); sub-14px text is forbidden."
+        "fontFamily": "\"Google Sans Flex\", \"HarmonyOS Sans SC\", -apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"PingFang SC\", \"Microsoft YaHei\", sans-serif",
+        "fontSize": "14px",
+        "fontWeight": 400,
+        "usage": "时间、大小、说明，全站最小字号"
       },
       "mono": {
-        "displayName": "Monospace Tokens & Terminal",
-        "purpose": "Agent token values, HTTP curl terminal block, and record code prefixes (15px / 0.9375rem)."
+        "fontFamily": "\"SF Mono\", \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+        "fontSize": "14px",
+        "fontWeight": 400,
+        "usage": "代码与令牌"
       }
     },
     "shadows": [
       {
-        "name": "primary-hover",
-        "value": "0 0 0 1px color-mix(in srgb, #fff3df 45%, transparent), 0 8px 24px rgba(0, 0, 0, 0.45)",
-        "purpose": "Crisp 1px warm rim paired with neutral offset elevation on primary alabaster button hover."
+        "name": "shadow-pop",
+        "value": "0 1px 2px rgba(58, 44, 20, 0.06), 0 14px 34px -10px rgba(58, 44, 20, 0.26)",
+        "usage": "菜单、上传卡片、提示条、多选操作条"
       },
       {
-        "name": "focus-ring",
-        "value": "0 0 0 3px color-mix(in srgb, #fff3df 14%, transparent)",
-        "purpose": "Zero-blur warm focus ring accompanying focused text inputs."
-      },
-      {
-        "name": "stamp-rest",
-        "value": "0 0 0 0.5px rgba(255, 255, 255, 0.22), 0 8px 28px rgba(0, 0, 0, 0.5)",
-        "purpose": "Rest elevation anchoring #f6f4ee squircle icon stamps off the #05060b night sky."
-      },
-      {
-        "name": "stamp-hover",
-        "value": "0 0 0 1px color-mix(in srgb, #fff3df 72%, transparent), 0 10px 28px rgba(0, 0, 0, 0.56)",
-        "purpose": "Crisp 1px warm rim and neutral offset lift on hovered visitor capability row stamps."
-      },
-      {
-        "name": "tile-dir",
-        "value": "0 0 0 0.5px rgba(255, 255, 255, 0.2), 0 6px 18px rgba(0, 0, 0, 0.45)",
-        "purpose": "Rest elevation on #f6f4ee folder squircle tiles inside the root file list."
-      },
-      {
-        "name": "status-ok-ring",
-        "value": "0 0 0 2px color-mix(in srgb, #3ecf8e 22%, transparent)",
-        "purpose": "Crisp 2px mint online indicator ring in the topbar account pill."
-      },
-      {
-        "name": "status-warn-ring",
-        "value": "0 0 0 2px color-mix(in srgb, #ecbd55 22%, transparent)",
-        "purpose": "Crisp 2px amber warning indicator ring for non-whitelisted sessions."
-      },
-      {
-        "name": "filebrowser-modal",
-        "value": "0 30px 90px rgba(0, 0, 0, 0.62)",
-        "purpose": "Deep shadow framing FileBrowser modal .card overlays in branding/custom.css."
+        "name": "shadow-dlg",
+        "value": "0 2px 6px rgba(58, 44, 20, 0.08), 0 36px 80px -24px rgba(40, 30, 12, 0.42)",
+        "usage": "对话框与文件查看器"
       }
     ],
     "motion": [
       {
-        "name": "ease-control",
-        "value": "160ms ease-out",
-        "purpose": "Fast color, border, and fill transitions on buttons, nav links, inputs, and inline links."
+        "name": "pop-in",
+        "duration": "0.14s to 0.16s",
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "usage": "菜单与对话框出现"
       },
       {
-        "name": "ease-row",
-        "value": "180ms-200ms ease-out",
-        "purpose": "Hover wash transitions across open hairline file and capability rows."
+        "name": "sheet-in",
+        "duration": "0.2s",
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "usage": "手机端底部菜单"
       },
       {
-        "name": "ease-drawer-reveal",
-        "value": "280ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "Exponential ease-out reveal and chevron rotation on #admin-settings-drawer."
+        "name": "rise-in",
+        "duration": "0.18s",
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "usage": "提示条与多选操作条"
       },
       {
         "name": "reduced-motion",
-        "value": "0.01ms",
-        "purpose": "Universal transition and animation collapse under prefers-reduced-motion: reduce."
+        "usage": "prefers-reduced-motion: reduce 时关闭全部动画与过渡"
       }
     ],
     "breakpoints": [
       {
-        "name": "tablet-nav",
-        "value": "960px"
-      },
-      {
-        "name": "filebrowser-mobile",
-        "value": "736px"
-      },
-      {
-        "name": "mobile",
-        "value": "720px"
+        "name": "sidebar",
+        "value": "960px",
+        "usage": "以下收起侧栏"
       },
       {
         "name": "compact",
-        "value": "380px"
+        "value": "720px",
+        "usage": "以下使用两行式列表与底部菜单"
+      },
+      {
+        "name": "tiny",
+        "value": "360px",
+        "usage": "以下进一步收紧间距"
+      },
+      {
+        "name": "touch",
+        "value": "(hover: none)",
+        "usage": "勾选框改为显式选择模式"
       }
     ]
   },
   "components": [
     {
-      "name": "Primary Action Button",
-      "kind": "button",
-      "refersTo": "button-primary-hero",
-      "description": "Warm alabaster (#f4f1ea) solid button with dark obsidian ink (#07080d) and #fff3df starlight hover halo.",
-      "html": "<button type=\"button\" class=\"ds-btn-primary\"><span>使用统一通行证登录</span><svg class=\"ds-btn-icon\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4.5 10h11\"/><path d=\"m11 5.5 4.5 4.5L11 14.5\"/></svg></button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 22px; border: 0; border-radius: 8px; background: var(--solid, #f4f1ea); color: var(--on-solid, #07080d); font-family: \"Google Sans Flex\", \"HarmonyOS Sans SC\", sans-serif; font-size: 1rem; font-weight: 650; line-height: 1.3; cursor: pointer; transition: background-color 160ms ease-out, box-shadow 200ms ease-out; } .ds-btn-primary:hover { background: var(--solid-hover, #fff3df); box-shadow: 0 0 0 1px color-mix(in srgb, #fff3df 45%, transparent), 0 8px 24px rgba(0, 0, 0, 0.45); } .ds-btn-primary:active { background: #ffe2b8; } .ds-btn-primary:focus-visible { outline: 2px solid #fff3df; outline-offset: 3px; } .ds-btn-icon { width: 17px; height: 17px; transition: transform 200ms ease-out; } .ds-btn-primary:hover .ds-btn-icon { transform: translateX(3px); }"
+      "name": "storage-gauge",
+      "kind": "meter",
+      "refersTo": ".gauge",
+      "description": "刻度尺存储条：两端立边、十等分刻度、松绿填充、珊瑚指针，通过 --pct 控制。"
     },
     {
-      "name": "Secondary Action Button",
-      "kind": "button",
-      "refersTo": "button-secondary",
-      "description": "Obsidian (#0b0d14) button framed with 0.5px #3a3f4f edge and #f4f1ea text.",
-      "html": "<button type=\"button\" class=\"ds-btn-secondary\"><svg class=\"ds-btn-icon\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M16.5 10a6.5 6.5 0 1 1-1.9-4.6\"/><path d=\"M16.5 3.8v3.6h-3.6\"/></svg><span>刷新列表</span></button>",
-      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 46px; padding: 10px 18px; border: 0.5px solid var(--field-edge, #3a3f4f); border-radius: 8px; background: var(--surface, #0b0d14); color: var(--ink, #f4f1ea); font-family: \"Google Sans Flex\", \"HarmonyOS Sans SC\", sans-serif; font-size: 0.9375rem; font-weight: 650; line-height: 1.3; cursor: pointer; transition: background-color 160ms ease-out, border-color 160ms ease-out; } .ds-btn-secondary:hover { background: var(--surface-hover, #151924); border-color: var(--line-hover, #6b7080); } .ds-btn-secondary:focus-visible { outline: 2px solid #fff3df; outline-offset: 3px; } .ds-btn-icon { width: 17px; height: 17px; }"
+      "name": "file-tile",
+      "kind": "icon",
+      "refersTo": ".ftile",
+      "description": "按文件类型着色的 36px 圆角色块，文件夹直接画成蜜色文件夹。"
     },
     {
-      "name": "Status & Capacity Preset Chips",
-      "kind": "chip",
-      "refersTo": "chip-verified",
-      "description": "Dark-tinted mint verification badge, meta count pill, and selectable obsidian preset chips.",
-      "html": "<div class=\"ds-chip-row\"><span class=\"ds-verified-pill\"><svg class=\"ds-inline-icon\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10 2.5 16 5v4.8c0 3.7-2.5 6.8-6 7.7-3.5-.9-6-4-6-7.7V5l6-2.5Z\"/><path d=\"m7.2 10 2 2 3.8-4\"/></svg><span>已开通权限</span></span><span class=\"ds-meta-pill\">12 项</span><button type=\"button\" class=\"ds-preset-chip is-selected\">扩至 160 GB</button><button type=\"button\" class=\"ds-preset-chip\">扩至 200 GB</button></div>",
-      "css": ".ds-chip-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; } .ds-verified-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 6px; background: #0f241b; color: #5fd39a; font-size: 0.9375rem; font-weight: 650; } .ds-inline-icon { width: 18px; height: 18px; } .ds-meta-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; background: #151924; border: 0.5px solid #2a2e3b; color: #a3a7b3; font-size: 0.9375rem; font-weight: 550; } .ds-preset-chip { min-height: 42px; padding: 7px 12px; border-radius: 8px; background: #0b0d14; border: 0.5px solid #3a3f4f; color: #d8d5cd; font-size: 0.9375rem; font-weight: 550; cursor: pointer; } .ds-preset-chip:hover { background: #151924; border-color: #6b7080; color: #f4f1ea; } .ds-preset-chip.is-selected { background: #222838; border-color: #fff3df; color: #ffffff; }"
+      "name": "file-row",
+      "kind": "list-item",
+      "refersTo": ".row",
+      "description": "56px 行高的列表行，勾选框与行内操作在悬停、聚焦或已有选中项时出现，选中为淡黄色。"
     },
     {
-      "name": "Search & Form Input",
-      "kind": "input",
-      "refersTo": "input-field",
-      "description": "44px obsidian input with 0.5px #3a3f4f border and #fff3df glow focus ring.",
-      "html": "<div class=\"ds-search-field\"><svg class=\"ds-search-icon\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"9\" r=\"5.5\"/><path d=\"m13.2 13.2 3.3 3.3\"/></svg><input class=\"ds-input\" type=\"search\" placeholder=\"按文件名筛选…\" aria-label=\"按文件名筛选\"></div>",
-      "css": ".ds-search-field { position: relative; max-width: 340px; } .ds-search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; color: #a3a7b3; pointer-events: none; } .ds-input { width: 100%; min-height: 44px; padding: 9px 13px 9px 38px; border-radius: 8px; border: 0.5px solid #3a3f4f; background: #0b0d14; color: #f4f1ea; font-family: \"Google Sans Flex\", \"HarmonyOS Sans SC\", sans-serif; font-size: 1rem; transition: border-color 160ms ease-out, box-shadow 200ms ease-out; } .ds-input::placeholder { color: #7d8291; } .ds-input:hover { border-color: #6b7080; } .ds-input:focus { outline: none; border-color: #fff3df; box-shadow: 0 0 0 3px rgba(255, 214, 160, 0.12); }"
+      "name": "file-card",
+      "kind": "card",
+      "refersTo": ".card",
+      "description": "宫格视图的卡片，图片不超过 3 MB 时显示缩略图。"
     },
     {
-      "name": "Sticky Frosted Topbar",
-      "kind": "nav",
-      "refersTo": "topbar",
-      "description": "68px sticky translucent header using backdrop-filter blur(18px) saturate(1.5), Google Sans Flex + HarmonyOS Sans SC brand wordmark, and #fff3df active underline beam.",
-      "html": "<header class=\"ds-topbar\"><div class=\"ds-topbar-inner\"><a class=\"ds-nav-brand\" href=\"#\"><svg viewBox=\"0 0 280 196\" width=\"46\" height=\"32\" aria-hidden=\"true\"><path d=\"M78 128 H202 C222 128 236 114 236 96 C236 79 224 66 207 63 C199 38 175 22 145 22 C114 22 88 42 82 70 C61 74 46 88 46 106 C46 120 60 128 78 128 Z\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"12\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M140 109 C121 95 115 82 122 73 C128 66 136 69 140 77 C144 69 152 66 158 73 C165 82 159 95 140 109 Z\" fill=\"#ff5a3c\"/><path d=\"M24 142 H36 V174 H244 V142 H256 V184 H24 Z\" fill=\"#f4f1ea\"/><rect x=\"82\" y=\"160\" width=\"8\" height=\"14\" fill=\"#f4f1ea\"/><rect x=\"190\" y=\"160\" width=\"8\" height=\"14\" fill=\"#f4f1ea\"/><rect x=\"135\" y=\"148\" width=\"10\" height=\"26\" fill=\"#ff5a3c\"/></svg><span class=\"ds-brand-name\">心创云盘</span></a><nav class=\"ds-page-nav\"><a href=\"#\" aria-current=\"page\">心创云盘</a><a href=\"#\">心创组作品集</a><a href=\"#\">以手予爱首页</a></nav><div class=\"ds-nav-tools\"><span class=\"ds-account-pill\"><span class=\"ds-status-dot\"></span><span>139****0323</span></span></div></div></header>",
-      "css": ".ds-topbar { position: sticky; top: 0; background: color-mix(in srgb, #05060b 82%, transparent); -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5); border-bottom: 0.5px solid #1c1f2a; } .ds-topbar-inner { min-height: 68px; padding: 0 28px; display: flex; align-items: center; gap: 16px; } .ds-nav-brand { display: inline-flex; align-items: center; gap: 16px; color: #f4f1ea; text-decoration: none; font-family: \"Google Sans Flex\", \"HarmonyOS Sans SC\", sans-serif; } .ds-brand-name { font-size: 1.0625rem; font-weight: 650; letter-spacing: -0.02em; } .ds-page-nav { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; } .ds-page-nav a { position: relative; display: flex; align-items: center; min-height: 44px; padding: 10px 14px; color: #a3a7b3; text-decoration: none; font-size: 0.9375rem; font-weight: 550; } .ds-page-nav a[aria-current=\"page\"] { color: #ffffff; font-weight: 650; } .ds-page-nav a[aria-current=\"page\"]::after { content: \"\"; position: absolute; inset-inline: 14px; bottom: -12px; height: 1px; background: linear-gradient(90deg, transparent, #fff3df 24%, #fff3df 76%, transparent); } .ds-nav-tools { display: flex; align-items: center; padding-inline-start: 14px; border-inline-start: 0.5px solid #2a2e3b; } .ds-account-pill { display: inline-flex; align-items: center; gap: 8px; color: #d8d5cd; font-size: 0.9375rem; font-weight: 550; font-variant-numeric: tabular-nums; } .ds-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #3ecf8e; box-shadow: 0 0 0 2px color-mix(in srgb, #3ecf8e 22%, transparent); }"
+      "name": "folder-tree",
+      "kind": "navigation",
+      "refersTo": ".tree",
+      "description": "侧栏与移动对话框共用的目录树，按需展开加载。"
     },
     {
-      "name": "Open Hairline Capability Row",
-      "kind": "custom",
-      "refersTo": "report-stamp",
-      "description": "Borderless guest overview row separated by 0.5px hairlines with a #f6f4ee 13px squircle stamp and #ff5a3c dual-tone stroke.",
-      "html": "<div class=\"ds-reports\"><article class=\"ds-report-item\"><span class=\"ds-report-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"#07080d\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 9.5A2.5 2.5 0 0 1 7.5 7h5.4l2.2 2.6h9.4A2.5 2.5 0 0 1 27 12.1v10.4A2.5 2.5 0 0 1 24.5 25h-17A2.5 2.5 0 0 1 5 22.5v-13Z\"/><path d=\"M16 20v-7\" stroke=\"#ff5a3c\" stroke-width=\"2.2\"/><path d=\"m12.8 16 3.2-3.2 3.2 3.2\" stroke=\"#ff5a3c\" stroke-width=\"2.2\"/></svg></span><div class=\"ds-report-copy\"><h3>网页随时存取</h3><span class=\"ds-report-meta\">在线预览 · 打包下载</span><p>打开浏览器即可拖拽上传文件与文件夹，支持文档、图片与代码<span class=\"ds-accepted\">在线预览</span>及一键打包下载。</p></div></article></div>",
-      "css": ".ds-reports { background: #05060b; border-top: 0.5px solid #2a2e3b; font-family: \"Google Sans Flex\", \"HarmonyOS Sans SC\", sans-serif; } .ds-report-item { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: center; gap: 20px; padding: 22px 16px; border-radius: 14px; transition: background 200ms ease-out; } .ds-report-item:hover { background: linear-gradient(90deg, #0e1119, transparent 85%); } .ds-report-icon { width: 48px; height: 48px; padding: 6px; border-radius: 13px; background: #f6f4ee; box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.22), 0 8px 28px rgba(0, 0, 0, 0.5); display: grid; place-items: center; } .ds-report-item:hover .ds-report-icon { box-shadow: 0 0 0 1px color-mix(in srgb, #fff3df 72%, transparent), 0 10px 28px rgba(0, 0, 0, 0.56); } .ds-report-icon svg { width: 100%; height: 100%; } .ds-report-copy { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 24px; align-items: baseline; } .ds-report-copy h3 { margin: 0; font-size: 1.25rem; font-weight: 650; color: #f4f1ea; letter-spacing: -0.02em; } .ds-report-meta { font-size: 0.9375rem; color: #a3a7b3; } .ds-report-copy p { grid-column: 1 / -1; margin: 0; font-size: 1.0625rem; line-height: 1.7; color: #a3a7b3; } .ds-accepted { color: #5fd39a; font-weight: 650; }"
+      "name": "menu",
+      "kind": "menu",
+      "refersTo": ".menu",
+      "description": "宽屏为浮层，720px 以下为底部面板。"
     },
     {
-      "name": "Open Hairline File Row",
-      "kind": "custom",
-      "refersTo": "card-pane",
-      "description": "Logged-in root directory rows contrasting #f6f4ee folder squircles against #10131c file tiles over 0.5px #1c1f2a dividers.",
-      "html": "<ul class=\"ds-file-table\"><li class=\"ds-file-row\"><div class=\"ds-file-main\"><span class=\"ds-file-tile ds-tile-dir\"><svg class=\"ds-tile-svg\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M2.5 5.5A1.5 1.5 0 0 1 4 4h4l1.6 1.8H16a1.5 1.5 0 0 1 1.5 1.5v7.2A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z\"/></svg></span><a class=\"ds-file-name\" href=\"#\">手语文化节视觉素材</a></div><div class=\"ds-file-meta\"><span class=\"ds-kind-pill\">文件夹</span><span>2026-11-14</span></div></li></ul>",
-      "css": ".ds-file-table { list-style: none; margin: 0; padding: 0; background: #05060b; border-top: 0.5px solid #2a2e3b; font-family: \"Google Sans Flex\", \"HarmonyOS Sans SC\", sans-serif; } .ds-file-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px; border-bottom: 0.5px solid #1c1f2a; border-radius: 8px; } .ds-file-row:hover { background: linear-gradient(90deg, #0e1119, transparent 85%); } .ds-file-main { display: flex; align-items: center; gap: 16px; min-width: 0; } .ds-file-tile { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; flex: none; } .ds-tile-dir { background: #f6f4ee; color: #07080d; box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.2), 0 6px 18px rgba(0, 0, 0, 0.45); } .ds-tile-svg { width: 20px; height: 20px; } .ds-file-name { color: #f4f1ea; text-decoration: none; font-size: 1.0625rem; font-weight: 550; } .ds-file-name:hover { color: #fff3df; text-decoration: underline; } .ds-file-meta { display: flex; align-items: center; gap: 12px; color: #a3a7b3; font-size: 0.9375rem; font-variant-numeric: tabular-nums; } .ds-kind-pill { padding: 2px 9px; border-radius: 6px; background: #10131c; border: 0.5px solid #2a2e3b; color: #a3a7b3; font-size: 0.9375rem; }"
+      "name": "selection-bar",
+      "kind": "toolbar",
+      "refersTo": ".selbar",
+      "description": "多选后底部浮出的松绿色操作条：下载、移动、删除。"
     },
     {
-      "name": "Night-Sky Agent Code Card",
-      "kind": "custom",
-      "refersTo": "terminal-console",
-      "description": "Deep-space #05060b terminal block inside the collapsible drawer framed with 0.5px #2a2e3b border and #0b0d14 title bar.",
-      "html": "<div class=\"ds-terminal\"><div class=\"ds-terminal-bar\"><span class=\"ds-terminal-title\">HTTP 接口调用示例</span><button type=\"button\" class=\"ds-terminal-copy\">复制命令</button></div><pre class=\"ds-terminal-pre\">curl -H \"Authorization: Bearer &lt;YOUR_AGENT_TOKEN&gt;\" \\\n  \"https://shouyulove.cn/drive/api/agent/tree?path=/\"</pre></div>",
-      "css": ".ds-terminal { border-radius: 14px; overflow: hidden; background: #05060b; border: 0.5px solid #2a2e3b; } .ds-terminal-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: #0b0d14; border-bottom: 0.5px solid #1c1f2a; } .ds-terminal-title { color: #a3a7b3; font-size: 0.9375rem; font-weight: 550; } .ds-terminal-copy { min-height: 36px; padding: 5px 12px; border-radius: 8px; background: #10131c; border: 0.5px solid #3a3f4f; color: #f4f1ea; font-size: 0.9375rem; font-weight: 550; cursor: pointer; } .ds-terminal-copy:hover { background: #151924; border-color: #6b7080; } .ds-terminal-pre { margin: 0; padding: 16px; color: #d8d5cd; font-family: \"SF Mono\", \"JetBrains Mono\", Menlo, monospace; font-size: 0.9375rem; line-height: 1.68; white-space: pre-wrap; overflow-wrap: anywhere; }"
+      "name": "dialog",
+      "kind": "dialog",
+      "refersTo": ".dlg",
+      "description": "命名与确认、移动、管理设置三种对话框共用的外壳。"
+    },
+    {
+      "name": "viewer",
+      "kind": "dialog",
+      "refersTo": ".viewer",
+      "description": "文件查看与在线编辑，图片视频用深色舞台，文档用纸面版心。"
     }
   ],
   "narrative": {
-    "northStar": "The Star-Track Night-Sky Directory",
-    "overview": "心创云盘 (`shouyulove-drive`) replicates the nocturnal architectural discipline of `Benchmarks' Last Exam` (`/zh/benchmarks/`): a `#05060b` deep-space canvas brushed with subtle starlight dots and indigo/umber nebula washes, `0.5px` structural hairlines (`--line: #1c1f2a`, `--line-strong: #2a2e3b`), warm `#f4f1ea` primary ink paired with `#fff3df` starlight glow, `#ff5a3c` emblem accent ticks, `#f6f4ee` ivory squircle icon stamps, and open hairline directories in place of boxed card walls.\n\nPublic copy remains concise, human, and free of filesystem/ops jargon—never displaying `/srv/drive` paths or hash internals. Right beneath the editorial left-right header (`<h1>心创云盘</h1>`, plain-language subtitle, and `48px` `#f4f1ea` login CTA), `#drive-overview.overview` renders a quiet full-width two-column `0.5px` hairline band modeled directly on `Benchmarks' Last Exam`: left column `存储空间` (`7px` `#3ecf8e -> #fff3df` `<progress>` bar plus tabular `已用空间`, `剩余可用`, `总容量`) and right column `云盘概览` (aggregate file/folder counts plus live sync timestamp). All Unified Passport sign-in, auto-registration, and account-switching actions open an in-page floating `<dialog class=\"syl-auth-modal\">` (`ShouyuAuth.openModal`) right over `/drive/` with zero URL redirect. When an authorized member signs in, the guest directory hides immediately so `#view-console` places the open `网盘文件` hairline table right below `#drive-overview`, while administrative controls (`成员名单`, `空间扩展`, `Agent 接入令牌`) remain collapsed by default inside `<details id=\"admin-settings-drawer\">`.\n\nEvery asset—including self-hosted `Google Sans Flex` and `HarmonyOS Sans SC` (`400 / 500 / 600–700`) WOFF2 faces, custom cloud-bracket SVG logo (`logo.svg` / `favicon.svg`), and `1.75px` UI icons—ships under a strict `'self'` Content Security Policy, while `branding/custom.css` brings the identical `#05060b`, `#0b0d14`, `#10131c`, `#f4f1ea`, `#d8d5cd`, and `#fff3df` palette into FileBrowser (`/drive/files/`).",
+    "northStar": "暖纸面上的文件工作台",
+    "overview": "页面本身保持安静，颜色主要来自文件自己。左侧目录树与存储刻度尺，右侧白色文件区；只有浅色一种外观，与统一通行证的浅色悬浮窗同系。完整规范见 DESIGN.md。",
     "keyCharacteristics": [
-      "Deep-space `#05060b` canvas layered with sparse CSS starlight (`body::before`), stepped obsidian surfaces (`#0b0d14` / `#0e1119` / `#10131c` / `#151924` / `#222838`), and `0.5px` structural hairlines (`#1c1f2a` / `#2a2e3b` / `#3a3f4f`).",
-      "Warm alabaster ink (`#f4f1ea` / `#d8d5cd`) and cool slate muted text (`#a3a7b3`), ignited by `#fff3df` warm starlight hover rims and `#ff5a3c` cinnabar-orange brand ticks.",
-      "Signature `#f6f4ee` warm-ivory squircle stamps (`48x48`, `13px` radius for guest feature rows; `40x40`, `10px` radius for root folder tiles) casting high-contrast dark icons (`#07080d` + `#ff5a3c`) off the night canvas.",
-      "Variable typography combining self-hosted `Google Sans Flex` + `HarmonyOS Sans SC` (`--font` and `--font-brand`) and `SF Mono` / `JetBrains Mono` (`--font-mono`), preserving a strict `>= 15px` (`0.9375rem`) desktop floor and `>= 14px` (`0.875rem`) floor at `<= 380px`.",
-      "Sticky translucent frosted glass `.topbar` (`backdrop-filter: blur(18px) saturate(1.5)` over `color-mix(in srgb, #05060b 82%, transparent)`) with a `1px` starlight beam under active/hovered navigation links."
+      "存储条画成徽标里的那把刻度尺",
+      "文件夹是蜜色的，文件按类型着色",
+      "选中像荧光笔划过",
+      "主操作松绿，危险操作深红，珊瑚色只属于爱心",
+      "工具栏只有上传和新建两个带文字的按钮"
     ],
     "rules": [
-      {
-        "name": "The Starlight-Over-Obsidian Rule",
-        "body": "Deep-space `#05060b` and obsidian `#0b0d14`–`#10131c` layers frame warm `#f4f1ea` alabaster prose, leaving `#fff3df` glow exclusively for interactive focus/hover/beams and `#ff5a3c` strictly for emblem and stamp ticks.",
-        "section": "colors"
-      },
-      {
-        "name": "The Tactile Ivory Stamp Rule",
-        "body": "Directory tiles (`.file-row__tile--dir`) and visitor capability badges (`.report-project-icon`) flip polarity onto `#f6f4ee` warm ivory with `#07080d` strokes, anchoring visual hierarchy without boxing the surrounding `0.5px` open hairline rows.",
-        "section": "colors"
-      },
-      {
-        "name": "The 14px Minimum Legibility Floor",
-        "body": "Auxiliary labels, navigation items, chips, buttons, and FileBrowser rows hold `0.9375rem` (`15px`) on desktop and never drop below `--type-meta: 0.875rem` (`14px`) inside `@media (max-width: 380px)`—zero sub-`14px` text anywhere.",
-        "section": "typography"
-      },
-      {
-        "name": "The Variable Font & Tabular Discipline",
-        "body": "`Google Sans Flex` and `HarmonyOS Sans SC` drive headings (`450` / `650`) and body prose (`400` / `550`) with `font-variant-numeric: tabular-nums`.",
-        "section": "typography"
-      },
-      {
-        "name": "The Frosted Topbar & Specular-Line Rule",
-        "body": "Only `.topbar` uses `backdrop-filter: blur(18px) saturate(1.5)` over `82%` `#05060b`; secondary panels (`.denied-panel`, `.admin-drawer`, `.workbench-pane`) use flat obsidian fills, `0.5px` `#2a2e3b` borders, and subtle warm top-edge specular glints instead of frosted glass.",
-        "section": "elevation"
-      }
+      "全站最小字号 14px",
+      "正文与占位文字对比度不低于 4.5:1",
+      "阴影带暖色，不用纯灰",
+      "不使用毛玻璃和装饰性渐变",
+      "不写行内 style，不引用外部资源"
     ],
     "dos": [
-      "Do anchor every view on `#05060b` deep-space canvas, `#0b0d14`–`#10131c` obsidian panels, `0.5px` `#1c1f2a` / `#2a2e3b` hairlines, `#f4f1ea` ink, and `#fff3df` warm starlight focus/hover glow.",
-      "Do keep `.topbar` sticky translucent glass (`backdrop-filter: blur(18px) saturate(1.5)`) with `1px` warm underline beams, while keeping secondary panels flat obsidian with `0.5px` strokes.",
-      "Do spotlight folders and visitor capability entries using `#f6f4ee` warm-ivory squircle stamps (`13px` and `10px` radius) with `#07080d` and `#ff5a3c` accents, keeping directory rows borderless with open hairlines.",
-      "Do enforce `Google Sans Flex` + self-hosted `HarmonyOS Sans SC`, `1.0625rem` (`17px`) desktop body copy, `0.9375rem` (`15px`) buttons/nav/metadata, and the `0.875rem` (`14px`) absolute mobile floor (`<= 380px`).",
-      "Do keep `branding/custom.css` synchronized pixel-for-token with `#05060b`, `#0b0d14`, `#f4f1ea`, `#d8d5cd`, `#fff3df`, `#3ecf8e`, and `#ff6b5e`, and collapse transitions to `0.01ms` under `prefers-reduced-motion: reduce`."
+      "让文件名和文件类型最显眼",
+      "新增操作优先放进已有菜单",
+      "不可恢复的操作先确认并写清后果",
+      "文案用成员听得懂的话",
+      "在 1440、820、390、320 四个宽度检查横向溢出"
     ],
     "donts": [
-      "Don't box directory rows (`.report-entry`, `.file-row`, `.record-row`) inside full card borders or drop shadows—preserve open `0.5px` hairline rows on `#05060b`.",
-      "Don't render any text smaller than `0.875rem` (`14px`) or place eyebrow/kicker labels above `<h1>心创云盘</h1>`.",
-      "Don't expose capacity GB metrics, ports, or server filesystem paths (`/srv/drive`) in the public visitor hero or capability directory.",
-      "Don't apply `backdrop-filter` blur to `.denied-panel`, `.admin-drawer`, `.workbench-pane`, or `.file-row`—reserve glassmorphism strictly for `.topbar`.",
-      "Don't reference external CDN fonts, icon libraries, or inline `<script>`/`<style>` blocks that break the strict `'self'` Content Security Policy."
+      "不恢复深色外观",
+      "不把珊瑚色用于按钮或链接",
+      "不在每一行重复摆放文字操作链接",
+      "不在页面上写运维术语",
+      "不使用 550、650 等中间字重"
     ]
   }
 }

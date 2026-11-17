@@ -2,20 +2,29 @@
 version: 2
 slug: "src-web-index-html"
 primary_target: "src/web/index.html"
-related_targets: ["src/web/style.css","src/web/app.js","src/web/auth-modal.css","branding/custom.css"]
+related_targets: ["src/web/style.css","src/web/app.js","src/web/auth-modal.css","src/web/logo.svg","src/web/favicon.svg"]
 ---
 
-# 心创云盘 · 深夜星轨编辑部工作台（复刻 Benchmarks' Last Exam）
+# 心创云盘 · 暖纸面文件工作台
 
-Mode: Operate. Route: `/drive/` 与 `/drive/files/`.
-保留全部当前功能与文案内容，并将视觉体系完整复刻回 `Benchmarks' Last Exam`（`https://benchmarks-last-exam.com/zh/benchmarks/`）深夜星轨暗黑风格，同时彻底修复页面刷新时字体切换闪烁的缺陷：（1）首页上方直接展示双栏发丝线云盘实时概览（存储空间使用率与文件、文件夹规模）；（2）统一通行证全程在当前页悬浮窗内登录与切换账号，零整页跳转；（3）文案详略得当、无目录与加密术语，最小字号清晰易读（桌面端与常规手机 `>= 15px`，`<= 380px` 超窄屏 `>= 14px`）；（4）预加载 `~50 KB` UI 中文子集字体 + `font-display: block` + 服务端同步注入首屏状态，刷新页面零字体切换、零布局跳动。
+Mode: Operate. Route: `/drive/`.
+2026-11-17 整体重构：放弃此前复刻 `Benchmarks' Last Exam` 的深色方案，改为只有浅色一种外观的暖纸面工作台。完整规范见项目根目录的 `DESIGN.md`。
 
 ## Direction contract
 
-THESIS: 复刻 `Benchmarks' Last Exam` 深空暗夜编辑部界面（`#05060b` 夜空画布、`#0b0d14` / `#10131c` 黑曜石台面、`0.5px` 结构发丝线、`#f4f1ea` 暖白主操作与 `#fff3df` 暖星光灯带），以开放式双栏发丝线概览带锚定存储空间与云盘规模，配合当前页免跳转统一通行证悬浮窗（`dialog.syl-auth-modal`），登录后就地切换至开放式发丝线「网盘文件」工作台。
+THESIS: 一张安静的暖纸面，颜色主要来自文件自己。左侧浅沙色侧栏放目录树、管理入口和存储刻度尺，右侧纯白文件区放搜索、路径、操作和文件列表；松绿墨色（`#23332c`）负责主操作，蜜色文件夹和按类型着色的文件色块负责辨认，淡黄色（`#fdf2d0`）表示选中。
 
-OWN-WORLD: 遵循 `Benchmarks' Last Exam` 深夜仪器与学术编辑部纪律——`#05060b` 深空底色配顶部稀疏星尘与克制靛蓝/暖褐星云漫射光、`0.5px` 结构发丝线（`#1c1f2a` / `#2a2e3b` / `#3a3f4f`）、暖白主字 `#f4f1ea` / 次级 `#d8d5cd` / 辅助 `#a3a7b3`、`48x48` `#f6f4ee` 暖象牙白圆角图章（内嵌 `#07080d` 与 `#ff5a3c` 双色徽标）及翡翠绿 `#3ecf8e` / `#5fd39a`、琥珀 `#ecbd55`、珊瑚红 `#ff7f70` 语义色；自托管预加载 `Google Sans Flex` 与子集化 `HarmonyOS Sans SC`（`font-display: block`），数字统一 `tabular-nums`。
+OWN-WORLD: 取材于项目自己的徽标（托在刻度尺上的云和一颗珊瑚色爱心）和统一通行证的暖色天光。存储条画成那把刻度尺，珊瑚色（`#f2553b`）只出现在爱心和刻度尺指针上；未登录页用一轮暖光托着徽标。
 
-STORY: 未登录访客进入首屏即见 `<h1>心创云盘</h1>`、清爽单行导语与 `#f4f1ea` 暖白主登录按钮，下方紧接开放式双栏实时容量与文件统计概览带及三项 `#f6f4ee` 图章能力名录；点击登录直接在当前页弹出同步深空风格的悬浮窗验证；已授权成员登录后自动收起访客名录，直达开放式发丝线「网盘文件」列表（搜索、新建文件夹、上传、删除、进入完整网盘），并将成员名单、空间扩展与 Agent 令牌收纳于底部折叠抽屉中。
+STORY: 未登录时是整页门厅，只有名称、一句说明、登录按钮和三条用途。登录后直接是文件：侧栏目录树可以逐级展开，文件区里点一下打开，悬停出现勾选框和操作，右键或「更多」打开菜单，拖到文件夹上就是移动。管理员在侧栏或账号菜单进入「管理设置」对话框，里面分成员名单、存储空间、接入令牌三页。
 
-FIRST VIEWPORT: `68px` 半透明毛玻璃吸顶导航栏（`backdrop-filter: blur(18px) saturate(1.5)` + `0.5px solid #1c1f2a` + `1px` `#fff3df` 激活星光底线），首屏 `1280px` 左对齐编辑部标头 + 双栏发丝线云盘实时概览带，无横向溢出，零页面跳转，刷新零字体抖动。
+FIRST VIEWPORT: 桌面端 272px 侧栏加自适应文件区，68px 吸顶顶栏里是搜索框和账号按钮，下面一行是当前路径与「上传」「新建」、显示方式切换，再往下就是文件列表。手机端没有侧栏，顶栏是徽标、搜索框和头像，存储刻度尺移到列表下方。
+
+## Guardrails
+
+- 不恢复深色外观，不添加跟随系统的深色模式。
+- 珊瑚色不用于按钮、链接和大面积底色。
+- 不在每一行重复摆放文字操作链接，新增操作优先放进已有菜单。
+- 全站最小字号 14px，四个检查宽度（1440、820、390、320）下都不能出现横向滚动。
+- 页面受 `style-src 'self'` 等内容安全策略约束，不写行内 `style` 属性，不引用外部资源。
+- 修改界面文案后重新运行 `python3 scripts/build-ui-fonts.py` 更新预加载字体子集。

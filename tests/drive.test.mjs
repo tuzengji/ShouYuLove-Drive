@@ -149,7 +149,7 @@ test('HTTP RBAC (admin vs member), unified native cloud drive operations, range,
     appServer = createServer(handler);
     const base = await listenServer(appServer);
 
-    // 1. Portal HTML has zero jump links to /auth/ or /drive/files/, and admin drawer is hidden by default
+    // 1. Portal HTML has zero jump links to /auth/ or /drive/files/, and admin entries are hidden by default
     const portalRes = await fetch(`${base}/drive/`);
     assert.equal(portalRes.status, 200);
     const portalHtml = await portalRes.text();
@@ -160,11 +160,24 @@ test('HTTP RBAC (admin vs member), unified native cloud drive operations, range,
     assert.equal(portalHtml.includes('id="drive-overview"'), true);
     assert.equal(/<a\b[^>]*href="\/auth\//i.test(portalHtml), false);
     assert.equal(portalHtml.includes('/drive/files/'), false);
-    assert.equal(/<details[^>]*id="admin-settings-drawer"[^>]*hidden/i.test(portalHtml), true);
+    assert.equal(/<div[^>]*id="admin-nav"[^>]*hidden/i.test(portalHtml), true);
+    assert.equal(/<dialog[^>]*id="admin-settings"/i.test(portalHtml), true);
+    assert.equal(/<dialog[^>]*id="admin-settings"[^>]*\bopen\b/i.test(portalHtml), false);
+    assert.equal(/\sstyle="/i.test(portalHtml), false);
+    assert.equal(portalHtml.includes('__ASSET_VERSION__'), false);
+    const assetVersion = /\.\/style\.css\?v=([0-9a-f]{10})"/.exec(portalHtml)?.[1];
+    assert.ok(assetVersion);
+    assert.equal(portalHtml.includes(`./app.js?v=${assetVersion}`), true);
+    assert.equal(portalHtml.includes(`./logo.svg?v=${assetVersion}`), true);
 
     const cssText = await (await fetch(`${base}/drive/style.css`)).text();
-    assert.equal(cssText.includes('--page: #05060b'), true);
-    assert.equal(cssText.includes('--glow: #fff3df'), true);
+    assert.equal(cssText.includes('--paper: #fbfaf6'), true);
+    assert.equal(cssText.includes('--pine: #23332c'), true);
+    assert.equal(cssText.includes('color-scheme: only light'), true);
+    assert.equal(cssText.includes('__ASSET_VERSION__'), false);
+    assert.equal(cssText.includes(`./hos-ui-regular.woff2?v=${assetVersion}`), true);
+    const versionedCss = await fetch(`${base}/drive/style.css?v=${assetVersion}`);
+    assert.equal(versionedCss.status, 200);
     assert.equal(cssText.includes('font-display: block'), true);
 
     for (const fontFile of [

@@ -1,10 +1,13 @@
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import {
   chmodSync,
+  closeSync,
   chownSync,
   existsSync,
   lstatSync,
   mkdirSync,
+  mkdtempSync,
+  openSync,
   readdirSync,
   readFileSync,
   realpathSync,
@@ -14,7 +17,7 @@ import {
   statSync,
   writeFileSync,
 } from 'node:fs';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, relative, resolve, sep } from 'node:path';
 
 export const PHONE_HASH_PREFIX = 'syl-phone-v1:';
 
@@ -721,14 +724,20 @@ export class DriveStore {
   writeFileBuffer(rawPath, buffer) {
     const resolved = resolveSafeStoragePath(this.storageRoot, rawPath, { allowRoot: false });
     ensureSharedDirectoryChain(resolved.realRoot, dirname(resolved.absPath));
-    const tmp = `${resolved.absPath}.${process.pid}.${randomBytes(4).toString('hex')}.tmp`;
-    writeFileSync(tmp, buffer, { mode: OPEN_FILE_MODE });
+    const tmp = join(dirname(resolved.absPath), `.drive-write-${randomBytes(12).toString('hex')}.tmp`);
+    const fd = openSync(tmp, 'wx', OPEN_FILE_MODE);
     try {
+      try {
+        writeFileSync(fd, buffer);
+      } finally {
+        closeSync(fd);
+      }
       chmodSync(tmp, OPEN_FILE_MODE);
-    } catch {
-      // Ignore chmod restriction when non-owner.
+      renameSync(tmp, resolved.absPath);
+    } catch (error) {
+      rmSync(tmp, { force: true });
+      throw error;
     }
-    renameSync(tmp, resolved.absPath);
     const st = statSync(resolved.absPath);
     this.invalidateOverviewCache();
     return {
@@ -752,26 +761,44 @@ export class DriveStore {
       throw new DriveError('INVALID_MOVE', '不能将文件夹移动到其自身或子文件夹内。', 400);
     }
 
-    if (existsSync(toResolved.absPath)) {
-      const sameInode =
-        (() => {
-          try {
-            const dstSt = lstatSync(toResolved.absPath);
-            return dstSt.ino === fromSt.ino && dstSt.dev === fromSt.dev;
-          } catch {
-            return false;
-          }
-        })();
-      if (!sameInode && !overwrite) {
+    const dstSt = lstatSync(toResolved.absPath, { throwIfNoEntry: false });
+    if (dstSt) {
+      if (!overwrite && (dstSt.ino !== fromSt.ino || dstSt.dev !== fromSt.dev)) {
         throw new DriveError('ALREADY_EXISTS', '目标位置已存在同名文件或文件夹。', 409);
       }
-      if (!sameInode && overwrite) {
-        rmSync(toResolved.absPath, { recursive: true, force: false });
+      if (overwrite && dstSt.isDirectory()) {
+        const parent = realpathSync(dirname(fromResolved.absPath));
+        const target = realpathSync(toResolved.absPath);
+        if (parent === target || parent.startsWith(target + sep)) {
+          throw new DriveError('INVALID_MOVE', '不能用文件或文件夹覆盖它的上级目录。', 400);
+        }
       }
     }
 
     ensureSharedDirectoryChain(toResolved.realRoot, dirname(toResolved.absPath));
-    renameSync(fromResolved.absPath, toResolved.absPath);
+    try {
+      renameSync(fromResolved.absPath, toResolved.absPath);
+    } catch (error) {
+      if (!overwrite || !dstSt || !['EEXIST', 'ENOTEMPTY', 'EISDIR', 'ENOTDIR'].includes(error.code)) throw error;
+      // POSIX cannot replace a nonempty directory or an entry of a different type atomically.
+      const staging = mkdtempSync(join(dirname(toResolved.absPath), '.drive-move-'));
+      const backup = join(staging, 'previous');
+      try {
+        renameSync(toResolved.absPath, backup);
+        try {
+          renameSync(fromResolved.absPath, toResolved.absPath);
+        } catch (moveError) {
+          if (lstatSync(toResolved.absPath, { throwIfNoEntry: false })) {
+            throw new DriveError('MOVE_CONFLICT', '目标在移动期间发生变化，原目标已保存在临时目录中。', 409);
+          }
+          renameSync(backup, toResolved.absPath);
+          throw moveError;
+        }
+        rmSync(backup, { recursive: true });
+      } finally {
+        if (!lstatSync(backup, { throwIfNoEntry: false })) rmSync(staging, { recursive: true });
+      }
+    }
     this.invalidateOverviewCache();
     return {
       ok: true,

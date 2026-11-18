@@ -1,12 +1,13 @@
 import {
   createReadStream,
-  createWriteStream,
   readFileSync,
   statSync,
   chmodSync,
   renameSync,
   unlinkSync,
 } from 'node:fs';
+import { open } from 'node:fs/promises';
+import { pipeline } from 'node:stream/promises';
 import { request as httpRequest } from 'node:http';
 import { createHash, randomBytes } from 'node:crypto';
 import { basename, dirname, extname, join } from 'node:path';
@@ -219,29 +220,28 @@ async function readJsonBody(req, maxBytes = 65536) {
 
 async function streamBodyToFile(req, realRoot, absTarget, maxBytes) {
   ensureSharedDirectoryChain(realRoot, dirname(absTarget));
-  const tmp = `${absTarget}.${process.pid}.${randomBytes(4).toString('hex')}.tmp`;
+  const tmp = join(dirname(absTarget), `.drive-write-${randomBytes(12).toString('hex')}.tmp`);
   let total = 0;
   const declared = Number(req.headers['content-length'] || 0);
   if (maxBytes && declared > maxBytes) {
     throw new DriveError('PAYLOAD_TOO_LARGE', '上传文件过大。', 413);
   }
-  const stream = createWriteStream(tmp, { mode: OPEN_FILE_MODE });
-  try {
+  async function* checkedChunks() {
     for await (const chunk of req) {
       total += chunk.length;
       if (maxBytes && total > maxBytes) {
         throw new DriveError('PAYLOAD_TOO_LARGE', '上传文件过大。', 413);
       }
-      if (!stream.write(chunk)) {
-        await new Promise((resolve, reject) => {
-          stream.once('drain', resolve);
-          stream.once('error', reject);
-        });
-      }
+      yield chunk;
     }
-    await new Promise((resolve, reject) => {
-      stream.end(err => (err ? reject(err) : resolve()));
-    });
+  }
+  const file = await open(tmp, 'wx', OPEN_FILE_MODE);
+  try {
+    try {
+      await file.writeFile(checkedChunks());
+    } finally {
+      await file.close();
+    }
     try {
       chmodSync(tmp, OPEN_FILE_MODE);
     } catch {
@@ -251,11 +251,6 @@ async function streamBodyToFile(req, realRoot, absTarget, maxBytes) {
     const st = statSync(absTarget);
     return { size: st.size, mtimeMs: Math.round(st.mtimeMs) };
   } catch (error) {
-    try {
-      stream.destroy();
-    } catch {
-      // Ignore cleanup errors
-    }
     try {
       unlinkSync(tmp);
     } catch {
@@ -655,7 +650,7 @@ export function createDriveHttpHandler({
               res.end();
               return;
             }
-            createReadStream(entry.absPath, { start: range.start, end: range.end }).pipe(res);
+            await pipeline(createReadStream(entry.absPath, { start: range.start, end: range.end }), res);
             return;
           }
 
@@ -667,7 +662,7 @@ export function createDriveHttpHandler({
             res.end();
             return;
           }
-          createReadStream(entry.absPath).pipe(res);
+          await pipeline(createReadStream(entry.absPath), res);
           return;
         }
 
@@ -728,13 +723,13 @@ export function createDriveHttpHandler({
             archiveTitle = `心创云盘精选-${targets.length}项`;
           }
 
-          res.writeHead(200, {
+          await streamZipArchive(res, targets, length => res.writeHead(200, {
             'Content-Type': 'application/zip',
+            'Content-Length': String(length),
             'Cache-Control': 'private, no-store',
             'X-Content-Type-Options': 'nosniff',
             'Content-Disposition': buildContentDisposition('attachment', `${archiveTitle}.zip`),
-          });
-          await streamZipArchive(res, targets);
+          }));
           return;
         }
 
@@ -786,7 +781,10 @@ export function createDriveHttpHandler({
           if (!fromPath || !toPath) {
             throw new DriveError('INVALID_INPUT', '请提供原路径 from 与目标路径 to。', 400);
           }
-          sendJson(res, 200, store.moveEntry(fromPath, toPath, { overwrite: Boolean(body.overwrite) }));
+          if (body.overwrite !== undefined && typeof body.overwrite !== 'boolean') {
+            throw new DriveError('INVALID_INPUT', 'overwrite 必须是布尔值。', 400);
+          }
+          sendJson(res, 200, store.moveEntry(fromPath, toPath, { overwrite: body.overwrite }));
           return;
         }
 
@@ -914,6 +912,10 @@ export function createDriveHttpHandler({
 
       sendJson(res, 404, { code: 'NOT_FOUND', message: '页面不存在。' });
     } catch (error) {
+      if (res.headersSent || res.destroyed) {
+        res.destroy();
+        return;
+      }
       if (error instanceof DriveError) {
         sendJson(res, error.status || 400, { code: error.code, message: error.message });
         return;

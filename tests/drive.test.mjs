@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
+import { Writable } from 'node:stream';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ADMIN_PHONE_HASHES, DEFAULT_SEED_WHITELIST, DriveStore, SUPER_ADMIN_PHONE_HASHES, hashPhone } from '../src/drive-store.mjs';
 import { createDriveHttpHandler } from '../src/http-app.mjs';
+import { streamZipArchive } from '../src/zip-stream.mjs';
 
 const TEST_ADMIN_PHONE = '13900000001';
 const TEST_ADMIN_HASH = hashPhone(TEST_ADMIN_PHONE);
@@ -30,6 +32,42 @@ function listenServer(server) {
     });
   });
 }
+
+test('moves preserve the source and destination when replacement cannot proceed', () => {
+  const { dir, statePath, storageRoot } = setupEnv();
+  try {
+    const store = new DriveStore({ statePath, storageRoot });
+    const filename = 'a'.repeat(250);
+    store.writeFileBuffer('/folder/' + filename, Buffer.from('kept'));
+    assert.throws(() => store.moveEntry('/folder/' + filename, '/folder', { overwrite: true }),
+                  error => error.code === 'INVALID_MOVE');
+    assert.equal(readFileSync(join(storageRoot, 'folder', filename), 'utf8'), 'kept');
+    assert.throws(() => store.writeFileBuffer('/folder', Buffer.from('file')));
+    assert.deepEqual(readdirSync(storageRoot), ['folder']);
+    store.writeFileBuffer('/replacement/new.txt', Buffer.from('new'));
+    store.moveEntry('/replacement', '/folder', { overwrite: true });
+    assert.deepEqual(readdirSync(join(storageRoot, 'folder')), ['new.txt']);
+    assert.deepEqual(readdirSync(storageRoot), ['folder']);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('ZIP entry limit fails before a successful response or the first archive byte', async () => {
+  const { dir, storageRoot } = setupEnv();
+  try {
+    writeFileSync(join(storageRoot, 'sample'), 'a');
+    const targets = Array.from({ length: 10001 }, (_, i) => ({
+      absPath: join(storageRoot, 'sample'), archiveName: String(i),
+    }));
+    const sink = new Writable({ write() { assert.fail('Partial archive'); } });
+    await assert.rejects(streamZipArchive(sink, targets, () => assert.fail('Premature headers')),
+                         error => error.code === 'ZIP_ENTRY_LIMIT' && error.status === 413);
+    sink.destroy();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
 
 test('default seed whitelist grants super_admin to both 191****0323 and 152****6060 without plaintext', () => {
   const { dir, statePath, storageRoot } = setupEnv();
@@ -310,6 +348,17 @@ test('HTTP RBAC (admin vs member), unified native cloud drive operations, range,
       }),
     });
     assert.equal(moveRes.status, 200);
+    const longPath = '/' + 'x'.repeat(250);
+    const longUpload = await fetch(`${base}/drive/api/agent/write?path=${encodeURIComponent(longPath)}`, {
+      method: 'PUT', headers: memberOriginHeaders, body: 'long filename',
+    });
+    assert.equal(longUpload.status, 200);
+    const ambiguousMove = await fetch(`${base}/drive/api/agent/move`, {
+      method: 'POST', headers: { ...memberOriginHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from: longPath, to: '/课程资料/2026春/手语讲义-修订版.md', overwrite: 'false' }),
+    });
+    assert.equal(ambiguousMove.status, 400);
+    assert.equal(store.statEntry(longPath).size, 13);
 
     // Folder ZIP streaming archive download
     const zipRes = await fetch(`${base}/drive/api/agent/zip?path=${encodeURIComponent('/课程资料')}`, {
@@ -318,6 +367,7 @@ test('HTTP RBAC (admin vs member), unified native cloud drive operations, range,
     assert.equal(zipRes.status, 200);
     assert.equal(zipRes.headers.get('content-type'), 'application/zip');
     const zipBuf = Buffer.from(await zipRes.arrayBuffer());
+    assert.equal(Number(zipRes.headers.get('content-length')), zipBuf.length);
     assert.equal(zipBuf.readUInt32LE(0), 0x04034b50);
     assert.equal(zipBuf.includes(Buffer.from('手语讲义-修订版.md', 'utf8')), true);
     assert.equal(zipBuf.readUInt32LE(zipBuf.length - 22), 0x06054b50);

@@ -38,7 +38,7 @@ def build_tarball() -> bytes:
                 for path in sorted(target.rglob("*")):
                     if "__pycache__" in path.parts or path.name == ".DS_Store":
                         continue
-                    tar.add(path, arcname=path.relative_to(ROOT).as_posix())
+                    tar.add(path, arcname=path.relative_to(ROOT).as_posix(), recursive=False)
     return buf.getvalue()
 
 
@@ -57,11 +57,42 @@ def main() -> int:
         [
             "ssh",
             SSH_HOST,
-            f"mkdir -p {shlex.quote(release_dir)} && tar -xzf - -C {shlex.quote(release_dir)}",
+            f"mkdir -p {shlex.quote(REMOTE_RELEASES)} && mkdir {shlex.quote(release_dir)} "
+            f"&& tar -xzf - -C {shlex.quote(release_dir)}",
         ],
         input=tar_bytes,
         check=True,
     )
+
+    if "--app-only" in sys.argv[1:]:
+        activate = r"""set -euo pipefail
+release=$1
+current=$2
+previous=$(readlink -e "$current")
+node=/opt/shouyulove-auth/node/bin/node
+diff -qr "$previous/branding" "$release/branding"
+diff -qr -x deploy_aliyun.py "$previous/deploy" "$release/deploy"
+cmp "$previous/package.json" "$release/package.json"
+for file in "$release"/src/*.mjs; do "$node" --check "$file"; done
+switch_release() {
+  ln -s "$1" "$current.next.$$"
+  mv -Tf "$current.next.$$" "$current"
+}
+rollback() {
+  switch_release "$previous"
+  systemctl restart shouyulove-drive.service
+}
+trap rollback EXIT
+switch_release "$release"
+systemctl restart shouyulove-drive.service
+curl -fsS --retry 12 --retry-delay 1 --retry-connrefused --max-time 3 \
+  http://127.0.0.1:8768/drive/healthz | python3 -c 'import json,sys; sys.exit(json.load(sys.stdin).get("ok") is not True)'
+trap - EXIT
+"""
+        subprocess.run(["ssh", SSH_HOST, "flock /run/lock/shouyulove-drive-deploy.lock bash -s -- "
+                        + shlex.join([release_dir, REMOTE_CURRENT])], input=activate.encode(), check=True)
+        print(f"DEPLOY_OK:{stamp}")
+        return 0
 
     remote_script = f"""set -euo pipefail
 RELEASE_DIR={shlex.quote(release_dir)}
@@ -289,7 +320,8 @@ echo "DEPLOY_OK:{stamp}"
 """
 
     print("Provisioning & restarting services on shouyulove-aliyun...")
-    subprocess.run(["ssh", SSH_HOST, "bash -s"], input=remote_script.encode("utf-8"), check=True)
+    subprocess.run(["ssh", SSH_HOST, "flock /run/lock/shouyulove-drive-deploy.lock bash -s"],
+                   input=remote_script.encode("utf-8"), check=True)
     return 0
 
 

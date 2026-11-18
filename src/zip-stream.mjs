@@ -1,225 +1,190 @@
-import { createReadStream, lstatSync, readdirSync } from 'node:fs';
+import { constants, createReadStream } from 'node:fs';
+import { lstat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { crc32 } from 'node:zlib';
+import { DriveError } from './drive-store.mjs';
+
+const MAX_ENTRIES = 10000;
+const ZIP32_MAX = 0xffffffff;
 
 function toDosDateTime(mtimeMs) {
-  const d = new Date(Number.isFinite(mtimeMs) && mtimeMs > 0 ? mtimeMs : Date.now());
+  const d = new Date(mtimeMs);
   const year = Math.max(1980, Math.min(2107, d.getFullYear()));
-  const dosDate = ((year - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
-  const dosTime = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
-  return { dosDate, dosTime };
+  return {
+    date: ((year - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate(),
+    time: (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1),
+  };
 }
 
-function writeChunk(writable, buf) {
-  if (writable.destroyed || writable.writableEnded) return Promise.resolve();
-  if (writable.write(buf)) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const onDrain = () => {
-      cleanup();
-      resolve();
+async function writeChunk(writable, buffer) {
+  if (writable.destroyed || writable.writableEnded) throw new Error('Download closed');
+  if (writable.write(buffer)) return;
+  await new Promise((resolve, reject) => {
+    const finish = error => {
+      writable.off('drain', drained);
+      writable.off('close', closed);
+      writable.off('error', finish);
+      if (error) reject(error);
+      else resolve();
     };
-    const onErr = err => {
-      cleanup();
-      reject(err);
-    };
-    const cleanup = () => {
-      writable.off('drain', onDrain);
-      writable.off('error', onErr);
-    };
-    writable.once('drain', onDrain);
-    writable.once('error', onErr);
+    const drained = () => finish();
+    const closed = () => finish(new Error('Download closed'));
+    writable.once('drain', drained);
+    writable.once('close', closed);
+    writable.once('error', finish);
   });
 }
 
-function collectArchiveEntries(absTarget, archivePrefix, out, maxFiles = 10000) {
-  if (out.length >= maxFiles) return;
-  let lst;
-  try {
-    lst = lstatSync(absTarget);
-  } catch {
-    return;
-  }
-  if (lst.isSymbolicLink()) return;
-
-  if (lst.isFile()) {
-    out.push({
-      type: 'file',
-      absPath: absTarget,
-      zipPath: archivePrefix,
-      mtimeMs: lst.mtimeMs,
+async function collectEntries(absPath, archiveName, entries, writable) {
+  if (writable.destroyed) throw new Error('Download closed');
+  const st = await lstat(absPath);
+  const directory = st.isDirectory();
+  if (!directory && !st.isFile()) return;
+  const name = directory && archiveName ? archiveName + '/' : archiveName;
+  if (name) {
+    if (entries.length >= MAX_ENTRIES) {
+      throw new DriveError('ZIP_ENTRY_LIMIT', '一次最多打包 10000 个文件和文件夹，请分批下载。', 413);
+    }
+    entries.push({
+      absPath, directory, name: Buffer.from(name, 'utf8'),
+      size: directory ? 0 : st.size, ...toDosDateTime(st.mtimeMs),
     });
-    return;
   }
-
-  if (lst.isDirectory()) {
-    const dirZipPath = archivePrefix ? (archivePrefix.endsWith('/') ? archivePrefix : `${archivePrefix}/`) : '';
-    if (dirZipPath) {
-      out.push({
-        type: 'dir',
-        absPath: absTarget,
-        zipPath: dirZipPath,
-        mtimeMs: lst.mtimeMs,
-      });
-    }
-    let names = [];
-    try {
-      names = readdirSync(absTarget).sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
-    } catch {
-      return;
-    }
-    for (const name of names) {
-      if (name === 'lost+found') continue;
-      if (out.length >= maxFiles) break;
-      const childPrefix = dirZipPath ? `${dirZipPath}${name}` : name;
-      collectArchiveEntries(join(absTarget, name), childPrefix, out, maxFiles);
+  if (directory) {
+    const children = (await readdir(absPath)).sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
+    for (const child of children) {
+      if (child !== 'lost+found') await collectEntries(join(absPath, child), name + child, entries, writable);
     }
   }
 }
 
-/**
- * Stream one or more resolved drive targets ({ absPath, archiveName }) as a standard UTF-8 ZIP archive.
- */
-export async function streamZipArchive(writable, targets) {
+function zip64Extra(values) {
+  const extra = Buffer.alloc(4 + 8 * values.length);
+  extra.writeUInt16LE(1, 0);
+  extra.writeUInt16LE(extra.length - 4, 2);
+  values.forEach((value, index) => extra.writeBigUInt64LE(BigInt(value), 4 + index * 8));
+  return extra;
+}
+
+function localHeader(entry, zip64) {
+  const extra = zip64 ? zip64Extra([entry.size, entry.size]) : Buffer.alloc(0);
+  const header = Buffer.alloc(30 + entry.name.length + extra.length);
+  header.writeUInt32LE(0x04034b50, 0);
+  header.writeUInt16LE(zip64 ? 45 : 20, 4);
+  header.writeUInt16LE(entry.directory ? 0x0800 : 0x0808, 6);
+  header.writeUInt16LE(entry.time, 10);
+  header.writeUInt16LE(entry.date, 12);
+  header.writeUInt32LE(zip64 ? ZIP32_MAX : 0, 18);
+  header.writeUInt32LE(zip64 ? ZIP32_MAX : 0, 22);
+  header.writeUInt16LE(entry.name.length, 26);
+  header.writeUInt16LE(extra.length, 28);
+  entry.name.copy(header, 30);
+  extra.copy(header, 30 + entry.name.length);
+  return header;
+}
+
+function descriptor(entry, zip64) {
+  const header = Buffer.alloc(zip64 ? 24 : 16);
+  header.writeUInt32LE(0x08074b50, 0);
+  header.writeUInt32LE(entry.crc, 4);
+  if (zip64) {
+    header.writeBigUInt64LE(BigInt(entry.size), 8);
+    header.writeBigUInt64LE(BigInt(entry.size), 16);
+  } else {
+    header.writeUInt32LE(entry.size, 8);
+    header.writeUInt32LE(entry.size, 12);
+  }
+  return header;
+}
+
+function centralHeader(entry, zip64) {
+  const extra = zip64 ? zip64Extra([entry.size, entry.size, entry.offset]) : Buffer.alloc(0);
+  const header = Buffer.alloc(46 + entry.name.length + extra.length);
+  header.writeUInt32LE(0x02014b50, 0);
+  header.writeUInt16LE(zip64 ? 45 : 20, 4);
+  header.writeUInt16LE(zip64 ? 45 : 20, 6);
+  header.writeUInt16LE(entry.directory ? 0x0800 : 0x0808, 8);
+  header.writeUInt16LE(entry.time, 12);
+  header.writeUInt16LE(entry.date, 14);
+  header.writeUInt32LE(entry.crc, 16);
+  header.writeUInt32LE(zip64 ? ZIP32_MAX : entry.size, 20);
+  header.writeUInt32LE(zip64 ? ZIP32_MAX : entry.size, 24);
+  header.writeUInt16LE(entry.name.length, 28);
+  header.writeUInt16LE(extra.length, 30);
+  header.writeUInt32LE(entry.directory ? 0x10 : 0, 38);
+  header.writeUInt32LE(zip64 ? ZIP32_MAX : entry.offset, 42);
+  entry.name.copy(header, 46);
+  extra.copy(header, 46 + entry.name.length);
+  return header;
+}
+
+function endRecords(count, centralStart, centralSize, zip64) {
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50, 0);
+  end.writeUInt16LE(count, 8);
+  end.writeUInt16LE(count, 10);
+  end.writeUInt32LE(zip64 ? ZIP32_MAX : centralSize, 12);
+  end.writeUInt32LE(zip64 ? ZIP32_MAX : centralStart, 16);
+  if (!zip64) return end;
+
+  const record = Buffer.alloc(56);
+  record.writeUInt32LE(0x06064b50, 0);
+  record.writeBigUInt64LE(44n, 4);
+  record.writeUInt16LE(45, 12);
+  record.writeUInt16LE(45, 14);
+  record.writeBigUInt64LE(BigInt(count), 24);
+  record.writeBigUInt64LE(BigInt(count), 32);
+  record.writeBigUInt64LE(BigInt(centralSize), 40);
+  record.writeBigUInt64LE(BigInt(centralStart), 48);
+  const locator = Buffer.alloc(20);
+  locator.writeUInt32LE(0x07064b50, 0);
+  locator.writeBigUInt64LE(BigInt(centralStart + centralSize), 8);
+  locator.writeUInt32LE(1, 16);
+  return Buffer.concat([record, locator, end]);
+}
+
+/** Call onReady only after all selected entries and their transfer length are known. */
+export async function streamZipArchive(writable, targets, onReady = () => {}) {
   const entries = [];
   for (const target of targets) {
-    collectArchiveEntries(target.absPath, target.archiveName, entries);
+    await collectEntries(target.absPath, target.archiveName, entries, writable);
   }
+  // ZIP32 local header (30), central header (46), optional data descriptor (16), trailer (22).
+  const classicSize = 22 + entries.reduce((sum, e) =>
+    sum + 76 + e.name.length * 2 + e.size + (e.directory ? 0 : 16), 0);
+  const zip64 = classicSize >= ZIP32_MAX;
+  // ZIP64 adds 20 local and 28 central bytes per entry, 8 per descriptor and a 76-byte trailer.
+  const length = zip64 ? classicSize + 76 + entries.reduce((sum, e) => sum + 48 + (e.directory ? 0 : 8), 0) : classicSize;
+  onReady(length);
 
-  const centralRecords = [];
   let offset = 0;
-
-  for (const item of entries) {
-    if (writable.destroyed) return;
-    const nameBytes = Buffer.from(item.zipPath.replaceAll('\\', '/'), 'utf8');
-    const { dosDate, dosTime } = toDosDateTime(item.mtimeMs);
-    const localHeaderOffset = offset;
-
-    if (item.type === 'dir') {
-      const flags = 0x0800; // UTF-8
-      const lfh = Buffer.alloc(30 + nameBytes.length);
-      lfh.writeUInt32LE(0x04034b50, 0);
-      lfh.writeUInt16LE(20, 4);
-      lfh.writeUInt16LE(flags, 6);
-      lfh.writeUInt16LE(0, 8);
-      lfh.writeUInt16LE(dosTime, 10);
-      lfh.writeUInt16LE(dosDate, 12);
-      lfh.writeUInt32LE(0, 14);
-      lfh.writeUInt32LE(0, 18);
-      lfh.writeUInt32LE(0, 22);
-      lfh.writeUInt16LE(nameBytes.length, 26);
-      lfh.writeUInt16LE(0, 28);
-      nameBytes.copy(lfh, 30);
-
-      await writeChunk(writable, lfh);
-      offset += lfh.length;
-
-      centralRecords.push({
-        nameBytes,
-        flags,
-        dosTime,
-        dosDate,
-        crc: 0,
-        size: 0,
-        localHeaderOffset,
-        externalAttr: 0x10, // DOS directory attribute
-      });
-      continue;
-    }
-
-    // Streaming file with Data Descriptor (bit 3) + UTF-8 (bit 11)
-    const flags = 0x0808;
-    const lfh = Buffer.alloc(30 + nameBytes.length);
-    lfh.writeUInt32LE(0x04034b50, 0);
-    lfh.writeUInt16LE(20, 4);
-    lfh.writeUInt16LE(flags, 6);
-    lfh.writeUInt16LE(0, 8);
-    lfh.writeUInt16LE(dosTime, 10);
-    lfh.writeUInt16LE(dosDate, 12);
-    lfh.writeUInt32LE(0, 14);
-    lfh.writeUInt32LE(0, 18);
-    lfh.writeUInt32LE(0, 22);
-    lfh.writeUInt16LE(nameBytes.length, 26);
-    lfh.writeUInt16LE(0, 28);
-    nameBytes.copy(lfh, 30);
-
-    await writeChunk(writable, lfh);
-    offset += lfh.length;
-
-    let runningCrc = 0;
-    let fileSize = 0;
-    const rs = createReadStream(item.absPath);
-    for await (const chunk of rs) {
-      if (writable.destroyed) {
-        rs.destroy();
-        return;
-      }
-      runningCrc = crc32(chunk, runningCrc) >>> 0;
-      fileSize += chunk.length;
+  for (const entry of entries) {
+    entry.offset = offset;
+    entry.crc = 0;
+    const header = localHeader(entry, zip64);
+    await writeChunk(writable, header);
+    offset += header.length;
+    if (entry.directory) continue;
+    let bytes = 0;
+    const file = createReadStream(entry.absPath, { flags: constants.O_RDONLY | constants.O_NOFOLLOW });
+    for await (const chunk of file) {
+      bytes += chunk.length;
+      if (bytes > entry.size) throw new Error('File grew during download');
+      entry.crc = crc32(chunk, entry.crc) >>> 0;
       await writeChunk(writable, chunk);
-      offset += chunk.length;
     }
-
-    const size32 = fileSize >>> 0;
-    const dd = Buffer.alloc(16);
-    dd.writeUInt32LE(0x08074b50, 0);
-    dd.writeUInt32LE(runningCrc, 4);
-    dd.writeUInt32LE(size32, 8);
-    dd.writeUInt32LE(size32, 12);
-    await writeChunk(writable, dd);
-    offset += dd.length;
-
-    centralRecords.push({
-      nameBytes,
-      flags,
-      dosTime,
-      dosDate,
-      crc: runningCrc,
-      size: size32,
-      localHeaderOffset,
-      externalAttr: 0x00,
-    });
+    if (bytes !== entry.size) throw new Error('File size changed during download');
+    const trailer = descriptor(entry, zip64);
+    await writeChunk(writable, trailer);
+    offset += bytes + trailer.length;
   }
 
   const centralStart = offset;
-  for (const rec of centralRecords) {
-    const cdh = Buffer.alloc(46 + rec.nameBytes.length);
-    cdh.writeUInt32LE(0x02014b50, 0);
-    cdh.writeUInt16LE(20, 4); // version made by
-    cdh.writeUInt16LE(20, 6); // version needed
-    cdh.writeUInt16LE(rec.flags, 8);
-    cdh.writeUInt16LE(0, 10); // method: store
-    cdh.writeUInt16LE(rec.dosTime, 12);
-    cdh.writeUInt16LE(rec.dosDate, 14);
-    cdh.writeUInt32LE(rec.crc, 16);
-    cdh.writeUInt32LE(rec.size, 20);
-    cdh.writeUInt32LE(rec.size, 24);
-    cdh.writeUInt16LE(rec.nameBytes.length, 28);
-    cdh.writeUInt16LE(0, 30); // extra len
-    cdh.writeUInt16LE(0, 32); // comment len
-    cdh.writeUInt16LE(0, 34); // disk number start
-    cdh.writeUInt16LE(0, 36); // internal file attrs
-    cdh.writeUInt32LE(rec.externalAttr, 38);
-    cdh.writeUInt32LE(rec.localHeaderOffset >>> 0, 42);
-    rec.nameBytes.copy(cdh, 46);
-
-    await writeChunk(writable, cdh);
-    offset += cdh.length;
+  for (const entry of entries) {
+    const header = centralHeader(entry, zip64);
+    await writeChunk(writable, header);
+    offset += header.length;
   }
-
-  const centralSize = offset - centralStart;
-  const count16 = Math.min(0xffff, centralRecords.length);
-  const eocd = Buffer.alloc(22);
-  eocd.writeUInt32LE(0x06054b50, 0);
-  eocd.writeUInt16LE(0, 4);
-  eocd.writeUInt16LE(0, 6);
-  eocd.writeUInt16LE(count16, 8);
-  eocd.writeUInt16LE(count16, 10);
-  eocd.writeUInt32LE(centralSize >>> 0, 12);
-  eocd.writeUInt32LE(centralStart >>> 0, 16);
-  eocd.writeUInt16LE(0, 20);
-
-  await writeChunk(writable, eocd);
-  if (!writable.writableEnded && !writable.destroyed) {
-    writable.end();
-  }
+  await writeChunk(writable, endRecords(entries.length, centralStart, offset - centralStart, zip64));
+  writable.end();
 }

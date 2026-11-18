@@ -19,6 +19,8 @@
   - 侧栏常驻展示存储空间使用情况；点击登录或切换账号均在当前页打开 `<dialog class="syl-auth-modal">` 悬浮窗完成验证，零整页跳转。
   - 构建期自动提取全站 UI 字形生成约 `60 KB` `HarmonyOS Sans SC` 预加载子集（`scripts/build-ui-fonts.py`），配合 `Google Sans Flex` 实现页面刷新零字体跳变（Zero FOUT）。
 
+一次 ZIP 下载最多包含 10,000 个文件和文件夹。超限会在传输前提示分批下载。整包达到 4 GiB 时自动使用 ZIP64，下载过程中有文件大小变化会中断此次传输。
+
 ## 目录结构
 
 - `src/`：一体化云盘 HTTP 网关、分级白名单存储、纯流式 UTF-8 ZIP 打包器（`src/zip-stream.mjs`）、Agent HTTP API 与运维 CLI (`shouyulove-drive-cli`)
@@ -34,3 +36,5 @@
 cd 心创组内部使用/心创云盘
 npm test
 ```
+
+更新已上线的 Node 应用用 `python3 deploy/deploy_aliyun.py --app-only`。脚本核对现有部署配置，切换版本后检查服务健康，启动失败时恢复旧版本。初次安装使用 `python3 deploy/deploy_aliyun.py`。

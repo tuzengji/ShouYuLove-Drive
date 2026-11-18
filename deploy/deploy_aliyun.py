@@ -58,7 +58,7 @@ def main() -> int:
             "ssh",
             SSH_HOST,
             f"mkdir -p {shlex.quote(REMOTE_RELEASES)} && mkdir {shlex.quote(release_dir)} "
-            f"&& tar -xzf - -C {shlex.quote(release_dir)}",
+            f"&& tar --no-same-owner -xzf - -C {shlex.quote(release_dir)}",
         ],
         input=tar_bytes,
         check=True,
@@ -70,6 +70,7 @@ release=$1
 current=$2
 previous=$(readlink -e "$current")
 node=/opt/shouyulove-auth/node/bin/node
+chown -hR root:shouyulove-drive -- "$release"
 diff -qr "$previous/branding" "$release/branding"
 diff -qr -x deploy_aliyun.py "$previous/deploy" "$release/deploy"
 cmp "$previous/package.json" "$release/package.json"
